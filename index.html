@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AYA - AI × Design | AIでビジネスツールを制作</title>
+  <meta name="description" content="フリーランスデザイナーがAIエージェントを活用し、Webアプリ・LP・自動化ツールを制作します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #DA7756;
+      --primary-dark: #c4613f;
+      --dark: #141413;
+      --bg: #F4F3EE;
+      --subtitle: #B1ADA1;
+      --card-bg: #FFFFFF;
+      --font-heading: 'Poppins', 'Noto Sans JP', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --max-width: 1100px;
+      --section-padding: 100px 0;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(244, 243, 238, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s;
+    }
+
+    header.scrolled {
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+
+    .header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--dark);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    nav a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--dark);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* ===== MOBILE NAV ===== */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(244, 243, 238, 0.98);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mobile-overlay.active {
+      display: flex;
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .mobile-nav a {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--primary);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 140px 0 100px;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      padding: 6px 16px;
+      border: 1.5px solid var(--primary);
+      border-radius: 50px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--dark);
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero p {
+      font-size: clamp(0.875rem, 2vw, 1rem);
+      color: var(--subtitle);
+      max-width: 580px;
+      margin: 0 auto 40px;
+      line-height: 2;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(218, 119, 86, 0.25);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--dark);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* ===== ABOUT ===== */
+    .about {
+      padding: var(--section-padding);
+    }
+
+    .about-inner {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .about h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .about p {
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 2;
+      margin-bottom: 48px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--subtitle);
+      margin-top: 4px;
+    }
+
+    /* ===== SECTION TITLES ===== */
+    .section-title {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-title h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: var(--subtitle);
+      font-size: 0.9rem;
+    }
+
+    /* ===== WORKS ===== */
+    .works {
+      padding: var(--section-padding);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .work-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .work-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .work-card-accent {
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .work-card-body {
+      padding: 28px 24px;
+    }
+
+    .work-card-icon {
+      font-size: 2.25rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .work-card-body h3 {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .work-card-body p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary);
+      background: rgba(218, 119, 86, 0.08);
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    .work-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+
+    .demo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      padding: 6px 16px;
+      border: 1.5px solid var(--primary);
+      border-radius: 50px;
+      transition: all 0.2s;
+      cursor: pointer;
+      background: none;
+      font-family: var(--font-body);
+    }
+
+    .demo-link:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .demo-link svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* ===== PHONE MOCKUP MODAL ===== */
+    .demo-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 20, 19, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .demo-modal-overlay.active {
+      display: flex;
+    }
+
+    .demo-modal {
+      position: relative;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .demo-modal-close {
+      position: absolute;
+      top: -48px;
+      right: 0;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .demo-modal-close:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .phone-frame {
+      background: #1a1a1a;
+      border-radius: 40px;
+      padding: 14px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.4), inset 0 0 0 2px rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: #1a1a1a;
+      border-radius: 0 0 18px 18px;
+      z-index: 2;
+    }
+
+    .phone-screen {
+      border-radius: 28px;
+      overflow: hidden;
+      background: #fff;
+      aspect-ratio: 9/19.5;
+    }
+
+    .phone-screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .demo-modal-info {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .demo-modal-info h3 {
+      color: #fff;
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .demo-modal-info p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.8rem;
+    }
+
+    .demo-modal-info a {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .demo-modal-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== SELF-MADE BADGE ===== */
+    .self-made-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(218, 119, 86, 0.06);
+      border: 1px dashed var(--primary);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 0.78rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how {
+      padding: var(--section-padding);
+      background: var(--card-bg);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      position: relative;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .step h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 0.875rem;
+      color: #666;
+      line-height: 1.9;
+      max-width: 260px;
+      margin: 0 auto;
+    }
+
+    .step-connector {
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .step-connector {
+        display: block;
+        position: absolute;
+        top: 26px;
+        right: -24px;
+        width: 48px;
+        height: 2px;
+        background: rgba(218, 119, 86, 0.3);
+      }
+
+      .step-connector::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: -4px;
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid rgba(218, 119, 86, 0.4);
+        border-top: 2px solid rgba(218, 119, 86, 0.4);
+        transform: rotate(45deg);
+      }
+    }
+
+    /* ===== SERVICES ===== */
+    .services {
+      padding: var(--section-padding);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .service-card.featured {
+      border: 2px solid var(--primary);
+      transform: scale(1.03);
+    }
+
+    .service-card.featured:hover {
+      transform: scale(1.03) translateY(-4px);
+      box-shadow: 0 16px 48px rgba(218, 119, 86, 0.15);
+    }
+
+    .badge-recommend {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 20px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .service-price {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .service-price-note {
+      font-size: 0.8rem;
+      color: var(--subtitle);
+      margin-bottom: 20px;
+    }
+
+    .service-desc {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .service-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+
+    .service-features li {
+      font-size: 0.85rem;
+      color: #555;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-features li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 12px 32px;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ===== CTA ===== */
+    .cta {
+      padding: 80px 0;
+      background: var(--primary);
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.4rem, 4vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .cta > .container > p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+    }
+
+    .btn-white {
+      display: inline-block;
+      background: #fff;
+      color: var(--primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 18px 44px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .cta-note {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 16px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--subtitle);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+    .fade-in-delay-5 { transition-delay: 0.5s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      :root {
+        --section-padding: 72px 0;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero {
+        padding: 120px 0 72px;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+
+      .stats {
+        gap: 16px;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+      }
+
+      .works-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .step-connector {
+        display: none !important;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .service-card.featured {
+        transform: none;
+        order: -1;
+      }
+
+      .service-card.featured:hover {
+        transform: translateY(-4px);
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="#" class="logo">AYA<span>.</span></a>
+      <nav>
+        <a href="#works">制作事例</a>
+        <a href="lp.html">導入サポート</a>
+        <a href="#services">サービス</a>
+        <a href="#contact">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay">
+    <div class="mobile-nav">
+      <a href="#works">制作事例</a>
+      <a href="lp.html">導入サポート</a>
+      <a href="#services">サービス</a>
+      <a href="#contact">お問い合わせ</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-label fade-in">AI × Design</span>
+      <h1 class="fade-in fade-in-delay-1">AIで、あなたのビジネスに<br>必要なツールを作ります</h1>
+      <p class="fade-in fade-in-delay-2">一人起業家・フリーランスのあなたへ。プログラミング知識ゼロでも、<br>Webアプリ・LP・自動化ツールが手に入る。AIエージェントで「欲しい」を形にします。</p>
+      <div class="hero-actions fade-in fade-in-delay-3">
+        <a href="#services" class="btn-primary">サービスを見る</a>
+        <a href="#works" class="btn-secondary">制作事例を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-inner fade-in">
+        <h2>AIエージェント × デザイナー</h2>
+        <p>フリーランスデザイナーとして活動しながら、最先端のAIエージェント技術を活用。一人起業家やフリーランスの「業務効率化したいけどエンジニアに頼むほどでもない」を、デザインの目とAIの力で素早く形にします。</p>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-number">10+</div>
+            <div class="stat-label">件のプロモーション実績</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">1h</div>
+            <div class="stat-label">アプリ制作時間</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">0</div>
+            <div class="stat-label">プログラミング知識不要</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Works -->
+  <section class="works" id="works">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>制作事例</h2>
+        <p>Claude Codeで制作したもの</p>
+      </div>
+      <div class="works-grid">
+        <div class="work-card fade-in fade-in-delay-1">
+          <div class="work-card-accent"></div>
+          <div class="work-card-body">
+            <span class="work-card-icon">📱</span>
+            <h3>夢カレンダーアプリ</h3>
+            <p>目標管理Webアプリ。カレンダー・タイムライン・リスト・メモの4ビュー、音声入力対応。PWA化してスマホにインストール可能</p>
+            <div class="work-card-footer">
+              <span class="tag">Webアプリ</span>
+              <button class="demo-link" onclick="openDemo('https://inspiring-jelly-8d610f.netlify.app', '夢カレンダーアプリ')">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                デモを見る
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="work-card fade-in fade-in-delay-2">
+          <div class="work-card-accent"></div>
+          <div class="work-card-body">
+            <span class="work-card-icon">🌐</span>
+            <h3>会員サイト</h3>
+            <p>講座の動画・資料を管理する会員専用サイト。受講生がいつでもコンテンツにアクセスできる環境を構築</p>
+            <div class="work-card-footer">
+              <span class="tag">Webサイト</span>
+              <span class="demo-link" style="opacity:0.4;cursor:default;pointer-events:none;">準備中</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-card fade-in fade-in-delay-3">
+          <div class="work-card-accent"></div>
+          <div class="work-card-body">
+            <span class="work-card-icon">📊</span>
+            <h3>セミナースライド</h3>
+            <p>18枚の本格的なプレゼンテーション資料を自動生成。スピーカーノート付きで、すぐに登壇できる品質</p>
+            <div class="work-card-footer">
+              <span class="tag">資料作成</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-card fade-in fade-in-delay-1">
+          <div class="work-card-accent"></div>
+          <div class="work-card-body">
+            <span class="work-card-icon">📋</span>
+            <h3>業務管理シート</h3>
+            <p>講座の進捗管理・カリキュラム管理をExcelで自動化。関数やフォーマットも含めて一括作成</p>
+            <div class="work-card-footer">
+              <span class="tag">業務効率化</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-card fade-in fade-in-delay-2">
+          <div class="work-card-accent"></div>
+          <div class="work-card-body">
+            <span class="work-card-icon">🖼️</span>
+            <h3>LP（ランディングページ）</h3>
+            <p>クライアント向けのランディングページを短時間で制作。デザイン調整もAIとの対話で即座に反映</p>
+            <div class="work-card-footer">
+              <span class="tag">Webサイト</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-card fade-in fade-in-delay-3">
+          <div class="work-card-accent"></div>
+          <div class="work-card-body">
+            <span class="work-card-icon">⚙️</span>
+            <h3>自動化ツール</h3>
+            <p>毎日のタスクリマインド、スケジュール通知などの業務自動化。手作業から解放される仕組みを構築</p>
+            <div class="work-card-footer">
+              <span class="tag">自動化</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:24px;">
+        <span class="self-made-badge fade-in">* このポートフォリオサイトも Claude Code で制作しました</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>制作の流れ</h2>
+        <p>3ステップで完成</p>
+      </div>
+      <div class="steps">
+        <div class="step fade-in fade-in-delay-1">
+          <div class="step-number">1</div>
+          <h3>ヒアリング</h3>
+          <p>あなたのやりたいこと・困っていることをお聞きします</p>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step fade-in fade-in-delay-2">
+          <div class="step-number">2</div>
+          <h3>AI制作</h3>
+          <p>AIエージェントを活用して素早く制作。デザイナーの目で品質を担保</p>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step fade-in fade-in-delay-3">
+          <div class="step-number">3</div>
+          <h3>納品・サポート</h3>
+          <p>完成品をお渡し。使い方のサポートも行います</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>サービス</h2>
+        <p>あなたに合ったプランをお選びください</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card fade-in fade-in-delay-1">
+          <h3>Claude Code 導入サポート</h3>
+          <div class="service-price">¥20,000</div>
+          <div class="service-price-note">税込</div>
+          <p class="service-desc">120分のマンツーマンセッション</p>
+          <ul class="service-features">
+            <li>セットアップ完了</li>
+            <li>安全な使い方レクチャー</li>
+            <li>実際の制作体験</li>
+            <li>アフターフォロー</li>
+          </ul>
+          <a href="lp.html" class="btn-outline">詳細を見る</a>
+        </div>
+        <div class="service-card featured fade-in fade-in-delay-2">
+          <span class="badge-recommend">おすすめ</span>
+          <h3>個別制作サポート</h3>
+          <div class="service-price">¥50,000〜</div>
+          <div class="service-price-note">税込</div>
+          <p class="service-desc">あなたの業務に合わせたツール制作</p>
+          <ul class="service-features">
+            <li>ヒアリング</li>
+            <li>オーダーメイド制作</li>
+            <li>納品後の修正対応</li>
+            <li>使い方レクチャー</li>
+          </ul>
+          <a href="#" class="btn-outline">相談する</a>
+        </div>
+        <div class="service-card fade-in fade-in-delay-3">
+          <h3>月額サポートプラン</h3>
+          <div class="service-price">¥30,000〜</div>
+          <div class="service-price-note">/月（税込）</div>
+          <p class="service-desc">いつでも相談・依頼できる安心プラン</p>
+          <ul class="service-features">
+            <li>制作依頼し放題</li>
+            <li>優先対応</li>
+            <li>月1回のミーティング</li>
+            <li>ツールの保守・更新</li>
+          </ul>
+          <a href="#" class="btn-outline">相談する</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="container">
+      <h2 class="fade-in">あなたのビジネス、AIで変えてみませんか？</h2>
+      <p class="fade-in fade-in-delay-1">まずはClaude Codeを使えるようになる導入サポートから。<br>すでに作りたいものがある方は、無料の個別相談へどうぞ。</p>
+      <div class="fade-in fade-in-delay-2" style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;">
+        <a href="lp.html" class="btn-white">導入サポートに申し込む</a>
+        <a href="#" class="btn-white" style="background:transparent;border:2px solid #fff;color:#fff;">無料で個別相談する</a>
+      </div>
+      <p class="cta-note fade-in fade-in-delay-3">※ 個別相談は30分の無料ヒアリングです</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 AYA - AI &times; Design</p>
+    </div>
+  </footer>
+
+  <!-- Demo Modal (Phone Mockup) -->
+  <div class="demo-modal-overlay" id="demoModal">
+    <div class="demo-modal">
+      <button class="demo-modal-close" onclick="closeDemo()">&times;</button>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <iframe id="demoIframe" src="about:blank"></iframe>
+        </div>
+      </div>
+      <div class="demo-modal-info">
+        <h3 id="demoTitle"></h3>
+        <p>スマホと同じ操作感で体験できます</p>
+        <a id="demoFullLink" href="#" target="_blank" rel="noopener">全画面で開く &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Demo modal functions
+    function openDemo(url, title) {
+      const modal = document.getElementById('demoModal');
+      const iframe = document.getElementById('demoIframe');
+      const titleEl = document.getElementById('demoTitle');
+      const fullLink = document.getElementById('demoFullLink');
+      iframe.src = url;
+      titleEl.textContent = title;
+      fullLink.href = url;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDemo() {
+      const modal = document.getElementById('demoModal');
+      const iframe = document.getElementById('demoIframe');
+      modal.classList.remove('active');
+      iframe.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    // Close demo on overlay click
+    document.getElementById('demoModal').addEventListener('click', function(e) {
+      if (e.target === this) closeDemo();
+    });
+
+    // Close demo on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDemo();
+    });
+
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const overlay = document.getElementById('mobileOverlay');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Close mobile menu on link click
+    overlay.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+  </script>
+
+</body>
+</html>

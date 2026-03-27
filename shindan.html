@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI自動化診断 | あなたのビジネスはどこまで自動化できる？</title>
+  <meta name="description" content="5つの質問に答えるだけで、あなたのビジネスで自動化できるポイントがわかります。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #DA7756;
+      --primary-dark: #c4613f;
+      --primary-light: #e8956e;
+      --dark: #1a1a1a;
+      --darker: #0d0d0d;
+      --terminal: #0a0a0a;
+      --light: #faf9f7;
+      --muted: #8a8680;
+      --font-heading: 'Poppins', 'Noto Sans JP', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--terminal);
+      color: #fff;
+      min-height: 100vh;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Terminal code background */
+    body::before {
+      content: '$ claude analyze --business\n> Scanning workflows...\n> Identifying automation points...\n> Calculating time savings...\n✓ Analysis complete\n\n$ claude suggest --optimize\n> Reviewing daily tasks...\n> Finding repetitive patterns...\n> Generating recommendations...\n✓ 5 suggestions ready';
+      position: fixed; inset: 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: rgba(218,119,86,0.04);
+      white-space: pre-wrap;
+      line-height: 2.4;
+      padding: 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Orbs */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); pointer-events: none;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+    .orb-1 { width: 400px; height: 400px; background: rgba(218,119,86,0.08); top: -10%; right: -10%; }
+    .orb-2 { width: 300px; height: 300px; background: rgba(218,119,86,0.05); bottom: 10%; left: -10%; animation-delay: -3s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(15px, -20px) scale(1.03); }
+      66% { transform: translate(-10px, 10px) scale(0.97); }
+    }
+
+    /* Character pixel art (inline) */
+    .claude-char { display: inline-block; image-rendering: pixelated; }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      text-align: center;
+      padding: 80px 0 40px;
+    }
+
+    .page-header .claude-char svg {
+      width: 72px; height: 72px;
+      filter: drop-shadow(0 0 30px rgba(218,119,86,0.3));
+      animation: charBounce 3s ease-in-out infinite;
+    }
+
+    @keyframes charBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      font-weight: 800;
+      margin: 20px 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .page-header h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      margin: 32px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 0%;
+    }
+
+    .progress-text {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    /* ===== QUESTION CARD ===== */
+    .question-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 40px 36px;
+      margin-bottom: 24px;
+      animation: cardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .question-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* Answer options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      text-align: left;
+    }
+
+    .option-btn:hover {
+      background: rgba(218,119,86,0.06);
+      border-color: rgba(218,119,86,0.3);
+      color: #fff;
+      transform: translateX(4px);
+    }
+
+    .option-btn:active {
+      transform: scale(0.98);
+    }
+
+    .option-btn .check {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.15);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .option-btn:hover .check {
+      border-color: var(--primary);
+    }
+
+    .option-btn.selected {
+      background: rgba(218,119,86,0.1);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .option-btn.selected .check {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .option-btn.selected .check::after {
+      content: '✓';
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* ===== RESULT ===== */
+    .result-section {
+      display: none;
+      animation: cardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .result-section.show { display: block; }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .result-header .claude-char svg {
+      width: 80px; height: 80px;
+      animation: charBounce 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 30px rgba(218,119,86,0.4));
+    }
+
+    .result-header h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      font-weight: 800;
+      margin: 20px 0 8px;
+    }
+
+    .result-header h2 em {
+      font-style: normal;
+      color: var(--primary);
+    }
+
+    .result-score {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .score-circle {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.06);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+
+    .score-circle::before {
+      content: '';
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-top-color: var(--primary);
+      border-right-color: var(--primary);
+      animation: scoreRotate 2s ease-out forwards;
+    }
+
+    @keyframes scoreRotate {
+      from { transform: rotate(-90deg); }
+      to { transform: rotate(180deg); }
+    }
+
+    .score-number {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+
+    .time-saved {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .time-saved strong {
+      font-size: 1.8rem;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* Result items */
+    .result-items {
+      margin-bottom: 48px;
+    }
+
+    .result-item {
+      display: flex;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      animation: itemSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .result-item:nth-child(1) { animation-delay: 0.1s; }
+    .result-item:nth-child(2) { animation-delay: 0.2s; }
+    .result-item:nth-child(3) { animation-delay: 0.3s; }
+    .result-item:nth-child(4) { animation-delay: 0.4s; }
+    .result-item:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes itemSlide {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .result-item .ri-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: rgba(218,119,86,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .result-item .ri-icon svg {
+      width: 20px; height: 20px;
+      fill: none; stroke: var(--primary);
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .result-item h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .result-item p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.7;
+    }
+
+    .result-item .time-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--primary);
+      background: rgba(218,119,86,0.08);
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    /* CTA */
+    .result-cta {
+      text-align: center;
+      padding: 48px 32px;
+      background: rgba(218,119,86,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      margin-bottom: 40px;
+    }
+
+    .result-cta h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .result-cta p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 28px;
+      line-height: 1.9;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 18px 44px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(218,119,86,0.35);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      margin-top: 16px;
+      transition: color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--primary); }
+
+    /* Footer */
+    .page-footer {
+      text-align: center;
+      padding: 32px 0 48px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.15);
+    }
+
+    .page-footer a {
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+    }
+
+    .page-footer a:hover { color: var(--primary); }
+
+    /* Hide questions when done */
+    .quiz-section.hide { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Pixel character SVG -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <symbol id="claude-char" viewBox="0 0 64 64">
+      <rect x="12" y="4" width="4" height="4" fill="#D4835F"/><rect x="16" y="4" width="4" height="4" fill="#E0936F"/><rect x="20" y="4" width="4" height="4" fill="#E0936F"/><rect x="24" y="4" width="4" height="4" fill="#E0936F"/><rect x="28" y="4" width="4" height="4" fill="#E0936F"/><rect x="32" y="4" width="4" height="4" fill="#E0936F"/><rect x="36" y="4" width="4" height="4" fill="#E0936F"/><rect x="40" y="4" width="4" height="4" fill="#E0936F"/><rect x="44" y="4" width="4" height="4" fill="#E0936F"/><rect x="48" y="4" width="4" height="4" fill="#D4835F"/>
+      <rect x="8" y="8" width="4" height="4" fill="#D4835F"/><rect x="12" y="8" width="4" height="4" fill="#E8A585"/><rect x="16" y="8" width="4" height="4" fill="#E8A585"/><rect x="20" y="8" width="4" height="4" fill="#E0936F"/><rect x="24" y="8" width="4" height="4" fill="#E0936F"/><rect x="28" y="8" width="4" height="4" fill="#E0936F"/><rect x="32" y="8" width="4" height="4" fill="#E0936F"/><rect x="36" y="8" width="4" height="4" fill="#E0936F"/><rect x="40" y="8" width="4" height="4" fill="#E0936F"/><rect x="44" y="8" width="4" height="4" fill="#E8A585"/><rect x="48" y="8" width="4" height="4" fill="#E8A585"/><rect x="52" y="8" width="4" height="4" fill="#D4835F"/>
+      <rect x="8" y="12" width="4" height="4" fill="#E0936F"/><rect x="12" y="12" width="4" height="4" fill="#E8A585"/><rect x="16" y="12" width="4" height="4" fill="#E0936F"/><rect x="20" y="12" width="4" height="4" fill="#E0936F"/><rect x="24" y="12" width="4" height="4" fill="#E0936F"/><rect x="28" y="12" width="4" height="4" fill="#E0936F"/><rect x="32" y="12" width="4" height="4" fill="#E0936F"/><rect x="36" y="12" width="4" height="4" fill="#E0936F"/><rect x="40" y="12" width="4" height="4" fill="#E0936F"/><rect x="44" y="12" width="4" height="4" fill="#E0936F"/><rect x="48" y="12" width="4" height="4" fill="#E8A585"/><rect x="52" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="8" y="16" width="4" height="4" fill="#E0936F"/><rect x="12" y="16" width="4" height="4" fill="#E0936F"/><rect x="16" y="16" width="4" height="4" fill="#E0936F"/><rect x="20" y="16" width="4" height="4" fill="#2A2A2A"/><rect x="24" y="16" width="4" height="4" fill="#2A2A2A"/><rect x="28" y="16" width="4" height="4" fill="#E0936F"/><rect x="32" y="16" width="4" height="4" fill="#E0936F"/><rect x="36" y="16" width="4" height="4" fill="#2A2A2A"/><rect x="40" y="16" width="4" height="4" fill="#2A2A2A"/><rect x="44" y="16" width="4" height="4" fill="#E0936F"/><rect x="48" y="16" width="4" height="4" fill="#E0936F"/><rect x="52" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="8" y="20" width="4" height="4" fill="#E0936F"/><rect x="12" y="20" width="4" height="4" fill="#E0936F"/><rect x="16" y="20" width="4" height="4" fill="#E0936F"/><rect x="20" y="20" width="4" height="4" fill="#2A2A2A"/><rect x="24" y="20" width="4" height="4" fill="#2A2A2A"/><rect x="28" y="20" width="4" height="4" fill="#E0936F"/><rect x="32" y="20" width="4" height="4" fill="#E0936F"/><rect x="36" y="20" width="4" height="4" fill="#2A2A2A"/><rect x="40" y="20" width="4" height="4" fill="#2A2A2A"/><rect x="44" y="20" width="4" height="4" fill="#E0936F"/><rect x="48" y="20" width="4" height="4" fill="#E0936F"/><rect x="52" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="8" y="24" width="4" height="4" fill="#E0936F"/><rect x="12" y="24" width="4" height="4" fill="#E0936F"/><rect x="16" y="24" width="4" height="4" fill="#E0936F"/><rect x="20" y="24" width="4" height="4" fill="#E0936F"/><rect x="24" y="24" width="4" height="4" fill="#E0936F"/><rect x="28" y="24" width="4" height="4" fill="#E0936F"/><rect x="32" y="24" width="4" height="4" fill="#E0936F"/><rect x="36" y="24" width="4" height="4" fill="#E0936F"/><rect x="40" y="24" width="4" height="4" fill="#E0936F"/><rect x="44" y="24" width="4" height="4" fill="#E0936F"/><rect x="48" y="24" width="4" height="4" fill="#E0936F"/><rect x="52" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="8" y="28" width="4" height="4" fill="#D4835F"/><rect x="12" y="28" width="4" height="4" fill="#E0936F"/><rect x="16" y="28" width="4" height="4" fill="#E0936F"/><rect x="20" y="28" width="4" height="4" fill="#E0936F"/><rect x="24" y="28" width="4" height="4" fill="#E0936F"/><rect x="28" y="28" width="4" height="4" fill="#E0936F"/><rect x="32" y="28" width="4" height="4" fill="#E0936F"/><rect x="36" y="28" width="4" height="4" fill="#E0936F"/><rect x="40" y="28" width="4" height="4" fill="#E0936F"/><rect x="44" y="28" width="4" height="4" fill="#E0936F"/><rect x="48" y="28" width="4" height="4" fill="#E0936F"/><rect x="52" y="28" width="4" height="4" fill="#D4835F"/>
+      <rect x="12" y="32" width="4" height="4" fill="#D4835F"/><rect x="16" y="32" width="4" height="4" fill="#E0936F"/><rect x="20" y="32" width="4" height="4" fill="#E0936F"/><rect x="24" y="32" width="4" height="4" fill="#E0936F"/><rect x="28" y="32" width="4" height="4" fill="#E0936F"/><rect x="32" y="32" width="4" height="4" fill="#E0936F"/><rect x="36" y="32" width="4" height="4" fill="#E0936F"/><rect x="40" y="32" width="4" height="4" fill="#E0936F"/><rect x="44" y="32" width="4" height="4" fill="#E0936F"/><rect x="48" y="32" width="4" height="4" fill="#D4835F"/>
+      <rect x="12" y="36" width="4" height="4" fill="#E0936F"/><rect x="16" y="36" width="4" height="4" fill="#E0936F"/><rect x="20" y="36" width="4" height="4" fill="#D4835F"/><rect x="40" y="36" width="4" height="4" fill="#D4835F"/><rect x="44" y="36" width="4" height="4" fill="#E0936F"/><rect x="48" y="36" width="4" height="4" fill="#E0936F"/>
+      <rect x="12" y="40" width="4" height="4" fill="#D4835F"/><rect x="16" y="40" width="4" height="4" fill="#E0936F"/><rect x="44" y="40" width="4" height="4" fill="#E0936F"/><rect x="48" y="40" width="4" height="4" fill="#D4835F"/>
+      <rect x="8" y="44" width="4" height="4" fill="#D4835F"/><rect x="12" y="44" width="4" height="4" fill="#E0936F"/><rect x="16" y="44" width="4" height="4" fill="#E0936F"/><rect x="20" y="44" width="4" height="4" fill="#D4835F"/><rect x="40" y="44" width="4" height="4" fill="#D4835F"/><rect x="44" y="44" width="4" height="4" fill="#E0936F"/><rect x="48" y="44" width="4" height="4" fill="#E0936F"/><rect x="52" y="44" width="4" height="4" fill="#D4835F"/>
+    </symbol>
+  </svg>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+      <h1>あなたのビジネス、<br>どこまで<em>自動化</em>できる？</h1>
+      <p>6つの質問に答えるだけ。所要時間 約1分。</p>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div class="progress-text" id="progress-text">QUESTION 0 / 6</div>
+
+    <!-- Quiz Section -->
+    <div class="quiz-section" id="quiz"></div>
+
+    <!-- Result Section -->
+    <div class="result-section" id="result"></div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      <a href="lp.html">導入サポートについて詳しく見る &rarr;</a>
+      <p style="margin-top:8px;">&copy; 2026 AYA - AI &times; Design</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== QUIZ DATA =====
+    const questions = [
+      {
+        q: '毎週・毎月くり返している事務作業はありますか？',
+        options: [
+          { text: 'かなりある（週報、集計、メール送信など）', score: 3, tags: ['automation'] },
+          { text: 'いくつかある', score: 2, tags: ['automation'] },
+          { text: 'あまりない', score: 1, tags: [] },
+          { text: 'ほとんどない', score: 0, tags: [] }
+        ]
+      },
+      {
+        q: 'Webサイト・LP・ポートフォリオが欲しいと思ったことは？',
+        options: [
+          { text: '今すぐ欲しい！', score: 3, tags: ['web'] },
+          { text: '興味はある', score: 2, tags: ['web'] },
+          { text: '一応持っている', score: 1, tags: [] },
+          { text: '必要ない', score: 0, tags: [] }
+        ]
+      },
+      {
+        q: '講座やサービスの受講生・お客様のフォローは追いついていますか？',
+        options: [
+          { text: '全然追いつかない…', score: 3, tags: ['member'] },
+          { text: 'ちょっと手薄かも', score: 2, tags: ['member'] },
+          { text: 'まあまあできている', score: 1, tags: [] },
+          { text: '対象のサービスはない', score: 0, tags: [] }
+        ]
+      },
+      {
+        q: 'SNS・ブログの発信はどのくらいできていますか？',
+        options: [
+          { text: '全然できていない（やりたいのに…）', score: 3, tags: ['content'] },
+          { text: '不定期でがんばっている', score: 2, tags: ['content'] },
+          { text: 'まあまあ定期的に投稿している', score: 1, tags: [] },
+          { text: '発信は特に必要ない', score: 0, tags: [] }
+        ]
+      },
+      {
+        q: 'スライドや資料の作成にどのくらい時間をかけていますか？',
+        options: [
+          { text: '毎回かなりの時間がかかる', score: 3, tags: ['docs'] },
+          { text: 'そこそこ時間がかかる', score: 2, tags: ['docs'] },
+          { text: 'テンプレを使って効率化している', score: 1, tags: [] },
+          { text: '資料作成はほぼない', score: 0, tags: [] }
+        ]
+      },
+      {
+        q: 'AIツールの経験はどのくらいありますか？',
+        options: [
+          { text: 'まったく使ったことがない', score: 2, tags: ['beginner'] },
+          { text: 'ChatGPTなどを少し触った程度', score: 3, tags: ['beginner'] },
+          { text: 'けっこう使っている', score: 1, tags: [] },
+          { text: 'AIエージェントも使っている', score: 0, tags: [] }
+        ]
+      }
+    ];
+
+    // Result suggestions mapped to tags
+    const suggestions = {
+      automation: {
+        icon: '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>',
+        title: '業務の自動化',
+        desc: '週報集計・メール送信・リマインド通知などを仕組み化。手作業を大幅に削減できます。',
+        time: '月10〜20時間の削減'
+      },
+      web: {
+        icon: '<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+        title: 'Webサイト・LP制作',
+        desc: 'プロ品質のサイトを、外注なしで数時間で制作。更新もAIに話しかけるだけ。',
+        time: '外注費10〜50万円の節約'
+      },
+      member: {
+        icon: '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>',
+        title: '会員サイト・受講生サポート',
+        desc: '動画配信・進捗管理・Q&Aを一つに。一人ひとりに寄り添えるサポートを仕組みで実現。',
+        time: '月5〜10時間の削減'
+      },
+      content: {
+        icon: '<svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>',
+        title: 'SNS・コンテンツ発信',
+        desc: '投稿の下書き・画像案・ハッシュタグ提案まで。発信のハードルが劇的に下がります。',
+        time: '週3〜5時間の削減'
+      },
+      docs: {
+        icon: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+        title: 'スライド・資料作成',
+        desc: 'セミナースライド、提案資料、レポートを自動生成。スピーカーノート付きで登壇準備もラクに。',
+        time: '1回あたり3〜5時間の削減'
+      },
+      beginner: {
+        icon: '<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+        title: '導入サポートで安心スタート',
+        desc: 'AIの基礎から安全な使い方まで、マンツーマンでしっかりサポート。初めてでも安心です。',
+        time: '独学より圧倒的に早い'
+      }
+    };
+
+    // ===== STATE =====
+    let currentQ = 0;
+    let answers = [];
+    let allTags = [];
+
+    // ===== RENDER =====
+    function renderQuestion() {
+      const q = questions[currentQ];
+      const quiz = document.getElementById('quiz');
+
+      // Update progress
+      document.getElementById('progress').style.width = ((currentQ) / questions.length * 100) + '%';
+      document.getElementById('progress-text').textContent = `QUESTION ${currentQ + 1} / ${questions.length}`;
+
+      quiz.innerHTML = `
+        <div class="question-card" key="${currentQ}">
+          <div class="question-number">Q${currentQ + 1}</div>
+          <div class="question-text">${q.q}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <button class="option-btn" onclick="selectAnswer(${i})">
+                <span class="check"></span>
+                ${opt.text}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectAnswer(index) {
+      const q = questions[currentQ];
+      const opt = q.options[index];
+
+      // Visual feedback
+      const btns = document.querySelectorAll('.option-btn');
+      btns.forEach(b => b.classList.remove('selected'));
+      btns[index].classList.add('selected');
+
+      answers.push(opt.score);
+      allTags.push(...opt.tags);
+
+      // Next question after short delay
+      setTimeout(() => {
+        currentQ++;
+        if (currentQ < questions.length) {
+          renderQuestion();
+        } else {
+          showResult();
+        }
+      }, 400);
+    }
+
+    function showResult() {
+      const totalScore = answers.reduce((a, b) => a + b, 0);
+      const maxScore = questions.length * 3;
+      const pct = Math.round((totalScore / maxScore) * 100);
+
+      // Unique tags
+      const uniqueTags = [...new Set(allTags)];
+
+      // Progress to 100%
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('progress-text').textContent = '✓ ANALYSIS COMPLETE';
+
+      // Hide quiz
+      document.getElementById('quiz').classList.add('hide');
+
+      // Calculate time savings
+      let totalHours = 0;
+      const timeMap = { automation: 15, web: 8, member: 8, content: 4, docs: 4, beginner: 0 };
+      uniqueTags.forEach(t => totalHours += (timeMap[t] || 0));
+
+      // Determine message
+      let message, sub;
+      if (pct >= 70) {
+        message = '自動化の<em>伸びしろ大</em>！';
+        sub = 'AIエージェントを導入すれば、劇的に変わるポテンシャルがあります。';
+      } else if (pct >= 40) {
+        message = 'いくつか<em>自動化できるポイント</em>がありそう！';
+        sub = '特定の業務で大きな効率化が見込めます。';
+      } else {
+        message = 'すでに<em>効率的</em>に運営されていますね！';
+        sub = 'さらなるレベルアップにAIエージェントが力になれます。';
+      }
+
+      // Build result items
+      const items = uniqueTags.map(tag => {
+        const s = suggestions[tag];
+        return `
+          <div class="result-item">
+            <div class="ri-icon">${s.icon}</div>
+            <div>
+              <h3>${s.title}</h3>
+              <p>${s.desc}</p>
+              <span class="time-badge">${s.time}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render
+      const result = document.getElementById('result');
+      result.classList.add('show');
+      result.innerHTML = `
+        <div class="result-header">
+          <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+          <h2>${message}</h2>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.9rem;font-weight:300;">${sub}</p>
+        </div>
+
+        <div class="result-score">
+          <div class="score-circle">
+            <div class="score-number">${pct}%</div>
+            <div class="score-label">自動化ポテンシャル</div>
+          </div>
+          ${totalHours > 0 ? `<p class="time-saved">月 <strong>${totalHours}時間+</strong> の削減が見込めます</p>` : ''}
+        </div>
+
+        <div class="result-items">
+          <h3 style="font-size:0.78rem;color:var(--primary);letter-spacing:0.15em;margin-bottom:16px;font-family:var(--font-heading);">YOUR AUTOMATION POINTS</h3>
+          ${items || '<p style="color:rgba(255,255,255,0.4);">現時点では大きな自動化ポイントは見つかりませんでしたが、AIエージェントを学ぶことで新しい可能性が見えてきます。</p>'}
+        </div>
+
+        <div class="result-cta">
+          <h3>この結果を元に、あなたに最適なAI活用法をご提案します</h3>
+          <p>30分の無料ヒアリングで、具体的にどう業務が変わるかお伝えします。</p>
+          <a href="#" class="btn-primary">無料で個別相談する</a>
+          <br>
+          <a href="lp.html" class="btn-secondary">導入サポート（¥20,000）の詳細を見る &rarr;</a>
+        </div>
+      `;
+
+      // Smooth scroll to result
+      setTimeout(() => {
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    // ===== INIT =====
+    renderQuestion();
+  </script>
+
+</body>
+</html>
