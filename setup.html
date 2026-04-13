@@ -1517,8 +1517,8 @@
 
       <div class="info-box fade-up">
         <strong>「Code」タブがポイントです。</strong><br>
-        普通のチャットは「Chat」タブ、<br>
-        Claude Codeを使うには「<strong>Code</strong>」タブに切り替えます。
+        タブは「Chat」「Cowork」「Code」の3つ。<br>
+        Claude Codeを使うには一番右の「<strong>Code</strong>」タブに切り替えます。
       </div>
 
       <!-- OS Tab Switcher for app mocks -->
@@ -1541,6 +1541,7 @@
               <div class="mock-dots"><span></span><span></span><span></span></div>
               <div class="mock-claude-tabs">
                 <div class="mock-claude-tab">Chat</div>
+                <div class="mock-claude-tab">Cowork</div>
                 <div class="mock-claude-tab active highlight">
                   Code
                   <span class="highlight-arrow" style="margin-left:4px;">&#x2190;</span>
@@ -1554,6 +1555,21 @@
               <div style="margin-top:16px;"><span class="mock-btn-outline">Select folder</span></div>
             </div>
           </div>
+          <!-- Mac: 初回起動時の注意 -->
+          <div class="warning-box" style="margin-top:20px;">
+            <strong>Mac：初めてCodeタブを開くと...</strong><br>
+            「ターミナルを開いて再起動してください」<br>
+            のようなメッセージが表示されることがあります。<br><br>
+            <strong>対処法：</strong>
+            <ol style="margin:12px 0 0 20px;font-size:0.85rem;line-height:2;">
+              <li><code style="background:rgba(218,119,86,0.1);padding:2px 8px;border-radius:5px;font-size:0.8rem;">Command + Space</code> →「ターミナル」と入力して開く</li>
+              <li>表示された指示に従って操作する<br>（多くの場合、Xcode Command Line Toolsのインストール）</li>
+              <li>完了したら<strong>Claudeアプリを一度閉じて、再度開く</strong></li>
+            </ol>
+            <div style="margin-top:12px;padding:10px 14px;background:rgba(218,119,86,0.06);border-radius:8px;font-size:0.8rem;color:var(--muted);line-height:1.8;">
+              これは初回だけの作業です。<br>一度インストールすれば、次回からはすぐ使えます。
+            </div>
+          </div>
         </div>
 
         <!-- Windows Claude Desktop Mock -->
@@ -1562,6 +1578,7 @@
             <div class="mock-claude-bar win" style="border-radius:4px 4px 0 0;">
               <div class="mock-claude-tabs" style="margin:0;">
                 <div class="mock-claude-tab">Chat</div>
+                <div class="mock-claude-tab">Cowork</div>
                 <div class="mock-claude-tab active highlight">
                   Code
                   <span class="highlight-arrow" style="margin-left:4px;">&#x2190;</span>
