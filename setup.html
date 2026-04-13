@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code セットアップガイド | ゼロからはじめる環境構築</title>
+  <meta name="description" content="Claude Codeのセットアップを一緒に進めましょう。契約からインストール、動作確認まで、初心者でも迷わないステップバイステップガイド。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #DA7756;
+      --primary-dark: #c4613f;
+      --primary-light: #e8956e;
+      --primary-glow: rgba(218, 119, 86, 0.15);
+      --claude-skin: #E0936F;
+      --claude-eye: #2a2a2a;
+      --claude-bg: #F4F3EE;
+      --dark: #1a1a1a;
+      --darker: #0d0d0d;
+      --terminal: #0a0a0a;
+      --light: #faf9f7;
+      --muted: #8a8680;
+      --card-bg: #FFFFFF;
+      --font-heading: 'Poppins', 'Noto Sans JP', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 17px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== CLAUDE CHARACTER ===== */
+    .claude-char {
+      display: inline-block;
+      image-rendering: pixelated;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+
+    .logo {
+      font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
+      color: #fff; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+
+    .logo .claude-char svg { width: 24px; height: 24px; }
+
+    .header-nav { display: flex; gap: 16px; align-items: center; flex-shrink: 0; }
+    .header-nav a { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+    .header-nav a:hover { color: #fff; }
+
+    .header-cta {
+      font-size: 0.72rem !important; font-weight: 700 !important;
+      color: #fff !important; background: var(--primary);
+      padding: 7px 16px; border-radius: 50px;
+      transition: all 0.2s !important;
+      white-space: nowrap;
+    }
+
+    .header-cta:hover { background: var(--primary-light) !important; }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 100px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--terminal);
+      color: #fff;
+    }
+
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+
+    .hero-orb--1 { width: 500px; height: 500px; background: rgba(218,119,86,0.1); top: -10%; right: -10%; }
+    .hero-orb--2 { width: 400px; height: 400px; background: rgba(218,119,86,0.05); bottom: -15%; left: -5%; animation-delay: -4s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -30px) scale(1.05); }
+      66% { transform: translate(-15px, 15px) scale(0.95); }
+    }
+
+    .hero > .container { position: relative; z-index: 2; }
+
+    .hero-character {
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-character svg {
+      width: 80px; height: 80px;
+      filter: drop-shadow(0 0 40px rgba(218,119,86,0.4));
+      animation: charBounce 3s ease-in-out infinite;
+    }
+
+    @keyframes charBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-speech {
+      position: absolute;
+      top: -8px; right: -140px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 14px 14px 14px 4px;
+      padding: 8px 14px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.85);
+      white-space: nowrap;
+      animation: speechFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes speechFloat {
+      0%, 100% { opacity: 0.6; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-6px); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800; line-height: 1.3;
+      color: #fff; margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .lead {
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      color: rgba(255,255,255,0.7);
+      font-weight: 300; max-width: 500px;
+      margin: 0 auto; line-height: 2;
+    }
+
+    /* ===== STEP NAVIGATION ===== */
+    .step-nav {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: -32px auto 48px;
+      position: relative;
+      z-index: 3;
+      max-width: 700px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    .step-nav-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .step-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step-nav-list a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+
+    .step-nav-list a:hover {
+      background: var(--primary-glow);
+      color: var(--primary-dark);
+    }
+
+    .step-nav-num {
+      width: 28px; height: 28px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ===== STEP SECTIONS ===== */
+    .step-section {
+      padding: 48px 0;
+    }
+
+    .step-section:nth-child(even) {
+      background: rgba(218,119,86,0.03);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .step-number {
+      width: 48px; height: 48px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .step-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 2;
+      margin-bottom: 24px;
+    }
+
+    .step-list {
+      list-style: none;
+      counter-reset: step-item;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .step-list li {
+      counter-increment: step-item;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .step-list li::before {
+      content: counter(step-item);
+      width: 28px; height: 28px;
+      background: var(--primary-glow);
+      color: var(--primary-dark);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ===== INFO / WARNING BOXES ===== */
+    .info-box {
+      background: rgba(218,119,86,0.06);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .info-box strong {
+      color: var(--primary-dark);
+    }
+
+    .warning-box {
+      background: #fff8e1;
+      border-left: 3px solid #f9a825;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #5d4037;
+    }
+
+    .warning-box strong {
+      color: #e65100;
+    }
+
+    .success-box {
+      background: #e8f5e9;
+      border-left: 3px solid #43a047;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #2e7d32;
+    }
+
+    /* ===== OS TAB SWITCHER ===== */
+    .os-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .os-tab {
+      padding: 10px 24px;
+      background: rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .os-tab.active {
+      background: var(--card-bg);
+      color: var(--primary-dark);
+      border-color: rgba(0,0,0,0.08);
+    }
+
+    .os-tab:hover:not(.active) {
+      background: rgba(0,0,0,0.06);
+    }
+
+    .os-tab svg {
+      width: 16px; height: 16px;
+    }
+
+    .os-content {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 0 16px 16px 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .os-panel { display: none; }
+    .os-panel.active { display: block; }
+
+    /* ===== MOCK WINDOWS ===== */
+    .mock-browser {
+      background: #f5f5f5;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin: 24px 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .mock-browser-bar {
+      background: #e8e8e8;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .mock-dots {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .mock-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .mock-dots span:nth-child(1) { background: #ff5f57; }
+    .mock-dots span:nth-child(2) { background: #ffbd2e; }
+    .mock-dots span:nth-child(3) { background: #28c840; }
+
+    .mock-address {
+      flex: 1;
+      background: #fff;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #666;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .mock-browser-body {
+      padding: 24px;
+      background: #fff;
+      min-height: 180px;
+    }
+
+    /* Windows style bar */
+    .mock-win-bar {
+      background: #f0f0f0;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .mock-win-title {
+      font-size: 0.72rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .mock-win-controls {
+      display: flex;
+      gap: 2px;
+    }
+
+    .mock-win-controls span {
+      width: 36px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: #555;
+      border-radius: 0;
+      transition: background 0.15s;
+    }
+
+    .mock-win-controls span:hover { background: rgba(0,0,0,0.08); }
+    .mock-win-controls span:last-child:hover { background: #e81123; color: #fff; }
+
+    /* macOS App window */
+    .mock-app {
+      background: var(--terminal);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin: 24px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    .mock-app-bar {
+      background: rgba(255,255,255,0.06);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .mock-app-body {
+      padding: 20px;
+      color: rgba(255,255,255,0.8);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 2;
+      min-height: 160px;
+    }
+
+    /* Claude Desktop mock */
+    .mock-claude-app {
+      background: #f7f6f3;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin: 24px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .mock-claude-bar {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mock-claude-bar.mac { background: #e8e6e1; }
+    .mock-claude-bar.win { background: #f0efec; justify-content: space-between; }
+
+    .mock-claude-tabs {
+      display: flex;
+      gap: 0;
+      margin: 0 auto;
+    }
+
+    .mock-claude-tab {
+      padding: 8px 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #999;
+      cursor: default;
+      position: relative;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .mock-claude-tab.active {
+      color: var(--dark);
+      font-weight: 700;
+      background: #f7f6f3;
+    }
+
+    .mock-claude-tab.highlight {
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    .mock-claude-body {
+      padding: 24px;
+      min-height: 200px;
+      background: #f7f6f3;
+    }
+
+    .mock-input-area {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .mock-input-text {
+      flex: 1;
+      font-size: 0.85rem;
+      color: var(--dark);
+    }
+
+    .mock-send-btn {
+      width: 32px; height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mock-response {
+      background: rgba(218,119,86,0.06);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    /* Highlight arrow badge */
+    .highlight-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      position: relative;
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .highlight-arrow {
+      color: var(--primary);
+      font-size: 1.2rem;
+      animation: arrowBounce 1s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+
+    /* Terminal mock */
+    .mock-terminal {
+      background: var(--terminal);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin: 20px 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .mock-terminal-bar {
+      background: rgba(255,255,255,0.06);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .mock-terminal-body {
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 2;
+    }
+
+    .mock-terminal-body .dollar { color: var(--primary); }
+    .mock-terminal-body .cmd { color: rgba(255,255,255,0.9); }
+    .mock-terminal-body .output { color: rgba(255,255,255,0.5); }
+    .mock-terminal-body .success { color: #28c840; }
+    .mock-terminal-body .string { color: #a8d8a8; }
+
+    /* Form mock */
+    .mock-form-field {
+      margin-bottom: 14px;
+    }
+
+    .mock-form-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .mock-form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      background: #fff;
+      color: #999;
+    }
+
+    .mock-form-input.filled {
+      color: var(--dark);
+      border-color: var(--primary);
+    }
+
+    .mock-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 8px;
+      cursor: default;
+    }
+
+    .mock-btn-outline {
+      display: inline-block;
+      background: #fff;
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 10px 28px;
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+      cursor: default;
+    }
+
+    .mock-btn-gray {
+      display: inline-block;
+      background: #e0e0e0;
+      color: #666;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 10px 28px;
+      border-radius: 8px;
+      cursor: default;
+    }
+
+    /* Billing mock */
+    .mock-plan-card {
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .mock-plan-card.selected {
+      border-color: var(--primary);
+      background: rgba(218,119,86,0.04);
+    }
+
+    .mock-plan-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .mock-plan-price {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .mock-plan-badge {
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
+    /* macOS drag illustration */
+    .mock-drag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 20px;
+      flex-wrap: wrap;
+    }
+
+    .mock-icon-box {
+      width: 72px; height: 72px;
+      background: var(--primary-glow);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mock-icon-box .claude-char svg {
+      width: 40px; height: 40px;
+    }
+
+    .mock-icon-label {
+      font-size: 0.65rem;
+      color: #666;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .mock-drag-arrow {
+      font-size: 1.5rem;
+      color: var(--primary);
+      animation: arrowBounce 1s ease-in-out infinite;
+    }
+
+    .mock-folder-icon {
+      width: 72px; height: 72px;
+      background: #dbeafe;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    /* Windows security dialog mock */
+    .mock-win-dialog {
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      margin: 20px auto;
+      max-width: 400px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .mock-win-dialog-bar {
+      background: #0078d4;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .mock-win-dialog-body {
+      padding: 20px;
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: #333;
+    }
+
+    .mock-win-dialog-body .link {
+      color: #0078d4;
+      text-decoration: underline;
+      cursor: default;
+    }
+
+    .mock-win-dialog-actions {
+      padding: 12px 20px;
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      background: #f5f5f5;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .mock-win-btn {
+      padding: 6px 20px;
+      font-size: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      cursor: default;
+      background: #fff;
+      color: #333;
+    }
+
+    .mock-win-btn.primary {
+      background: #0078d4;
+      color: #fff;
+      border-color: #0078d4;
+    }
+
+    /* ===== TROUBLESHOOTING ===== */
+    .trouble-section {
+      padding: 48px 0;
+      background: var(--terminal);
+      color: #fff;
+    }
+
+    .trouble-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .trouble-header h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .trouble-header p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    details {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    details:hover {
+      border-color: rgba(218,119,86,0.2);
+    }
+
+    details[open] {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(218,119,86,0.3);
+    }
+
+    summary {
+      padding: 16px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.9);
+      transition: color 0.2s;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::before {
+      content: '+';
+      width: 24px; height: 24px;
+      background: rgba(218,119,86,0.15);
+      color: var(--primary);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    details[open] summary::before {
+      content: '-';
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .trouble-answer {
+      padding: 0 20px 18px 56px;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .trouble-answer code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--primary-light);
+    }
+
+    /* ===== FOOTER ===== */
+    .setup-footer {
+      padding: 48px 0;
+      text-align: center;
+      background: var(--light);
+    }
+
+    .footer-character {
+      margin-bottom: 16px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-character svg {
+      width: 64px; height: 64px;
+      animation: charBounce 3s ease-in-out infinite;
+    }
+
+    .footer-speech {
+      position: absolute;
+      top: -12px; right: -180px;
+      background: var(--primary-glow);
+      border: 1px solid rgba(218,119,86,0.2);
+      border-radius: 14px 14px 14px 4px;
+      padding: 8px 16px;
+      font-size: 0.78rem;
+      color: var(--primary-dark);
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .footer-text {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--primary-dark); }
+
+    .footer-bottom {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .footer-bottom p {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ===== SECTION CHARACTER ===== */
+    .section-char {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-char .claude-char svg {
+      width: 40px; height: 40px;
+    }
+
+    .section-char-bubble {
+      background: var(--primary-glow);
+      border: 1px solid rgba(218,119,86,0.15);
+      border-radius: 12px 12px 12px 4px;
+      padding: 8px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.12s; }
+    .delay-2 { transition-delay: 0.24s; }
+    .delay-3 { transition-delay: 0.36s; }
+    .delay-4 { transition-delay: 0.48s; }
+
+    /* ===== CODE INLINE ===== */
+    code {
+      background: rgba(0,0,0,0.06);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      .header-inner { padding: 0 16px; }
+      .hero { padding: 80px 0 48px; }
+      .hero-speech { display: none; }
+      .footer-speech { display: none; }
+      .step-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .os-tab { padding: 8px 16px; font-size: 0.75rem; }
+      .os-content { padding: 20px 16px; }
+      .mock-drag { gap: 16px; }
+      .step-nav { margin: -24px 16px 36px; padding: 20px; }
+      .mock-browser-body { padding: 16px; }
+      .mock-plan-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-nav a:not(.header-cta) { display: none; }
+      .step-nav-list a { font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Reusable Claude Character SVG ===== -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <symbol id="claude-char" viewBox="0 0 64 64">
+      <!-- Row 1: top of head -->
+      <rect x="12" y="4" width="4" height="4" fill="#D4835F"/>
+      <rect x="16" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="24" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="28" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="40" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="4" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="4" width="4" height="4" fill="#D4835F"/>
+      <!-- Row 2 -->
+      <rect x="8" y="8" width="4" height="4" fill="#D4835F"/>
+      <rect x="12" y="8" width="4" height="4" fill="#E8A585"/>
+      <rect x="16" y="8" width="4" height="4" fill="#E8A585"/>
+      <rect x="20" y="8" width="4" height="4" fill="#E0936F"/>
+      <rect x="24" y="8" width="4" height="4" fill="#E0936F"/>
+      <rect x="28" y="8" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="8" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="8" width="4" height="4" fill="#E0936F"/>
+      <rect x="40" y="8" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="8" width="4" height="4" fill="#E8A585"/>
+      <rect x="48" y="8" width="4" height="4" fill="#E8A585"/>
+      <rect x="52" y="8" width="4" height="4" fill="#D4835F"/>
+      <!-- Row 3 -->
+      <rect x="8" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="12" y="12" width="4" height="4" fill="#E8A585"/>
+      <rect x="16" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="24" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="28" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="40" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="12" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="12" width="4" height="4" fill="#E8A585"/>
+      <rect x="52" y="12" width="4" height="4" fill="#E0936F"/>
+      <!-- Row 4: eye row -->
+      <rect x="8" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="12" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="16" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="16" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="24" y="16" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="28" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="16" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="40" y="16" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="44" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="16" width="4" height="4" fill="#E0936F"/>
+      <rect x="52" y="16" width="4" height="4" fill="#E0936F"/>
+      <!-- Row 5 -->
+      <rect x="8" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="12" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="16" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="20" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="24" y="20" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="28" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="20" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="40" y="20" width="4" height="4" fill="#2A2A2A"/>
+      <rect x="44" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="20" width="4" height="4" fill="#E0936F"/>
+      <rect x="52" y="20" width="4" height="4" fill="#E0936F"/>
+      <!-- Row 6 -->
+      <rect x="8" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="12" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="16" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="24" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="28" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="40" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="24" width="4" height="4" fill="#E0936F"/>
+      <rect x="52" y="24" width="4" height="4" fill="#E0936F"/>
+      <!-- Row 7 -->
+      <rect x="8" y="28" width="4" height="4" fill="#D4835F"/>
+      <rect x="12" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="16" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="24" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="28" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="40" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="28" width="4" height="4" fill="#E0936F"/>
+      <rect x="52" y="28" width="4" height="4" fill="#D4835F"/>
+      <!-- Row 8 -->
+      <rect x="12" y="32" width="4" height="4" fill="#D4835F"/>
+      <rect x="16" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="24" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="28" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="32" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="36" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="40" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="32" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="32" width="4" height="4" fill="#D4835F"/>
+      <!-- Row 9: legs start -->
+      <rect x="12" y="36" width="4" height="4" fill="#E0936F"/>
+      <rect x="16" y="36" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="36" width="4" height="4" fill="#D4835F"/>
+      <rect x="40" y="36" width="4" height="4" fill="#D4835F"/>
+      <rect x="44" y="36" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="36" width="4" height="4" fill="#E0936F"/>
+      <!-- Row 10 -->
+      <rect x="12" y="40" width="4" height="4" fill="#D4835F"/>
+      <rect x="16" y="40" width="4" height="4" fill="#E0936F"/>
+      <rect x="44" y="40" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="40" width="4" height="4" fill="#D4835F"/>
+      <!-- Row 11: feet -->
+      <rect x="8" y="44" width="4" height="4" fill="#D4835F"/>
+      <rect x="12" y="44" width="4" height="4" fill="#E0936F"/>
+      <rect x="16" y="44" width="4" height="4" fill="#E0936F"/>
+      <rect x="20" y="44" width="4" height="4" fill="#D4835F"/>
+      <rect x="40" y="44" width="4" height="4" fill="#D4835F"/>
+      <rect x="44" y="44" width="4" height="4" fill="#E0936F"/>
+      <rect x="48" y="44" width="4" height="4" fill="#E0936F"/>
+      <rect x="52" y="44" width="4" height="4" fill="#D4835F"/>
+    </symbol>
+  </svg>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="lp.html" class="logo">
+        <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+        Claude Code <span style="color:var(--primary)">Setup</span>
+      </a>
+      <div class="header-nav">
+        <a href="index.html">Works</a>
+        <a href="lp.html">LP</a>
+        <a href="lp.html#cta" class="header-cta">申し込む</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-orb hero-orb--1"></div>
+    <div class="hero-orb hero-orb--2"></div>
+
+    <div class="container">
+      <div class="hero-character fade-up">
+        <svg><use href="#claude-char"/></svg>
+        <div class="hero-speech">一緒にやろう！</div>
+      </div>
+
+      <h1 class="fade-up delay-1"><em>Claude Code</em><br>セットアップガイド</h1>
+
+      <p class="lead fade-up delay-2">契約からセットアップまで、<br>一緒に進めましょう。</p>
+    </div>
+  </section>
+
+  <!-- ===== STEP NAVIGATION ===== -->
+  <div class="container">
+    <nav class="step-nav fade-up">
+      <p class="step-nav-title">Contents</p>
+      <ol class="step-nav-list">
+        <li><a href="#step1"><span class="step-nav-num">1</span>Anthropicアカウント作成</a></li>
+        <li><a href="#step2"><span class="step-nav-num">2</span>Proプラン（$20/月）に登録</a></li>
+        <li><a href="#step3"><span class="step-nav-num">3</span>Claude Desktopアプリをダウンロード</a></li>
+        <li><a href="#step4"><span class="step-nav-num">4</span>ログイン & 初期設定</a></li>
+        <li><a href="#step5"><span class="step-nav-num">5</span>動作確認</a></li>
+        <li><a href="#trouble"><span class="step-nav-num" style="background:var(--dark);">?</span>よくあるトラブル</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- ==================== STEP 1 ==================== -->
+  <section class="step-section" id="step1">
+    <div class="container">
+      <div class="section-char fade-up">
+        <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+        <div class="section-char-bubble">まずはアカウントを作るよ！</div>
+      </div>
+
+      <div class="step-header fade-up">
+        <div class="step-number">1</div>
+        <h2 class="step-title">Anthropicアカウント作成</h2>
+      </div>
+
+      <ol class="step-list fade-up">
+        <li><a href="https://claude.ai" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;">claude.ai</a> にアクセス</li>
+        <li>「<strong>Sign up</strong>」をクリック</li>
+        <li>メールアドレスを入力して登録</li>
+        <li>届いたメールの認証リンクをクリック</li>
+      </ol>
+
+      <div class="info-box fade-up">
+        <strong>メールアドレスでの登録を推奨します。</strong><br>
+        Googleログインだと後の手順で失敗することがあるため、<br>
+        メールアドレスでの新規登録が確実です。
+      </div>
+
+      <!-- Mock: Claude.ai signup page -->
+      <div class="mock-browser fade-up">
+        <div class="mock-browser-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-address">claude.ai</div>
+        </div>
+        <div class="mock-browser-body" style="text-align:center;padding:40px 24px;">
+          <div style="margin-bottom:8px;">
+            <span class="claude-char"><svg style="width:48px;height:48px;"><use href="#claude-char"/></svg></span>
+          </div>
+          <p style="font-family:var(--font-heading);font-weight:700;font-size:1.3rem;margin-bottom:4px;color:var(--dark);">Claude</p>
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:24px;">Sign up to get started</p>
+          <div style="max-width:300px;margin:0 auto;">
+            <div class="mock-form-field">
+              <div class="mock-form-input filled" style="text-align:left;">your-email@example.com</div>
+            </div>
+            <div style="margin-top:12px;"><span class="mock-btn" style="width:100%;text-align:center;display:block;">Continue with email</span></div>
+            <div style="margin-top:12px;color:var(--muted);font-size:0.72rem;">or</div>
+            <div style="margin-top:12px;"><span class="mock-btn-gray" style="width:100%;text-align:center;display:block;">Continue with Google</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STEP 2 ==================== -->
+  <section class="step-section" id="step2">
+    <div class="container">
+      <div class="section-char fade-up">
+        <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+        <div class="section-char-bubble">Proプランに登録しよう！</div>
+      </div>
+
+      <div class="step-header fade-up">
+        <div class="step-number">2</div>
+        <h2 class="step-title">Proプラン（$20/月）に登録</h2>
+      </div>
+
+      <ol class="step-list fade-up">
+        <li>ログイン後、画面左下の<strong>自分の名前</strong>をクリック</li>
+        <li><strong>Settings</strong> → <strong>Billing</strong> を開く</li>
+        <li><strong>Pro プラン（$20/月）</strong>を選択</li>
+        <li>クレジットカード情報を入力して完了</li>
+      </ol>
+
+      <div class="info-box fade-up">
+        <strong>まずは$20/月のProプランで十分です。</strong><br>
+        あとからいつでもプラン変更できるので、<br>
+        最初はProプランから始めましょう。
+      </div>
+
+      <!-- Mock: Billing page -->
+      <div class="mock-browser fade-up">
+        <div class="mock-browser-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-address">claude.ai/settings/billing</div>
+        </div>
+        <div class="mock-browser-body" style="padding:24px;">
+          <p style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">Settings &gt; Billing</p>
+          <p style="font-family:var(--font-heading);font-weight:700;font-size:1.1rem;margin-bottom:20px;">Choose your plan</p>
+
+          <div class="mock-plan-card">
+            <div>
+              <div class="mock-plan-name">Free</div>
+              <div style="font-size:0.72rem;color:var(--muted);">Basic access</div>
+            </div>
+            <div class="mock-plan-price" style="color:var(--muted);">$0/mo</div>
+          </div>
+
+          <div class="mock-plan-card selected">
+            <div>
+              <div class="mock-plan-name" style="color:var(--primary-dark);">
+                Pro
+                <span class="mock-plan-badge">RECOMMENDED</span>
+              </div>
+              <div style="font-size:0.72rem;color:var(--muted);">Claude Code included</div>
+            </div>
+            <div class="mock-plan-price">$20/mo</div>
+          </div>
+
+          <div class="mock-plan-card">
+            <div>
+              <div class="mock-plan-name">Max</div>
+              <div style="font-size:0.72rem;color:var(--muted);">For heavy usage</div>
+            </div>
+            <div class="mock-plan-price" style="color:var(--muted);">$100/mo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STEP 3 ==================== -->
+  <section class="step-section" id="step3">
+    <div class="container">
+      <div class="section-char fade-up">
+        <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+        <div class="section-char-bubble">アプリをダウンロードしよう！</div>
+      </div>
+
+      <div class="step-header fade-up">
+        <div class="step-number">3</div>
+        <h2 class="step-title">Claude Desktopアプリを<br>ダウンロード</h2>
+      </div>
+
+      <!-- OS Tab Switcher -->
+      <div class="os-tabs fade-up">
+        <div class="os-tab active" data-os="mac" onclick="switchOS('mac')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Mac
+        </div>
+        <div class="os-tab" data-os="win" onclick="switchOS('win')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.75l6-1.32v6.48L3 12zm6.25.13l8.75-.09V3.54l-8.75 1.46v7.13zM18 12.04v8.46l-8.75-1.46V12.1l8.75-.06zM9 12.14l-6 .09v5.52l6 1.32V12.14z"/></svg>
+          Windows
+        </div>
+      </div>
+
+      <div class="os-content fade-up">
+        <!-- Mac Panel -->
+        <div class="os-panel active" id="panel-mac">
+          <ol class="step-list">
+            <li><a href="https://claude.ai/download" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;">claude.ai/download</a> を開く</li>
+            <li>「<strong>Download for macOS</strong>」をクリック</li>
+            <li>ダウンロードした <code>.dmg</code> ファイルを開く</li>
+            <li>Claudeアイコンを <strong>Applications</strong> フォルダにドラッグ</li>
+            <li>Launchpad（またはアプリケーション）から <strong>Claude</strong> を開く</li>
+          </ol>
+
+          <!-- Mock: macOS drag to Applications -->
+          <div class="mock-browser" style="background:#f5f5f5;">
+            <div class="mock-browser-bar">
+              <div class="mock-dots"><span></span><span></span><span></span></div>
+              <div style="flex:1;text-align:center;font-size:0.72rem;color:#666;">Claude Installer</div>
+            </div>
+            <div class="mock-browser-body" style="background:#e8e6e1;padding:32px;">
+              <div class="mock-drag">
+                <div style="text-align:center;">
+                  <div class="mock-icon-box">
+                    <span class="claude-char"><svg style="width:36px;height:36px;"><use href="#claude-char"/></svg></span>
+                  </div>
+                  <p class="mock-icon-label">Claude.app</p>
+                </div>
+                <div class="mock-drag-arrow">
+                  &#x2192;
+                </div>
+                <div style="text-align:center;">
+                  <div class="mock-folder-icon">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  </div>
+                  <p class="mock-icon-label">Applications</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Windows Panel -->
+        <div class="os-panel" id="panel-win">
+          <div class="warning-box" style="margin-top:0;margin-bottom:20px;">
+            <strong>まず先に Git for Windows をインストールしてください。</strong><br>
+            Claude CodeはGitが必要です。先にインストールしておきましょう。
+          </div>
+
+          <p style="font-size:0.85rem;font-weight:700;color:var(--primary-dark);margin-bottom:12px;">Git のインストール</p>
+          <ol class="step-list" style="margin-bottom:28px;">
+            <li><a href="https://git-scm.com" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;">git-scm.com</a> を開く</li>
+            <li>「<strong>Download</strong>」をクリック</li>
+            <li>インストーラを実行 → <strong>全部「Next」でOK</strong></li>
+            <li>確認：コマンドプロンプトで <code>git --version</code> を実行</li>
+          </ol>
+
+          <!-- Mock: Git version check -->
+          <div class="mock-terminal fade-up" style="margin-bottom:28px;">
+            <div class="mock-terminal-bar">
+              <span style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Command Prompt</span>
+            </div>
+            <div class="mock-terminal-body">
+              <span class="cmd">C:\Users\you&gt;</span> <span class="string">git --version</span><br>
+              <span class="success">git version 2.44.0.windows.1</span>
+            </div>
+          </div>
+
+          <p style="font-size:0.85rem;font-weight:700;color:var(--primary-dark);margin-bottom:12px;">Claude Desktop のインストール</p>
+          <ol class="step-list">
+            <li><a href="https://claude.ai/download" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;">claude.ai/download</a> を開く</li>
+            <li>「<strong>Download for Windows</strong>」をクリック</li>
+            <li>ダウンロードした <code>Claude.Setup.exe</code> をダブルクリック</li>
+          </ol>
+
+          <div class="warning-box fade-up">
+            <strong>「WindowsによってPCが保護されました」と出た場合</strong><br>
+            「<strong>詳細情報</strong>」→「<strong>実行</strong>」をクリックすれば進めます。
+          </div>
+
+          <!-- Mock: Windows security dialog -->
+          <div class="mock-win-dialog fade-up">
+            <div class="mock-win-dialog-bar">Windows Defender SmartScreen</div>
+            <div class="mock-win-dialog-body">
+              <p style="font-weight:600;margin-bottom:8px;">WindowsによってPCが保護されました</p>
+              <p>認識されないアプリの起動が停止されました。<br>このアプリを実行すると、PCに問題が起こる可能性があります。</p>
+              <p style="margin-top:12px;"><span class="link">詳細情報</span> <span class="highlight-arrow">&#x2190;</span> <span style="color:var(--primary-dark);font-weight:600;font-size:0.75rem;">ここをクリック</span></p>
+            </div>
+            <div class="mock-win-dialog-actions">
+              <span class="mock-win-btn primary">実行</span>
+              <span class="mock-win-btn">実行しない</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STEP 4 ==================== -->
+  <section class="step-section" id="step4">
+    <div class="container">
+      <div class="section-char fade-up">
+        <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+        <div class="section-char-bubble">あと少し！設定しよう！</div>
+      </div>
+
+      <div class="step-header fade-up">
+        <div class="step-number">4</div>
+        <h2 class="step-title">ログイン & 初期設定</h2>
+      </div>
+
+      <ol class="step-list fade-up">
+        <li>Claudeアプリを開いて、Step 1で作ったアカウントで<strong>ログイン</strong></li>
+        <li>画面上部の「<strong>Code</strong>」タブをクリック</li>
+        <li>「<strong>Select folder</strong>」で作業フォルダを選ぶ</li>
+      </ol>
+
+      <div class="info-box fade-up">
+        <strong>「Code」タブがポイントです。</strong><br>
+        普通のチャットは「Chat」タブ、<br>
+        Claude Codeを使うには「<strong>Code</strong>」タブに切り替えます。
+      </div>
+
+      <!-- OS Tab Switcher for app mocks -->
+      <div class="os-tabs fade-up">
+        <div class="os-tab active" data-os="mac2" onclick="switchOS2('mac2')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Mac
+        </div>
+        <div class="os-tab" data-os="win2" onclick="switchOS2('win2')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.75l6-1.32v6.48L3 12zm6.25.13l8.75-.09V3.54l-8.75 1.46v7.13zM18 12.04v8.46l-8.75-1.46V12.1l8.75-.06zM9 12.14l-6 .09v5.52l6 1.32V12.14z"/></svg>
+          Windows
+        </div>
+      </div>
+
+      <div class="os-content fade-up">
+        <!-- Mac Claude Desktop Mock -->
+        <div class="os-panel active" id="panel-mac2">
+          <div class="mock-claude-app">
+            <div class="mock-claude-bar mac">
+              <div class="mock-dots"><span></span><span></span><span></span></div>
+              <div class="mock-claude-tabs">
+                <div class="mock-claude-tab">Chat</div>
+                <div class="mock-claude-tab active highlight">
+                  Code
+                  <span class="highlight-arrow" style="margin-left:4px;">&#x2190;</span>
+                  <span class="highlight-badge" style="position:absolute;top:-12px;right:-32px;font-size:0.6rem;">ここ！</span>
+                </div>
+              </div>
+            </div>
+            <div class="mock-claude-body" style="text-align:center;padding:40px 24px;color:var(--muted);">
+              <span class="claude-char"><svg style="width:48px;height:48px;opacity:0.4;"><use href="#claude-char"/></svg></span>
+              <p style="margin-top:12px;font-size:0.85rem;">Select a folder to get started</p>
+              <div style="margin-top:16px;"><span class="mock-btn-outline">Select folder</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Windows Claude Desktop Mock -->
+        <div class="os-panel" id="panel-win2">
+          <div class="mock-claude-app" style="border-radius:4px;">
+            <div class="mock-claude-bar win" style="border-radius:4px 4px 0 0;">
+              <div class="mock-claude-tabs" style="margin:0;">
+                <div class="mock-claude-tab">Chat</div>
+                <div class="mock-claude-tab active highlight">
+                  Code
+                  <span class="highlight-arrow" style="margin-left:4px;">&#x2190;</span>
+                  <span class="highlight-badge" style="position:absolute;top:-12px;right:-32px;font-size:0.6rem;">ここ！</span>
+                </div>
+              </div>
+              <div class="mock-win-controls">
+                <span>&#x2500;</span>
+                <span>&#x25A1;</span>
+                <span>&#x2715;</span>
+              </div>
+            </div>
+            <div class="mock-claude-body" style="text-align:center;padding:40px 24px;color:var(--muted);">
+              <span class="claude-char"><svg style="width:48px;height:48px;opacity:0.4;"><use href="#claude-char"/></svg></span>
+              <p style="margin-top:12px;font-size:0.85rem;">Select a folder to get started</p>
+              <div style="margin-top:16px;"><span class="mock-btn-outline">Select folder</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STEP 5 ==================== -->
+  <section class="step-section" id="step5">
+    <div class="container">
+      <div class="section-char fade-up">
+        <span class="claude-char"><svg><use href="#claude-char"/></svg></span>
+        <div class="section-char-bubble">できたね！</div>
+      </div>
+
+      <div class="step-header fade-up">
+        <div class="step-number">5</div>
+        <h2 class="step-title">動作確認</h2>
+      </div>
+
+      <p class="step-desc fade-up">
+        フォルダを選んだら、入力欄に<strong>「テスト」</strong>と打ってみましょう。<br>
+        Claudeが返事をしたら成功です！
+      </p>
+
+      <!-- Mock: Claude Code with test input -->
+      <div class="mock-app fade-up">
+        <div class="mock-app-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:8px;">Claude Code - my-project</span>
+        </div>
+        <div class="mock-app-body">
+          <div style="margin-bottom:16px;">
+            <span class="dollar">$</span> <span style="color:rgba(255,255,255,0.5);">claude</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+            <span style="color:var(--primary);font-size:0.72rem;font-weight:600;">You:</span><br>
+            <span style="color:rgba(255,255,255,0.9);">テスト</span>
+          </div>
+          <div style="background:rgba(218,119,86,0.08);border-radius:8px;padding:12px 16px;">
+            <span style="color:var(--primary);font-size:0.72rem;font-weight:600;">Claude:</span><br>
+            <span style="color:rgba(255,255,255,0.85);">テスト受信しました！Claude Codeが正常に動作しています。<br>何かお手伝いできることはありますか？</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-box fade-up" style="text-align:center;font-weight:600;font-size:0.95rem;">
+        Claudeが返事をしたらセットアップ完了です。<br>おめでとうございます！
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TROUBLESHOOTING ==================== -->
+  <section class="trouble-section" id="trouble">
+    <div class="container">
+      <div class="trouble-header fade-up">
+        <div style="margin-bottom:12px;">
+          <span class="claude-char"><svg style="width:48px;height:48px;"><use href="#claude-char"/></svg></span>
+        </div>
+        <h2>よくあるトラブル</h2>
+        <p>困ったときはここをチェック</p>
+      </div>
+
+      <details class="fade-up">
+        <summary>「WindowsによってPCが保護されました」と出る</summary>
+        <div class="trouble-answer">
+          これはWindowsの標準的な警告です。<br>
+          「<strong style="color:var(--primary-light);">詳細情報</strong>」をクリック → 「<strong style="color:var(--primary-light);">実行</strong>」を押せば進めます。<br>
+          Claude Desktopは安全な公式アプリなので、問題ありません。
+        </div>
+      </details>
+
+      <details class="fade-up">
+        <summary>Macで「xcode-select --install」エラーが出る</summary>
+        <div class="trouble-answer">
+          ターミナルを開いて、以下のコマンドを実行してください：<br>
+          <code>xcode-select --install</code><br><br>
+          ポップアップが表示されたら「<strong style="color:var(--primary-light);">インストール</strong>」をクリック。<br>
+          完了後にClaude Codeを再起動すれば解決します。
+        </div>
+      </details>
+
+      <details class="fade-up">
+        <summary>Googleアカウントでログインできない</summary>
+        <div class="trouble-answer">
+          Googleログインがうまくいかない場合は、<br>
+          <strong style="color:var(--primary-light);">メールアドレスで新規登録し直す</strong>のが一番確実です。<br>
+          Step 1に戻って、メールアドレスで登録してみてください。
+        </div>
+      </details>
+
+      <details class="fade-up">
+        <summary>「Gitがない」と言われる（Windows）</summary>
+        <div class="trouble-answer">
+          Step 3の最初に戻って、<strong style="color:var(--primary-light);">Git for Windows</strong>をインストールしてください。<br>
+          <a href="https://git-scm.com" target="_blank" rel="noopener" style="color:var(--primary-light);">git-scm.com</a> → Download → 全部「Next」で OK です。<br>
+          インストール後、コマンドプロンプトで <code>git --version</code> を実行して確認。
+        </div>
+      </details>
+
+      <details class="fade-up">
+        <summary>アプリが起動しない / ブラウザが開かない</summary>
+        <div class="trouble-answer">
+          アプリのログイン画面でURLが表示される場合は、<br>
+          そのURLをコピーして<strong style="color:var(--primary-light);">ブラウザに手動で貼り付け</strong>てみてください。<br>
+          それでも開かない場合は、アプリを一度閉じて再起動を試してください。
+        </div>
+      </details>
+
+      <details class="fade-up">
+        <summary>それでも解決しない時は？</summary>
+        <div class="trouble-answer">
+          エラー画面の<strong style="color:var(--primary-light);">スクリーンショット</strong>を撮って、<br>
+          あやに送ってください。一緒に解決しましょう！<br><br>
+          スクリーンショットの撮り方：<br>
+          Mac：<code>Cmd + Shift + 4</code> で範囲選択<br>
+          Windows：<code>Win + Shift + S</code> で範囲選択
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <section class="setup-footer">
+    <div class="container">
+      <div class="footer-character fade-up">
+        <svg><use href="#claude-char"/></svg>
+        <div class="footer-speech">困ったらいつでもLINEで聞いてね</div>
+      </div>
+
+      <p class="footer-text fade-up">
+        セットアップが終わったら、<br>
+        いよいよClaude Codeで制作体験！<br>
+        わからないことがあれば、いつでも聞いてくださいね。
+      </p>
+
+      <a href="lp.html" class="footer-link fade-up">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        導入サポートLPに戻る
+      </a>
+
+      <div class="footer-bottom">
+        <p>Claude Code Setup Guide by aya-ai-design</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ===== Scroll animations =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ===== Header scroll =====
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // ===== OS Tab Switcher (Step 3) =====
+    function switchOS(os) {
+      document.querySelectorAll('.os-tabs')[0].querySelectorAll('.os-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.os === os);
+      });
+      document.getElementById('panel-mac').classList.toggle('active', os === 'mac');
+      document.getElementById('panel-win').classList.toggle('active', os === 'win');
+    }
+
+    // ===== OS Tab Switcher (Step 4) =====
+    function switchOS2(os) {
+      document.querySelectorAll('.os-tabs')[1].querySelectorAll('.os-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.os === os);
+      });
+      document.getElementById('panel-mac2').classList.toggle('active', os === 'mac2');
+      document.getElementById('panel-win2').classList.toggle('active', os === 'win2');
+    }
+
+    // ===== Parallax orbs =====
+    if (window.innerWidth > 768) {
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        document.querySelectorAll('.hero-orb').forEach((orb, i) => {
+          const speed = (i + 1) * 0.4;
+          orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+        });
+      });
+    }
+  </script>
+</body>
+</html>
