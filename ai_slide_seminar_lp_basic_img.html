@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIスライド生成セミナー｜構成からデザインまでAIと一緒に作れる90分</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /*
+      ぽんだし版 ＋ 画像指示3行追加バージョン
+      追加した指示：
+        ① FVに女性が働いているイメージの写真を入れて（picsum使用）
+        ② 背景に水彩風の丸いぼかしブロブを入れて
+        ③ 見出しそばにSVGのスパークル（星）装飾を入れて
+      ─────────────────────────────────────────
+      ベースのCSS・構成・コピーはぽんだし版と同一。追加分のみ★マーク。
+    */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #333;
+      background: #fff;
+    }
+
+    img { display: block; width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+
+    h1 { font-size: clamp(24px, 5vw, 40px); line-height: 1.4; font-weight: 700; }
+    h2 { font-size: clamp(20px, 4vw, 28px); line-height: 1.4; font-weight: 700; }
+    h3 { font-size: clamp(16px, 3vw, 20px); line-height: 1.4; font-weight: 700; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 56px 0; }
+    section:nth-child(even) { background: #f8f8f8; }
+
+    :root { --accent: #4A7FC1; }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 40px;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .btn-block { display: block; text-align: center; max-width: 400px; margin: 0 auto; }
+
+    .section-title { margin-bottom: 32px; }
+    .section-title h2 { margin-bottom: 8px; }
+    .section-title p { color: #666; font-size: 15px; }
+
+    /* =====================
+       ★ 追加①：水彩ブロブ（共通）
+    ===================== */
+    .blob {
+      position: absolute;
+      border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+      filter: blur(48px);
+      opacity: 0.38;
+      pointer-events: none;
+    }
+
+    /* =====================
+       1. FV
+    ===================== */
+    .fv {
+      background: #f0f5ff;
+      padding: 64px 0;
+      position: relative; /* ★ ブロブ用 */
+      overflow: hidden;   /* ★ ブロブ用 */
+    }
+    /* ★ FVブロブ */
+    .fv .blob-1 {
+      width: 340px; height: 260px;
+      background: #a8c4e8;
+      top: -60px; right: -40px;
+    }
+    .fv .blob-2 {
+      width: 200px; height: 200px;
+      background: #c5ddf6;
+      bottom: -40px; left: 20px;
+    }
+    .fv .container { position: relative; z-index: 1; }
+
+    .fv-tag {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .fv h1 { margin-bottom: 16px; }
+    .fv-sub {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+    .fv-meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* ★ FV 2カラム（テキスト左・写真右） */
+    .fv-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .fv-inner { grid-template-columns: 1fr 1fr; }
+    }
+    .fv-photo {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .fv-photo img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    /* =====================
+       2. 悩み
+    ===================== */
+    .pain { position: relative; overflow: hidden; }
+    /* ★ 悩みセクションのブロブ */
+    .pain .blob-3 {
+      width: 280px; height: 220px;
+      background: #b8d4f0;
+      bottom: -60px; right: -40px;
+    }
+    .pain .container { position: relative; z-index: 1; }
+
+    .pain-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    @media (min-width: 768px) {
+      .pain-list { grid-template-columns: repeat(2, 1fr); }
+    }
+    .pain-list li {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 16px 20px;
+      font-size: 15px;
+      padding-left: 48px;
+      position: relative;
+    }
+    .pain-list li::before {
+      content: '・';
+      position: absolute;
+      left: 20px;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 20px;
+      top: 14px;
+    }
+
+    /* =====================
+       3. 変化
+    ===================== */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .benefit-item {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 24px;
+    }
+    .benefit-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .benefit-item h3 { margin-bottom: 12px; font-size: 17px; }
+    .benefit-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (min-width: 768px) {
+      .benefit-row { grid-template-columns: 1fr 1fr; }
+    }
+    .benefit-func, .benefit-emo {
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .benefit-func { background: #f0f5ff; }
+    .benefit-func-label, .benefit-emo-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .benefit-emo { background: #fff8ee; }
+
+    /* =====================
+       4. プログラム
+    ===================== */
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 40px;
+      font-size: 15px;
+    }
+    .timetable thead { background: var(--accent); color: #fff; }
+    .timetable th { padding: 12px 16px; text-align: left; }
+    .timetable td { padding: 12px 16px; border-bottom: 1px solid #e8e8e8; }
+    .timetable tr:last-child td { border-bottom: none; }
+    .timetable tr:nth-child(even) td { background: #f8f8f8; }
+    .t-time { color: var(--accent); font-weight: 700; font-size: 13px; white-space: nowrap; }
+
+    .reasons-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (min-width: 768px) {
+      .reasons-list { grid-template-columns: repeat(3, 1fr); }
+    }
+    .reason-item {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 20px;
+    }
+    .reason-item h3 { font-size: 15px; margin-bottom: 8px; }
+    .reason-item p { font-size: 14px; color: #666; }
+
+    /* =====================
+       5. 声 ★ アバター写真追加
+    ===================== */
+    .voice-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    @media (min-width: 768px) {
+      .voice-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .voice-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 20px;
+    }
+    /* ★ アバター */
+    .voice-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid var(--accent);
+    }
+    .voice-card p { font-size: 15px; margin-bottom: 12px; }
+    .voice-source { font-size: 13px; color: #888; border-top: 1px solid #e8e8e8; padding-top: 10px; }
+
+    /* =====================
+       6. プロフィール ★ 写真追加
+    ===================== */
+    .profile-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (min-width: 768px) {
+      .profile-inner { grid-template-columns: 200px 1fr; }
+    }
+    /* ★ プロフィール写真 */
+    .profile-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      margin: 0 auto;
+    }
+    .profile-text p { margin-bottom: 14px; font-size: 15px; }
+
+    /* =====================
+       7. オファー
+    ===================== */
+    .offer-box {
+      max-width: 480px;
+      margin: 24px auto 0;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 32px;
+      text-align: center;
+    }
+    .price-label { font-size: 13px; color: #888; margin-bottom: 8px; }
+    .price { font-size: clamp(40px, 8vw, 56px); font-weight: 700; margin-bottom: 4px; }
+    .price-tax { font-size: 13px; color: #888; margin-bottom: 24px; }
+    .offer-date {
+      background: #f0f5ff;
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .bonus-list { list-style: none; margin-bottom: 24px; text-align: left; }
+    .bonus-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #e8e8e8;
+      font-size: 15px;
+      padding-left: 24px;
+      position: relative;
+    }
+    .bonus-list li:last-child { border-bottom: none; }
+    .bonus-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .bonus-list li strong { display: block; font-weight: 700; }
+    .bonus-list li span { font-size: 13px; color: #888; }
+
+    /* =====================
+       8. FAQ
+    ===================== */
+    .faq-list { max-width: 720px; margin: 24px auto 0; }
+    details { border-bottom: 1px solid #e0e0e0; }
+    summary {
+      padding: 18px 0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 16px;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '+';
+      font-size: 20px;
+      color: var(--accent);
+      flex-shrink: 0;
+      font-weight: 400;
+    }
+    details[open] summary::after { content: '−'; }
+    .faq-a {
+      padding: 0 0 16px 0;
+      font-size: 15px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    /* =====================
+       9. CTA ★ ブロブ追加
+    ===================== */
+    .cta {
+      background: #f0f5ff;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta .blob-4 {
+      width: 320px; height: 240px;
+      background: #a8c4e8;
+      top: -60px; left: -60px;
+    }
+    .cta .blob-5 {
+      width: 260px; height: 200px;
+      background: #c5ddf6;
+      bottom: -40px; right: -40px;
+    }
+    .cta .container { position: relative; z-index: 1; }
+    .cta p { font-size: clamp(16px,3vw,18px); line-height: 1.85; margin-bottom: 32px; }
+    .cta-note { font-size: 13px; color: #888; margin-top: 12px; }
+
+    /* モバイル固定CTA */
+    .sticky-cta {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      padding: 12px 20px; z-index: 50;
+    }
+    .sticky-cta .btn { display: block; text-align: center; }
+    @media (min-width: 768px) { .sticky-cta { display: none; } }
+    body { padding-bottom: 80px; }
+    @media (min-width: 768px) { body { padding-bottom: 0; } }
+
+    /* ★ セクション見出しのスパークル装飾（共通） */
+    .sparkle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sparkle-wrap svg {
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ▼ このファイルについて（デモ用コメント） -->
+<!--
+  ぽんだし版 ＋ 「画像3行指示」追加バージョン
+  追加した指示の例：
+  ① 「FVに女性がパソコンで作業している写真をpicsumで入れてください」
+  ② 「背景にふんわりした水彩ブロブ（CSS blur）を入れてください」
+  ③ 「見出しのそばにSVGのスパークル装飾を入れてください」
+-->
+
+<!-- 1. FV -->
+<section class="fv">
+  <!-- ★ 水彩ブロブ -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="container">
+    <!-- ★ 2カラムレイアウト（テキスト＋写真） -->
+    <div class="fv-inner">
+      <div class="fv-text">
+        <p class="fv-tag">AIスライド生成セミナー</p>
+        <h1>スライドの悩み、全部AIに聞いてみたら。<br>構成も、デザインも、画像も——一緒に解決してくれた。</h1>
+        <p class="fv-sub">「このスライド、誰が作ったの？」と言われる側になれる90分。</p>
+        <div class="fv-meta">
+          <span>開催時間：90分</span>
+          <span>対象：女性起業家</span>
+          <span>形式：オンライン</span>
+        </div>
+        <a href="【URL】" class="btn">AIスライド生成セミナーに参加する</a>
+      </div>
+      <!-- ★ FV写真 -->
+      <div class="fv-photo">
+        <img
+          src="https://picsum.photos/seed/woman-laptop-bright/600/440"
+          alt="パソコンで作業する女性"
+          width="600"
+          height="440"
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 2. 悩み -->
+<section class="pain">
+  <!-- ★ ブロブ -->
+  <div class="blob blob-3"></div>
+
+  <div class="container">
+    <div class="section-title">
+      <!-- ★ スパークル装飾 -->
+      <div class="sparkle-wrap">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#4A7FC1" opacity="0.7"/>
+        </svg>
+        <h2>こんなお悩みありませんか？</h2>
+      </div>
+      <p>スライド作りが苦手じゃなく、ただ知らなかっただけかもしれません。</p>
+    </div>
+    <ul class="pain-list">
+      <li>スライド1枚に、気づいたら1時間以上かけていた</li>
+      <li>フォントと色を変えるうちに、どこに向かっているかわからなくなった</li>
+      <li>好みの画像が見つからなくて、探しているうちに時間だけが過ぎていく</li>
+      <li>完成したのに「なんか安っぽい」気がして、なかなか出せずにいる</li>
+      <li>AIに興味はあるけど、何ができるかわからない</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- 3. 変化 -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <div class="sparkle-wrap">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#4A7FC1" opacity="0.7"/>
+        </svg>
+        <h2>このセミナーを受けると</h2>
+      </div>
+      <p>「できる・できない」ではなく、「知っているか、知らないか」の話です。</p>
+    </div>
+    <div class="benefits-grid">
+
+      <div class="benefit-item">
+        <div class="benefit-num">変化 01</div>
+        <h3>構成からデザインまで、AIに相談しながら作れるようになる</h3>
+        <div class="benefit-row">
+          <div class="benefit-func">
+            <span class="benefit-func-label">機能的変化</span>
+            「何をどの順で話すか」の構成からデザインまで、全部AIに相談しながら作れるようになる
+          </div>
+          <div class="benefit-emo">
+            <span class="benefit-emo-label">感情的変化</span>
+            一人で悩んで時間を溶かす夜が、なくなる
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">変化 02</div>
+        <h3>図解もビジュアルも、探さずにAIで生成できるようになる</h3>
+        <div class="benefit-row">
+          <div class="benefit-func">
+            <span class="benefit-func-label">機能的変化</span>
+            図解もビジュアルも、探さずにAIで生成できるようになる
+          </div>
+          <div class="benefit-emo">
+            <span class="benefit-emo-label">感情的変化</span>
+            「これでいいのかな」が「AIと作った自信作」に変わる
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">変化 03</div>
+        <h3>AIへの相談を、仕事全体で使えるようになる</h3>
+        <div class="benefit-row">
+          <div class="benefit-func">
+            <span class="benefit-func-label">機能的変化</span>
+            スライド制作だけでなく、企画・提案書までAIに相談できるとわかる
+          </div>
+          <div class="benefit-emo">
+            <span class="benefit-emo-label">感情的変化</span>
+            「AIって何でも聞いていいんだ」が、仕事全体を軽くしてくれる
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 4. プログラム -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <div class="sparkle-wrap">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#4A7FC1" opacity="0.7"/>
+        </svg>
+        <h2>セミナー内容</h2>
+      </div>
+      <p>実際に動く画面を見ながら進めるので、当日その場でついていけます。</p>
+    </div>
+    <table class="timetable">
+      <thead><tr><th>時間</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td class="t-time">0〜10分</td><td>オープニング：AIでスライドが変わる、その全体像</td></tr>
+        <tr><td class="t-time">10〜40分</td><td>実演①：構成・文章をAIに相談する</td></tr>
+        <tr><td class="t-time">40〜70分</td><td>実演②：デザイン・図解・画像をAIで生成する</td></tr>
+        <tr><td class="t-time">70〜85分</td><td>実演③：AIへの相談の仕方・コツ</td></tr>
+        <tr><td class="t-time">85〜90分</td><td>まとめ＆質疑応答</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-bottom:16px;">このセミナーを選ぶ3つの理由</h3>
+    <div class="reasons-list">
+      <div class="reason-item">
+        <h3>帰ってすぐ試せる</h3>
+        <p>実際に動く画面を見ながら学べるので、講座後すぐに自分でも試せます。</p>
+      </div>
+      <div class="reason-item">
+        <h3>考え方ごと持ち帰れる</h3>
+        <p>「AIとの相談の仕方」という考え方ごと持ち帰れます。ほかの場面でも使えます。</p>
+      </div>
+      <div class="reason-item">
+        <h3>使う場面に特化した内容</h3>
+        <p>女性起業家が実際に使う場面（セミナー資料・提案書）に絞った内容です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 5. 声 ★ アバター写真追加 -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <div class="sparkle-wrap">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#4A7FC1" opacity="0.7"/>
+        </svg>
+        <h2>受けた方からいただいた声</h2>
+      </div>
+    </div>
+    <div class="voice-grid">
+      <div class="voice-card">
+        <!-- ★ アバター写真 -->
+        <img
+          src="https://picsum.photos/seed/woman-a1/100/100"
+          alt=""
+          class="voice-avatar"
+          width="52"
+          height="52"
+        >
+        <p>図解があってとても理解しやすかったです。知らないことばかりで、もっと早く知りたかったと思いました。</p>
+        <p class="voice-source">〇〇講座受講生</p>
+      </div>
+      <div class="voice-card">
+        <img
+          src="https://picsum.photos/seed/woman-b2/100/100"
+          alt=""
+          class="voice-avatar"
+          width="52"
+          height="52"
+        >
+        <p>AIの最新情報をわかりやすく教えていただけました。先生の丁寧で謙虚な姿勢がとても心地よく、質問しやすい雰囲気でした。</p>
+        <p class="voice-source">〇〇講座受講生</p>
+      </div>
+      <div class="voice-card">
+        <img
+          src="https://picsum.photos/seed/woman-c3/100/100"
+          alt=""
+          class="voice-avatar"
+          width="52"
+          height="52"
+        >
+        <p>実際の操作画面を見ながら学べたので、講座後すぐに自分でも試せました。声のトーンも穏やかで、最後まで集中して聞けました。</p>
+        <p class="voice-source">〇〇講座受講生</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 6. プロフィール ★ 写真追加 -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <div class="sparkle-wrap">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#4A7FC1" opacity="0.7"/>
+        </svg>
+        <h2>講師プロフィール</h2>
+      </div>
+    </div>
+    <!-- ★ 写真＋テキストの2カラム -->
+    <div class="profile-inner">
+      <div>
+        <img
+          src="https://picsum.photos/seed/profile-instructor/300/300"
+          alt="講師プロフィール写真"
+          class="profile-photo"
+          width="180"
+          height="180"
+        >
+      </div>
+      <div class="profile-text">
+        <p>以前の私は、伝えたいことを詰め込みすぎて「初心者には難しい」と言われることがありました。Canvaのレイアウトにも悩み、どこに何を置くか、文字をどれだけ入れるか——毎回迷子でした。</p>
+        <p>ClaudeとChatGPTに出会ってから、その悩みが全部消えました。「何を話すか」「どう整理するか」——迷ったときの壁打ち相手になってくれるので、一人で悩まなくていい安心感があります。</p>
+        <p>今は他の先生のコミュニティで特別講師として呼んでいただき、受講生の方からも好評をいただいています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 7. オファー -->
+<section>
+  <div class="container">
+    <div class="section-title" style="text-align:center;">
+      <h2>参加費・特典</h2>
+    </div>
+    <div class="offer-box">
+      <p class="price-label">参加費（税込）</p>
+      <p class="price">¥5,500</p>
+      <p class="price-tax">税込</p>
+      <div class="offer-date">
+        <strong>開催日：</strong>【〇月〇日（〇）】<br>
+        <strong>申込締め切り：</strong>前日【〇時】まで
+      </div>
+      <ul class="bonus-list">
+        <li>
+          <strong>特典①：当日使用スライドデータをプレゼント</strong>
+          <span>受講後すぐに自分のスライドづくりに使えます</span>
+        </li>
+        <li>
+          <strong>特典②：アーカイブ動画（視聴期限付き）をプレゼント</strong>
+          <span>当日参加できなくなっても、何度でも復習できます</span>
+        </li>
+      </ul>
+      <a href="【URL】" class="btn btn-block">AIスライド生成セミナーに参加する</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- 8. FAQ -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>よくある質問</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>AIを使ったことがないのですが大丈夫ですか？</summary>
+        <div class="faq-a">はい、大丈夫です。初めての方を前提に進めます。操作は講師が実演するので、見るだけでOKです。</div>
+      </details>
+      <details>
+        <summary>Canvaは持っていなくてもいいですか？</summary>
+        <div class="faq-a">不要です。スライドを作るソフトは問いません。考え方とAIの使い方をお持ち帰りいただきます。</div>
+      </details>
+      <details>
+        <summary>90分で本当に変わりますか？</summary>
+        <div class="faq-a">当日すぐ作れるようになるセミナーではありません。「AIとの相談の仕方」という考え方が変わるので、翌日から使い方が変わります。</div>
+      </details>
+      <details>
+        <summary>アーカイブはありますか？</summary>
+        <div class="faq-a">あります。視聴期限付きでプレゼントします。当日参加できなくなっても安心です。</div>
+      </details>
+      <details>
+        <summary>スマホだけでも参加できますか？</summary>
+        <div class="faq-a">参加は可能です。ただし実演画面が見やすいよう、PCやタブレットの使用をおすすめします。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+
+<!-- 9. CTA ★ ブロブ追加 -->
+<section class="cta">
+  <!-- ★ 水彩ブロブ -->
+  <div class="blob blob-4"></div>
+  <div class="blob blob-5"></div>
+
+  <div class="container">
+    <p>
+      AIって難しそう、自分には早いかも——そう思っているあなたへ。<br>
+      90分後、AIで何ができるかも、付き合い方も変わります。<br>
+      変わった先にあるのは、スライドだけじゃない。仕事全体が、少し軽くなる感覚です。
+    </p>
+    <a href="【URL】" class="btn btn-block">AIスライド生成セミナーに参加する</a>
+    <p class="cta-note">申込締め切り：開催前日の【〇時】まで</p>
+  </div>
+</section>
+
+
+<!-- モバイル固定CTA -->
+<div class="sticky-cta">
+  <a href="【URL】" class="btn">AIスライド生成セミナーに参加する</a>
+</div>
+
+</body>
+</html>
