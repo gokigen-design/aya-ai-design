@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIスライド生成セミナー｜構成からデザインまでAIと一緒に作れる90分</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /*
+      ぽんだし版 ＋ 参考画像モデリングバージョン
+      渡したプロンプト追加指示：
+        「添付の参考画像をモデルに、セクションごとのレイアウトと配色を再現してください。
+         ・アクセントカラー：ミントグリーン系（#7BBCB0）とローズ（#E0849A）
+         ・FVは左テキスト・右写真の2カラム
+         ・変化セクションは番号バッジ＋右側に人物写真
+         ・声とプロフィールは横2分割
+         ・ボーナスはギフトアイコン付き2枚カード横並び
+         ・CTAは大テキスト＋ライフスタイル写真
+         ・写真はpicsum.photosを使用」
+    */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint:       #7BBCB0;
+      --mint-dark:  #5A9E92;
+      --mint-light: #EEF7F5;
+      --rose:       #E0849A;
+      --rose-light: #FEF0F4;
+      --gold:       #C8A468;
+      --bg:         #FAFBFA;
+      --text:       #2A2A2A;
+      --muted:      #777;
+      --border:     #E4EDE9;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text);
+      background: var(--bg);
+    }
+    img { display: block; width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 72px 0; }
+
+    /* ===================== 共通パーツ ===================== */
+    /* セクションラベル */
+    .sec-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--mint-dark);
+      background: var(--mint-light);
+      border-radius: 20px;
+      padding: 4px 14px;
+      margin-bottom: 12px;
+    }
+    /* セクション見出し */
+    .sec-heading {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .sec-heading span { color: var(--mint); }
+    .sec-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    /* アクセントライン */
+    .accent-line {
+      width: 40px;
+      height: 3px;
+      background: var(--mint);
+      border-radius: 2px;
+      margin: 10px 0 28px;
+    }
+    /* ボタン */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--mint);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--mint-dark); }
+    .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .btn-block { display: flex; justify-content: center; }
+
+    /* =====================
+       1. FV
+    ===================== */
+    .fv {
+      background: var(--mint-light);
+      padding: 72px 0 56px;
+      overflow: hidden;
+    }
+    .fv-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .fv-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    .fv-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--mint-dark);
+      margin-bottom: 16px;
+    }
+    .fv h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(26px, 5.5vw, 44px);
+      line-height: 1.4;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .fv h1 .ai-word {
+      font-size: 1.35em;
+      color: var(--mint-dark);
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .fv-tagline {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(15px, 3vw, 20px);
+      color: var(--rose);
+      font-weight: 600;
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    .fv-seminar-name {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      letter-spacing: 0.06em;
+    }
+    .fv-quote {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 20px;
+      padding-left: 14px;
+      border-left: 3px solid var(--rose);
+    }
+    .fv-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .fv-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .fv-meta-item svg {
+      width: 15px; height: 15px;
+      color: var(--mint);
+      flex-shrink: 0;
+    }
+
+    /* FV 写真 */
+    .fv-photo {
+      position: relative;
+    }
+    .fv-photo img {
+      border-radius: 16px;
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .fv-photo::before {
+      content: '';
+      position: absolute;
+      bottom: -16px; right: -16px;
+      width: 60%; height: 60%;
+      background: var(--mint);
+      border-radius: 16px;
+      z-index: -1;
+      opacity: 0.18;
+    }
+
+    /* =====================
+       2. 悩み
+    ===================== */
+    .pain {
+      background: #fff;
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+    @media (min-width: 768px) {
+      .pain-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .pain-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .pain-icon {
+      width: 40px; height: 40px;
+      background: var(--mint-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pain-icon svg {
+      width: 18px; height: 18px;
+      color: var(--mint-dark);
+    }
+    .pain-card p {
+      font-size: 15px;
+      line-height: 1.7;
+      padding-top: 8px;
+    }
+
+    /* =====================
+       3. 変化
+    ===================== */
+    .benefits {
+      background: var(--mint-light);
+    }
+    .benefit-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-top: 32px;
+    }
+    .benefit-row {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .benefit-row { grid-template-columns: 1fr 260px; }
+    }
+    .benefit-body {
+      padding: 28px 32px;
+    }
+    .benefit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--mint);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border-radius: 20px;
+      padding: 4px 14px;
+      margin-bottom: 14px;
+    }
+    .benefit-body h3 {
+      font-size: clamp(16px, 2.5vw, 18px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .benefit-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .benefit-tag {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .tag-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border-radius: 4px;
+      padding: 2px 8px;
+      white-space: nowrap;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .tag-label.func {
+      background: var(--mint-light);
+      color: var(--mint-dark);
+    }
+    .tag-label.emo {
+      background: var(--rose-light);
+      color: var(--rose);
+    }
+    .benefit-photo img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: center top;
+    }
+    @media (min-width: 768px) {
+      .benefit-photo img { height: 100%; min-height: 220px; }
+    }
+
+    /* =====================
+       4. セミナー内容
+    ===================== */
+    .program {
+      background: #fff;
+    }
+    .program-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-top: 32px;
+    }
+    @media (min-width: 768px) {
+      .program-inner { grid-template-columns: 1fr 280px; }
+    }
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 32px;
+    }
+    .timetable thead tr {
+      background: var(--mint);
+      color: #fff;
+    }
+    .timetable th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .timetable td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .timetable tr:nth-child(even) td { background: var(--mint-light); }
+    .t-time {
+      color: var(--mint-dark);
+      font-weight: 700;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .reason-heading {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+    .reason-list { list-style: none; }
+    .reason-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.7;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .reason-list li:last-child { border-bottom: none; }
+    .check-icon {
+      width: 20px; height: 20px;
+      background: var(--mint);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .check-icon svg {
+      width: 11px; height: 11px;
+      color: #fff;
+    }
+
+    .program-photo {
+      position: relative;
+    }
+    .program-photo img {
+      border-radius: 12px;
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) {
+      .program-photo img { height: 100%; min-height: 360px; }
+    }
+
+    /* =====================
+       5. 信頼
+    ===================== */
+    .trust {
+      background: var(--rose-light);
+    }
+    .trust-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      margin-top: 32px;
+    }
+    @media (min-width: 768px) {
+      .trust-inner { grid-template-columns: 1fr 1fr; }
+    }
+    /* 声 */
+    .voices-label {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--rose);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--rose);
+    }
+    .voice-list { display: flex; flex-direction: column; gap: 14px; }
+    .voice-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+    .voice-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .voice-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--rose-light);
+      flex-shrink: 0;
+    }
+    .voice-name { font-size: 12px; color: var(--muted); }
+    /* プロフィール */
+    .profile-label {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--mint-dark);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--mint);
+    }
+    .profile-photo-wrap {
+      margin-bottom: 20px;
+    }
+    .profile-photo-wrap img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+    }
+    .profile-text p {
+      font-size: 14px;
+      line-height: 1.85;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    /* =====================
+       6. オファー
+    ===================== */
+    .offer {
+      background: #fff;
+    }
+    .offer-card {
+      max-width: 540px;
+      margin: 0 auto;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .offer-price-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .offer-price {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(44px, 9vw, 64px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .offer-tax {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .bonus-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .bonus-card {
+      background: var(--mint-light);
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .bonus-icon {
+      width: 36px; height: 36px;
+      background: var(--mint);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .bonus-icon svg {
+      width: 18px; height: 18px;
+      color: #fff;
+    }
+    .bonus-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mint-dark);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .bonus-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .bonus-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .offer-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .offer-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .offer-info-item svg {
+      width: 18px; height: 18px;
+      color: var(--mint);
+      flex-shrink: 0;
+    }
+    .offer-info-item strong { font-weight: 700; }
+    .offer-info-item span { color: var(--muted); font-size: 13px; }
+
+    /* =====================
+       7. FAQ
+    ===================== */
+    .faq {
+      background: var(--mint-light);
+    }
+    .faq-list { max-width: 720px; margin: 24px auto 0; }
+    details { margin-bottom: 12px; }
+    summary {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      list-style: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    details[open] summary {
+      border-radius: 10px 10px 0 0;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .q-badge {
+      width: 26px; height: 26px;
+      background: var(--mint);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .q-text { flex: 1; }
+    .q-toggle {
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--mint-dark);
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    details[open] .q-toggle::before { content: '−'; }
+    .q-toggle::before { content: '+'; }
+    .faq-a {
+      background: #fff;
+      border-radius: 0 0 10px 10px;
+      padding: 0 20px 18px 58px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    /* =====================
+       8. CTA / クロージング
+    ===================== */
+    .cta {
+      background: #fff;
+      text-align: center;
+      padding: 80px 0 0;
+    }
+    .cta-heading {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(22px, 4.5vw, 34px);
+      font-weight: 700;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      color: var(--text);
+    }
+    .cta-heading .rose { color: var(--rose); }
+    .cta-heading .mint { color: var(--mint-dark); }
+    .cta-photo {
+      margin-top: 48px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .cta-photo img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .cta-photo::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 60%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.7), transparent);
+    }
+    .cta-photo-btn {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      white-space: nowrap;
+    }
+    .cta-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* モバイル固定CTA */
+    .sticky-cta {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+      padding: 12px 20px;
+      z-index: 50;
+    }
+    .sticky-cta .btn { display: flex; justify-content: center; }
+    @media (min-width: 768px) { .sticky-cta { display: none; } }
+    body { padding-bottom: 80px; }
+    @media (min-width: 768px) { body { padding-bottom: 0; } }
+
+    /* ===================== アニメーション（軽量） ===================== */
+    @media (prefers-reduced-motion: no-preference) {
+      .benefit-row, .pain-card, .voice-item {
+        animation: fadeUp 0.5s ease both;
+      }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== 1. FV ===================== -->
+<section class="fv">
+  <div class="container">
+    <div class="fv-inner">
+      <!-- テキスト左 -->
+      <div class="fv-text">
+        <p class="fv-label">AIスライド生成セミナー</p>
+        <h1>
+          スライドの悩み、<br>
+          全部 <span class="ai-word">AI</span> に聞いてみたら。
+        </h1>
+        <p class="fv-tagline">
+          構成も、デザインも、画像も——<br>
+          一緒に解決してくれた。
+        </p>
+        <p class="fv-seminar-name">— AIスライド生成セミナー —</p>
+        <p class="fv-quote">
+          「このスライド、誰が作ったの？」<br>
+          と言われる側になれる90分。
+        </p>
+        <div class="fv-meta">
+          <span class="fv-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+            開催時間：90分
+          </span>
+          <span class="fv-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+            オンライン開催
+          </span>
+        </div>
+        <a href="【URL】" class="btn">
+          AIスライド生成セミナーに参加する
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+      <!-- 写真右 -->
+      <div class="fv-photo">
+        <img
+          src="https://picsum.photos/seed/woman-work-bright/600/500"
+          alt="パソコンで作業する女性"
+          width="600"
+          height="500"
+          style="object-position: center top;"
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 2. 悩み ===================== -->
+<section class="pain">
+  <div class="container">
+    <span class="sec-label">お悩みチェック</span>
+    <h2 class="sec-heading">こんな<span>お悩み</span>ありませんか？</h2>
+    <div class="accent-line"></div>
+    <p class="sec-sub">スライド作りが苦手じゃなく、ただ知らなかっただけかもしれません。</p>
+    <div class="pain-grid">
+
+      <div class="pain-card">
+        <div class="pain-icon">
+          <!-- 時計アイコン -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <p>スライド1枚に、気づいたら1時間以上かけていた</p>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-icon">
+          <!-- パレットアイコン -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="8" cy="14" r="1.5" fill="currentColor" stroke="none"/>
+            <circle cx="12" cy="9" r="1.5" fill="currentColor" stroke="none"/>
+            <circle cx="16" cy="14" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <p>フォントと色を変えるうちに、どこに向かっているかわからなくなった</p>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-icon">
+          <!-- 画像検索アイコン -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+        <p>好みの画像が見つからなくて、探しているうちに時間だけが過ぎていく</p>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-icon">
+          <!-- 困り顔アイコン -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 15s1.5-2 4-2 4 2 4 2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3" stroke-linecap="round"/>
+            <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p>完成したのに「なんか安っぽい」気がして、なかなか出せずにいる</p>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-icon">
+          <!-- AI/ロボットアイコン -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="8" width="14" height="10" rx="2"/>
+            <path d="M12 8V4M9 4h6"/>
+            <circle cx="9" cy="13" r="1.5" fill="currentColor" stroke="none"/>
+            <circle cx="15" cy="13" r="1.5" fill="currentColor" stroke="none"/>
+            <path d="M9 17h6"/>
+          </svg>
+        </div>
+        <p>AIに興味はあるけど、何ができるかわからない</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 3. 変化 ===================== -->
+<section class="benefits">
+  <div class="container">
+    <span class="sec-label">受講後の変化</span>
+    <h2 class="sec-heading">この<span>セミナー</span>を受けると</h2>
+    <div class="accent-line"></div>
+    <p class="sec-sub">「できる・できない」ではなく、「知っているか、知らないか」の話です。</p>
+    <div class="benefit-rows">
+
+      <div class="benefit-row">
+        <div class="benefit-body">
+          <div class="benefit-badge">変化 01</div>
+          <h3>構成からデザインまで、AIに相談しながら作れるようになる</h3>
+          <div class="benefit-tags">
+            <div class="benefit-tag">
+              <span class="tag-label func">機能</span>
+              「何をどの順で話すか」の構成からデザインまで、全部AIに相談しながら作れるようになる
+            </div>
+            <div class="benefit-tag">
+              <span class="tag-label emo">感情</span>
+              一人で悩んで時間を溶かす夜が、なくなる
+            </div>
+          </div>
+        </div>
+        <div class="benefit-photo">
+          <img
+            src="https://picsum.photos/seed/woman-desk-pc/400/300"
+            alt="パソコンで作業中の女性"
+            style="object-position: center top;"
+          >
+        </div>
+      </div>
+
+      <div class="benefit-row">
+        <div class="benefit-body">
+          <div class="benefit-badge">変化 02</div>
+          <h3>図解もビジュアルも、探さずにAIで生成できるようになる</h3>
+          <div class="benefit-tags">
+            <div class="benefit-tag">
+              <span class="tag-label func">機能</span>
+              図解もビジュアルも、探さずにAIで生成できるようになる
+            </div>
+            <div class="benefit-tag">
+              <span class="tag-label emo">感情</span>
+              「これでいいのかな」が「AIと作った自信作」に変わる
+            </div>
+          </div>
+        </div>
+        <div class="benefit-photo">
+          <img
+            src="https://picsum.photos/seed/woman-smile-work/400/300"
+            alt="スマイルで作業中の女性"
+            style="object-position: center top;"
+          >
+        </div>
+      </div>
+
+      <div class="benefit-row">
+        <div class="benefit-body">
+          <div class="benefit-badge">変化 03</div>
+          <h3>AIへの相談を、仕事全体で使えるようになる</h3>
+          <div class="benefit-tags">
+            <div class="benefit-tag">
+              <span class="tag-label func">機能</span>
+              スライド制作だけでなく、企画・提案書までAIに相談できるとわかる
+            </div>
+            <div class="benefit-tag">
+              <span class="tag-label emo">感情</span>
+              「AIって何でも聞いていいんだ」が、仕事全体を軽くしてくれる
+            </div>
+          </div>
+        </div>
+        <div class="benefit-photo">
+          <img
+            src="https://picsum.photos/seed/woman-bright-office/400/300"
+            alt="明るいオフィスで働く女性"
+            style="object-position: center top;"
+          >
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 4. セミナー内容 ===================== -->
+<section class="program">
+  <div class="container">
+    <span class="sec-label">プログラム</span>
+    <h2 class="sec-heading"><span>セミナー</span>内容</h2>
+    <div class="accent-line"></div>
+    <p class="sec-sub">実際に動く画面を見ながら進めるので、当日その場でついていけます。</p>
+    <div class="program-inner">
+      <div>
+        <table class="timetable">
+          <thead>
+            <tr><th>時間</th><th>内容</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="t-time">0〜10分</td><td>オープニング：AIでスライドが変わる、その全体像</td></tr>
+            <tr><td class="t-time">10〜40分</td><td>実演①：構成・文章をAIに相談する</td></tr>
+            <tr><td class="t-time">40〜70分</td><td>実演②：デザイン・図解・画像をAIで生成する</td></tr>
+            <tr><td class="t-time">70〜85分</td><td>実演③：AIへの相談の仕方・コツ</td></tr>
+            <tr><td class="t-time">85〜90分</td><td>まとめ＆質疑応答</td></tr>
+          </tbody>
+        </table>
+
+        <p class="reason-heading">このセミナーを選ぶ理由</p>
+        <ul class="reason-list">
+          <li>
+            <span class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+            実際に動く画面を見ながら学べるので、帰ってすぐ自分で試せる
+          </li>
+          <li>
+            <span class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+            ツールの操作方法だけでなく「AIとの相談の仕方」という考え方ごと持ち帰れる
+          </li>
+          <li>
+            <span class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+            女性起業家が実際に使う場面（セミナー資料・企画書）に特化した内容
+          </li>
+        </ul>
+      </div>
+
+      <div class="program-photo">
+        <img
+          src="https://picsum.photos/seed/laptop-minimal-desk/400/500"
+          alt="ノートパソコンでの作業シーン"
+          style="object-position: center;"
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 5. 信頼 ===================== -->
+<section class="trust">
+  <div class="container">
+    <div class="trust-inner">
+      <!-- 声 -->
+      <div>
+        <p class="voices-label">お客様の声</p>
+        <div class="voice-list">
+          <div class="voice-item">
+            <div class="voice-meta">
+              <img
+                src="https://picsum.photos/seed/voice-a11/80/80"
+                alt=""
+                class="voice-avatar"
+                width="36"
+                height="36"
+              >
+              <span class="voice-name">〇〇講座受講生</span>
+            </div>
+            「図解があってとても理解しやすかったです。知らないことばかりで、もっと早く知りたかったと思いました。」
+          </div>
+          <div class="voice-item">
+            <div class="voice-meta">
+              <img
+                src="https://picsum.photos/seed/voice-b22/80/80"
+                alt=""
+                class="voice-avatar"
+                width="36"
+                height="36"
+              >
+              <span class="voice-name">〇〇講座受講生</span>
+            </div>
+            「AIの最新情報をわかりやすく教えていただけました。先生の丁寧で謙虚な姿勢がとても心地よく、質問しやすい雰囲気でした。」
+          </div>
+          <div class="voice-item">
+            <div class="voice-meta">
+              <img
+                src="https://picsum.photos/seed/voice-c33/80/80"
+                alt=""
+                class="voice-avatar"
+                width="36"
+                height="36"
+              >
+              <span class="voice-name">〇〇講座受講生</span>
+            </div>
+            「実際の操作画面を見ながら学べたので、講座後すぐに自分でも試せました。声のトーンも穏やかで、最後まで集中して聞けました。」
+          </div>
+        </div>
+      </div>
+
+      <!-- プロフィール -->
+      <div>
+        <p class="profile-label">講師プロフィール</p>
+        <div class="profile-photo-wrap">
+          <img
+            src="https://picsum.photos/seed/instructor-profile/400/280"
+            alt="講師プロフィール写真"
+            style="object-position: center top;"
+          >
+        </div>
+        <div class="profile-text">
+          <p>以前の私は、伝えたいことを詰め込みすぎて「初心者には難しい」と言われることがありました。Canvaのレイアウトにも悩み、どこに何を置くか——毎回迷子でした。</p>
+          <p>ClaudeとChatGPTに出会ってから、その悩みが全部消えました。「何を話すか」「どう整理するか」——迷ったときの壁打ち相手になってくれるので、一人で悩まなくていい安心感があります。</p>
+          <p>今は他の先生のコミュニティで特別講師として呼んでいただき、受講生の方からも好評をいただいています。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 6. オファー ===================== -->
+<section class="offer">
+  <div class="container">
+    <span class="sec-label" style="display:block; text-align:center;">参加費・特典</span>
+    <h2 class="sec-heading" style="text-align:center; margin-top:8px;">価格</h2>
+    <div class="accent-line" style="margin: 12px auto 28px;"></div>
+    <div class="offer-card">
+      <p class="offer-price-label">参加費（税込）</p>
+      <p class="offer-price">¥5,500</p>
+      <p class="offer-tax">税込</p>
+
+      <!-- ボーナスカード2枚 -->
+      <div class="bonus-cards">
+        <div class="bonus-card">
+          <div class="bonus-icon">
+            <!-- ギフトアイコン -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7a4 4 0 0 0-8 0"/>
+              <line x1="12" y1="7" x2="12" y2="21"/>
+              <line x1="2" y1="11" x2="22" y2="11"/>
+            </svg>
+          </div>
+          <p class="bonus-label">典 01</p>
+          <p class="bonus-title">当日使用したスライドデータをそのままプレゼント</p>
+          <p class="bonus-desc">受講後すぐに自分のスライドづくりに使えます</p>
+        </div>
+        <div class="bonus-card">
+          <div class="bonus-icon">
+            <!-- 動画アイコン -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="23 7 16 12 23 17 23 7"/>
+              <rect x="1" y="5" width="15" height="14" rx="2"/>
+            </svg>
+          </div>
+          <p class="bonus-label">典 02</p>
+          <p class="bonus-title">アーカイブ動画（視聴期限付き）プレゼント</p>
+          <p class="bonus-desc">当日参加できなくなっても、何度でも復習できます</p>
+        </div>
+      </div>
+
+      <div class="offer-info">
+        <div class="offer-info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <div>
+            <strong>【〇月〇日（〇）】</strong>
+            <span>開催日</span>
+          </div>
+        </div>
+        <div class="offer-info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+          </svg>
+          <div>
+            <strong>前日【〇時】まで</strong>
+            <span>申込締め切り</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="【URL】" class="btn" style="justify-content: center;">
+        AIスライド生成セミナーに参加する
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 7. FAQ ===================== -->
+<section class="faq">
+  <div class="container">
+    <span class="sec-label">よくある質問</span>
+    <h2 class="sec-heading">Q &amp; A</h2>
+    <div class="accent-line"></div>
+    <div class="faq-list">
+      <details>
+        <summary>
+          <span class="q-badge">Q</span>
+          <span class="q-text">AIを使ったことがないのですが大丈夫ですか？</span>
+          <span class="q-toggle"></span>
+        </summary>
+        <div class="faq-a">はい、大丈夫です。初めての方を前提に進めます。操作は講師が実演するので、見るだけでOKです。</div>
+      </details>
+      <details>
+        <summary>
+          <span class="q-badge">Q</span>
+          <span class="q-text">Canvaは持っていなくてもいいですか？</span>
+          <span class="q-toggle"></span>
+        </summary>
+        <div class="faq-a">不要です。スライドを作るソフトは問いません。考え方とAIの使い方をお持ち帰りいただきます。</div>
+      </details>
+      <details>
+        <summary>
+          <span class="q-badge">Q</span>
+          <span class="q-text">90分で本当に変わりますか？</span>
+          <span class="q-toggle"></span>
+        </summary>
+        <div class="faq-a">当日すぐ作れるようになるセミナーではありません。「AIとの相談の仕方」という考え方が変わるので、翌日から使い方が変わります。</div>
+      </details>
+      <details>
+        <summary>
+          <span class="q-badge">Q</span>
+          <span class="q-text">アーカイブはありますか？</span>
+          <span class="q-toggle"></span>
+        </summary>
+        <div class="faq-a">あります。視聴期限付きでプレゼントします。当日参加できなくなっても安心です。</div>
+      </details>
+      <details>
+        <summary>
+          <span class="q-badge">Q</span>
+          <span class="q-text">スマホだけでも参加できますか？</span>
+          <span class="q-toggle"></span>
+        </summary>
+        <div class="faq-a">参加は可能です。ただし実演画面が見やすいよう、PCやタブレットの使用をおすすめします。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 8. CTA / クロージング ===================== -->
+<section class="cta">
+  <div class="container">
+    <p class="cta-heading">
+      AIって難しそう、自分には早いかも——<br>
+      そう思っているあなたへ。<br><br>
+      90分後、AIで何ができるかも、<br>
+      付き合い方も変わります。<br><br>
+      変わった先にあるのは、スライドだけじゃない。<br>
+      <span class="rose">仕事全体が、少し軽くなる感覚</span>です。
+    </p>
+    <a href="【URL】" class="btn btn-block">
+      AIスライド生成セミナーに参加する
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+    <p class="cta-note">申込締め切り：開催前日の【〇時】まで</p>
+  </div>
+
+  <!-- ライフスタイル写真 -->
+  <div class="cta-photo">
+    <img
+      src="https://picsum.photos/seed/lifestyle-flowers-mug-desk/1440/400"
+      alt=""
+      style="object-position: center 60%;"
+    >
+    <a href="【URL】" class="btn cta-photo-btn">
+      AIスライド生成セミナーに参加する
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- モバイル固定CTA -->
+<div class="sticky-cta">
+  <a href="【URL】" class="btn">AIスライド生成セミナーに参加する</a>
+</div>
+
+</body>
+</html>
