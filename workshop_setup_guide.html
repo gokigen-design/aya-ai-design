@@ -456,22 +456,35 @@
     <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
 
       <div style="background: var(--white); border-radius: 12px; padding: 20px; border-left: 4px solid var(--mint);">
-        <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--mint-dark); margin-bottom: 8px;">日常で使うほう</p>
-        <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">Claude Desktop App（白いチャットアプリ）</h3>
+        <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--mint-dark); margin-bottom: 8px;">日常で使うほう（メイン）</p>
+        <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">Claude Desktop App（白い画面のアプリ）</h3>
         <p style="font-size: 14px; color: var(--text); line-height: 1.8;">
-          claude.ai/download から落とせる、Claudeの公式デスクトップアプリ。<br>
-          普通のチャット画面で、見やすくて使いやすい。<br>
-          <strong>普段の会話・質問・相談はこちらを使います。</strong>
+          claude.ai/download から落とせるClaudeの公式アプリ。<br>
+          画面上部で <strong>「チャット」「コワーク」「コード」</strong> の3つのモードを切り替えられます。
+        </p>
+
+        <div style="margin-top: 14px; background: var(--mint-light); border-radius: 8px; padding: 14px 16px;">
+          <p style="font-size: 12px; font-weight: 700; color: var(--mint-dark); margin-bottom: 8px; letter-spacing: 0.05em;">3つのモード</p>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 13px; line-height: 1.7;">
+            <div><strong>チャット</strong>：普通の会話・質問・相談に使う</div>
+            <div><strong>コワーク</strong>：資料・文書を一緒に作るときに使う</div>
+            <div><strong>コード</strong>：コーディングや制作作業に使う（Claude Codeと同じ機能）</div>
+          </div>
+        </div>
+
+        <p style="font-size: 14px; color: var(--text); line-height: 1.8; margin-top: 12px;">
+          <strong>基本的に普段の作業はこのアプリで全部できます。</strong>
         </p>
       </div>
 
       <div style="background: var(--white); border-radius: 12px; padding: 20px; border-left: 4px solid var(--amber);">
         <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 8px;">プラグイン導入のときだけ使うほう</p>
-        <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">Claude Code（黒い虫マークの画面）</h3>
+        <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">Claude Code（ターミナルの黒い画面・虫マーク）</h3>
         <p style="font-size: 14px; color: var(--text); line-height: 1.8;">
-          ターミナルから <code style="font-family:monospace;">claude</code> と打って起動する開発向けツール。<br>
-          黒い画面に虫マークが出る。<br>
-          <strong>Superpowers・UI/UX Pro Max などのプラグインを入れるときだけ使います。</strong>
+          ターミナルから <code style="font-family:monospace;">claude</code> と打って起動する画面。<br>
+          黒い背景に虫マークが出ます。<br><br>
+          <strong>Superpowers・UI/UX Pro Max などのプラグイン／スキルを入れるとき</strong>に限って使います。<br>
+          一度プラグインを入れてしまえば、その後の作業は Desktop App の「コード」モードで進められます。
         </p>
       </div>
 
@@ -480,11 +493,11 @@
     <div class="info-box blue" style="margin-top: 20px;">
       <p class="info-box-label">この手順書の流れ</p>
       <p>
-        <strong>STEP 0：</strong>Claude Desktop App を入れる（普段使う方）<br>
-        <strong>STEP 1〜3：</strong>Claude Code を入れる（プラグイン導入の準備）<br>
+        <strong>STEP 0：</strong>Claude Desktop App を入れる（普段メインで使うアプリ）<br>
+        <strong>STEP 1〜3：</strong>Claude Code（ターミナル）を入れる（プラグイン導入の準備）<br>
         <strong>STEP 4〜5：</strong>Claude Code で Superpowers と UI/UX Pro Max を入れる<br>
         <strong>STEP 6：</strong>Chrome拡張を入れる<br><br>
-        導入が終わったら、普段は Claude Desktop App で使えばOKです。
+        プラグイン導入が終わったら、<strong>普段の作業は Claude Desktop App</strong> で全部できます。
       </p>
     </div>
   </div>
@@ -1131,12 +1144,23 @@
 <section class="step-section" style="background: var(--mint-dark); color: #fff; text-align: center;">
   <div class="container">
     <p style="display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; margin-bottom: 14px;">セットアップ完了後</p>
-    <h2 style="color: #fff; font-size: clamp(20px, 4vw, 26px); margin-bottom: 14px;">普段は Claude Desktop App を使えばOK</h2>
-    <p style="color: rgba(255,255,255,0.9); font-size: 15px; line-height: 1.85; max-width: 580px; margin: 0 auto;">
-      セットアップが終わったら、日常の会話・質問・相談は<br>
-      <strong>白い「Claude Desktop App」</strong>で行いましょう。<br><br>
-      Superpowers や UI/UX Pro Max のスキルを使った<br>
-      本格的なデザイン・制作作業をしたいときだけ、<br>
+    <h2 style="color: #fff; font-size: clamp(20px, 4vw, 26px); margin-bottom: 14px;">普段は Claude Desktop App でぜんぶOK</h2>
+    <p style="color: rgba(255,255,255,0.9); font-size: 15px; line-height: 1.85; max-width: 620px; margin: 0 auto;">
+      セットアップが終わったら、日常の作業は<br>
+      <strong>白い「Claude Desktop App」</strong>で進めましょう。<br><br>
+      画面上部のタブで用途に合わせて切り替えるだけ：<br>
+    </p>
+
+    <div style="max-width: 520px; margin: 24px auto 0; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; text-align: left;">
+      <div style="display: grid; grid-template-columns: 1fr; gap: 10px; color: rgba(255,255,255,0.95); font-size: 14px; line-height: 1.7;">
+        <div><strong style="color: #fff;">チャット</strong>　— 普通の会話・質問・相談</div>
+        <div><strong style="color: #fff;">コワーク</strong>　— 資料・文書を一緒に作る</div>
+        <div><strong style="color: #fff;">コード</strong>　— 制作作業・コーディング（プラグインもここで動く）</div>
+      </div>
+    </div>
+
+    <p style="color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.85; max-width: 620px; margin: 24px auto 0;">
+      新しいプラグインやスキルを追加したいときだけ、<br>
       ターミナルで <code style="background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px; font-family:monospace;">claude</code> と打って<br>
       Claude Code（黒い虫マークの画面）を開いてください。
     </p>
