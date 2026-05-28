@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code セットアップ手順書 | AIワークショップ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --mint:        #7BBCB0;
+      --mint-dark:   #5A9E92;
+      --mint-light:  #EEF7F5;
+      --rose:        #D97B8A;
+      --rose-light:  #FEF0F3;
+      --amber:       #D4A054;
+      --amber-light: #FEF8EC;
+      --blue:        #5B8DE8;
+      --blue-light:  #EEF3FD;
+      --text:        #2A2A2A;
+      --muted:       #6B7280;
+      --border:      #E5EAE8;
+      --bg:          #F8FAF9;
+      --white:       #FFFFFF;
+    }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* ===== ヘッダー ===== */
+    .header {
+      background: linear-gradient(135deg, var(--mint-dark) 0%, #3D7A70 100%);
+      color: #fff;
+      padding: 40px 24px 48px;
+      text-align: center;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .header h1 {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 14px;
+      opacity: 0.85;
+      line-height: 1.7;
+    }
+
+    /* ===== 目次バー ===== */
+    .toc-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      overflow-x: auto;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .toc-bar-inner {
+      display: inline-flex;
+      gap: 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .toc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .toc-link:hover { color: var(--mint-dark); border-bottom-color: var(--mint); }
+    .toc-num {
+      width: 20px; height: 20px;
+      background: var(--border);
+      color: var(--muted);
+      border-radius: 50%;
+      font-size: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ===== レイアウト ===== */
+    .container { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+    .step-section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+    .step-section:last-child { border-bottom: none; }
+
+    /* ===== OSタブ ===== */
+    .os-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px;
+    }
+    .os-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+    }
+    .os-tab.active {
+      background: var(--white);
+      color: var(--mint-dark);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .os-content { display: none; }
+    .os-content.active { display: block; }
+
+    /* ===== ステップ見出し ===== */
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .step-circle {
+      width: 48px; height: 48px;
+      background: var(--mint);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .step-circle .num { font-size: 18px; }
+    .step-meta { flex: 1; }
+    .step-meta .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--mint-dark);
+      margin-bottom: 4px;
+    }
+    .step-meta h2 {
+      font-size: clamp(17px, 3.5vw, 21px);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .step-meta p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ===== 手順ボックス ===== */
+    .procedure { display: flex; flex-direction: column; gap: 20px; }
+    .proc-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .proc-num {
+      width: 28px; height: 28px;
+      background: var(--mint-light);
+      color: var(--mint-dark);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .proc-body { flex: 1; }
+    .proc-body p { font-size: 14px; line-height: 1.75; margin-bottom: 8px; }
+    .proc-body p:last-child { margin-bottom: 0; }
+    .proc-body strong { font-weight: 700; }
+
+    /* ===== ターミナル表示 ===== */
+    .terminal {
+      background: #1A1B26;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .terminal-bar {
+      background: #2D2F40;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .t-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .t-dot.red    { background: #FF5F56; }
+    .t-dot.yellow { background: #FFBD2E; }
+    .t-dot.green  { background: #27C93F; }
+    .terminal-label {
+      margin-left: auto;
+      font-size: 10px;
+      color: #6B7280;
+      font-family: monospace;
+    }
+    .terminal-body {
+      padding: 16px 18px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.85;
+      color: #A9B1D6;
+    }
+    .t-prompt { color: #7DCFFF; }
+    .t-cmd    { color: #C3E88D; }
+    .t-output { color: #A9B1D6; }
+    .t-success{ color: #9ECE6A; }
+    .t-error  { color: #F7768E; }
+    .t-highlight { color: #E0AF68; }
+    .t-input  {
+      display: inline-block;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin: 4px 0;
+      cursor: text;
+    }
+
+    /* ===== カードボックス ===== */
+    .info-box {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+    .info-box.mint {
+      background: var(--mint-light);
+      border-left: 4px solid var(--mint);
+      color: var(--mint-dark);
+    }
+    .info-box.amber {
+      background: var(--amber-light);
+      border-left: 4px solid var(--amber);
+    }
+    .info-box.rose {
+      background: var(--rose-light);
+      border-left: 4px solid var(--rose);
+    }
+    .info-box.blue {
+      background: var(--blue-light);
+      border-left: 4px solid var(--blue);
+    }
+    .info-box-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .info-box.mint  .info-box-label { color: var(--mint-dark); }
+    .info-box.amber .info-box-label { color: var(--amber); }
+    .info-box.rose  .info-box-label { color: var(--rose); }
+    .info-box.blue  .info-box-label { color: var(--blue); }
+
+    /* ===== 完了チェック ===== */
+    .check-card {
+      background: var(--mint-light);
+      border: 1px solid var(--mint);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .check-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--mint-dark);
+      margin-bottom: 6px;
+    }
+    .check-card p { color: var(--mint-dark); }
+    .check-list { list-style: none; margin-top: 8px; }
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      padding: 4px 0;
+      color: var(--mint-dark);
+    }
+    .check-list li::before {
+      content: '';
+      width: 18px; height: 18px;
+      background: var(--mint);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%237BBCB0'/%3E%3Cpath d='M5 9.5L7.5 12L13 7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
+    /* ===== 画面イメージ ===== */
+    .screen-mock {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 14px 0;
+    }
+    .screen-mock-bar {
+      background: #E8E8E8;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .screen-mock-bar span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .screen-mock-body {
+      padding: 16px 20px;
+      background: var(--white);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .screen-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+    }
+    .screen-option.selected { color: var(--mint-dark); font-weight: 700; }
+    .arrow { color: var(--mint-dark); font-weight: 700; }
+
+    /* ===== コピーボタン付きコード ===== */
+    .copyable {
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(255,255,255,0.1);
+      color: #A9B1D6;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+    .copy-btn.copied { color: #9ECE6A; border-color: #9ECE6A; }
+
+    /* ===== まとめ表 ===== */
+    .summary-section {
+      background: var(--white);
+      padding: 52px 0;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: var(--mint-dark); color: #fff; padding: 12px 16px; text-align: left; font-size: 13px; }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; line-height: 1.7; }
+    tr:nth-child(even) td { background: var(--bg); }
+    tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 7px; }
+    .badge-mint  { background: var(--mint-light); color: var(--mint-dark); }
+    .badge-rose  { background: var(--rose-light); color: var(--rose); }
+
+    /* フッター */
+    footer {
+      background: var(--mint-dark);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 13px;
+    }
+    footer p { line-height: 1.8; }
+
+    @media (max-width: 599px) {
+      .toc-link { padding: 12px 10px; font-size: 11px; }
+      .step-circle { width: 40px; height: 40px; }
+      .step-circle .num { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="header">
+  <div class="header-badge">AIワークショップ 公式サポート資料</div>
+  <h1>Claude Code<br>セットアップ完全手順書</h1>
+  <p>インストールから、プラグイン導入まで<br>この1ページで全部できます。</p>
+</header>
+
+<!-- 目次 -->
+<nav class="toc-bar">
+  <div class="toc-bar-inner">
+    <a class="toc-link" href="#step1"><span class="toc-num">1</span>Node.js</a>
+    <a class="toc-link" href="#step2"><span class="toc-num">2</span>インストール</a>
+    <a class="toc-link" href="#step3"><span class="toc-num">3</span>起動・ログイン</a>
+    <a class="toc-link" href="#step4"><span class="toc-num">4</span>Superpowers</a>
+    <a class="toc-link" href="#step5"><span class="toc-num">5</span>UI/UX Pro Max</a>
+    <a class="toc-link" href="#step6"><span class="toc-num">6</span>Chrome拡張</a>
+    <a class="toc-link" href="#trouble"><span class="toc-num">?</span>トラブル</a>
+  </div>
+</nav>
+
+
+<!-- STEP 1 -->
+<section class="step-section" id="step1">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">1</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 1</p>
+        <h2>Node.js のインストール確認</h2>
+        <p>Claude Code を動かすために必要な「土台」です</p>
+      </div>
+    </div>
+
+    <!-- OSタブ -->
+    <div class="os-tabs">
+      <button class="os-tab active" onclick="switchOS('step1','mac')">Mac</button>
+      <button class="os-tab" onclick="switchOS('step1','win')">Windows</button>
+    </div>
+
+    <div id="step1-mac" class="os-content active">
+      <div class="procedure">
+        <div class="proc-item">
+          <div class="proc-num">1</div>
+          <div class="proc-body">
+            <p>「ターミナル」アプリを開く<br>
+            <strong>Spotlight検索（Command + Space）</strong>で「ターミナル」と入力</p>
+          </div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">2</div>
+          <div class="proc-body">
+            <p>下記を打ち込んでEnterを押す</p>
+            <div class="terminal copyable">
+              <div class="terminal-bar">
+                <span class="t-dot red"></span>
+                <span class="t-dot yellow"></span>
+                <span class="t-dot green"></span>
+                <span class="terminal-label">ターミナル</span>
+              </div>
+              <div class="terminal-body">
+                <span class="t-prompt">% </span><span class="t-cmd">node --version</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">3</div>
+          <div class="proc-body">
+            <p>結果を確認する</p>
+            <div class="terminal">
+              <div class="terminal-body">
+                <span class="t-success">v18.19.0</span><span class="t-output"> ← このように数字が出ればOK</span><br>
+                <span class="t-error">zsh: command not found: node</span><span class="t-output"> ← 出た場合は下記へ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info-box rose">
+        <p class="info-box-label">「command not found」が出た場合</p>
+        <p>Node.js が入っていません。<a href="https://nodejs.org" target="_blank">nodejs.org</a> を開いて、<strong>「LTS」と書かれた緑のボタン</strong>からダウンロード・インストールしてください。<br>インストール後、ターミナルを一度閉じて開き直してから、もう一度 <code>node --version</code> を試してください。</p>
+      </div>
+    </div>
+
+    <div id="step1-win" class="os-content">
+      <div class="info-box amber">
+        <p class="info-box-label">Windowsの方：まずセキュリティ設定を変更します</p>
+        <p>Windowsでは最初にこの設定が必要です（初回のみ）。</p>
+      </div>
+      <div class="procedure">
+        <div class="proc-item">
+          <div class="proc-num">1</div>
+          <div class="proc-body">
+            <p>Windowsキーを押して「PowerShell」と検索<br>
+            「<strong>Windows PowerShell</strong>」を右クリック →「<strong>管理者として実行</strong>」をクリック</p>
+          </div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">2</div>
+          <div class="proc-body">
+            <p>下記をコピペしてEnter</p>
+            <div class="terminal copyable">
+              <div class="terminal-bar">
+                <span class="t-dot red"></span>
+                <span class="t-dot yellow"></span>
+                <span class="t-dot green"></span>
+                <span class="terminal-label">PowerShell（管理者）</span>
+              </div>
+              <div class="terminal-body">
+                <span class="t-prompt">PS > </span><span class="t-cmd">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</span>
+              </div>
+            </div>
+            <p>確認が出たら <strong>「Y」を打ってEnter</strong></p>
+          </div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">3</div>
+          <div class="proc-body">
+            <p>次に、通常のターミナル（コマンドプロンプト）を開いて確認</p>
+            <div class="terminal">
+              <div class="terminal-bar">
+                <span class="t-dot red"></span>
+                <span class="t-dot yellow"></span>
+                <span class="t-dot green"></span>
+                <span class="terminal-label">コマンドプロンプト</span>
+              </div>
+              <div class="terminal-body">
+                <span class="t-prompt">C:\> </span><span class="t-cmd">node --version</span><br>
+                <span class="t-success">v18.19.0</span><span class="t-output"> ← 数字が出ればOK</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info-box rose">
+        <p class="info-box-label">数字が出なかった場合</p>
+        <p><a href="https://nodejs.org" target="_blank">nodejs.org</a> から「LTS」版をダウンロード・インストールしてください。</p>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 1 完了チェック</p>
+      <ul class="check-list">
+        <li>ターミナルに「v18.○○」などのバージョン番号が表示された</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 2 -->
+<section class="step-section" id="step2">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">2</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 2</p>
+        <h2>Claude Code のインストール</h2>
+        <p>コマンド1行で完了します</p>
+      </div>
+    </div>
+
+    <div class="procedure">
+      <div class="proc-item">
+        <div class="proc-num">1</div>
+        <div class="proc-body">
+          <p>ターミナルに下記を打ち込んでEnter<br>（インストールに数分かかります。そのまま待ってください）</p>
+          <div class="terminal copyable">
+            <div class="terminal-bar">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+              <span class="terminal-label">ターミナル / コマンドプロンプト</span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-prompt">% </span><span class="t-cmd">npm install -g @anthropic-ai/claude-code</span><br>
+              <span class="t-output">...</span><span class="t-output">（しばらく待つ）</span><br>
+              <span class="t-success">added 247 packages in 45s</span><span class="t-output"> ← このような表示で完了</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-num">2</div>
+        <div class="proc-body">
+          <p>途中で確認が出た場合は <strong>「Y」または「Yes」を選んでEnter</strong> で進めてください。</p>
+          <div class="info-box amber">
+            <p class="info-box-label">確認画面が出たら</p>
+            <p>「このフォルダを信頼しますか？」「続けますか？」などの確認はすべて <strong>「Yes」「Y」「Enter」</strong> で進めてOKです。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 2 完了チェック</p>
+      <ul class="check-list">
+        <li>「added ○○ packages」と表示された</li>
+        <li>エラー（赤い文字）が出ていない</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 3 -->
+<section class="step-section" id="step3">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">3</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 3</p>
+        <h2>Claude Code の起動とログイン</h2>
+        <p>初回はClaude.aiアカウントとの連携が必要です</p>
+      </div>
+    </div>
+
+    <div class="procedure">
+      <div class="proc-item">
+        <div class="proc-num">1</div>
+        <div class="proc-body">
+          <p>ターミナルに打ち込んでEnter</p>
+          <div class="terminal copyable">
+            <div class="terminal-bar">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-prompt">% </span><span class="t-cmd">claude</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">2</div>
+        <div class="proc-body">
+          <p>ログイン方法の選択画面が出ます。<strong>1番（Claude account with subscription）</strong> がすでに選ばれているので、そのまま <strong>Enter</strong> を押す。</p>
+          <div class="screen-mock">
+            <div class="screen-mock-bar">
+              <span style="background:#FF5F56"></span>
+              <span style="background:#FFBD2E"></span>
+              <span style="background:#27C93F"></span>
+            </div>
+            <div class="screen-mock-body" style="font-family: monospace; font-size: 13px; background: #1A1B26; color: #A9B1D6;">
+              Select login method:<br><br>
+              <span style="color: #7DCFFF;">&gt; 1. Claude account with subscription · Pro, Max, Team, or Enterprise</span><br>
+              &nbsp;&nbsp; 2. Anthropic Console account · API usage billing<br>
+              &nbsp;&nbsp; 3. 3rd-party platform<br><br>
+              <span style="color: #6B7280;">Enter to select</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">3</div>
+        <div class="proc-body">
+          <p>ブラウザが自動で開いてClaude.aiのログイン画面が出ます。<br>お持ちのClaude.aiアカウントでログインして「<strong>承認する</strong>」を押す。</p>
+          <div class="info-box amber">
+            <p class="info-box-label">ブラウザが開かなかった場合（Windowsに多い）</p>
+            <p>ターミナルに長いURLが表示されます。<br>
+            1. キーボードの <strong>「c」</strong> を押す（URLが自動コピーされます）<br>
+            2. ChromeやEdgeを開き、アドレスバーに貼り付けてEnter<br>
+            3. ログインして「承認する」を押す<br>
+            4. ブラウザに表示されたコードをコピー<br>
+            5. ターミナルに戻り、「Paste code here if prompted >」の横に <strong>右クリックで貼り付けて</strong> Enter</p>
+          </div>
+          <div class="info-box rose">
+            <p class="info-box-label">「OAuth error: status code 400」が出た場合</p>
+            <p>認証コードの<strong>時間切れ</strong>です。「Press Enter to retry」と出るのでEnterを押して最初からやり直してください。今度は素早く進めるとうまくいきます。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">4</div>
+        <div class="proc-body">
+          <p>ログイン成功すると、下のような画面が出ます。<br>「<strong>このフォルダを信頼しますか？</strong>」と聞かれたら <strong>Enter</strong> を押して進む。</p>
+          <div class="screen-mock">
+            <div class="screen-mock-bar">
+              <span style="background:#FF5F56"></span>
+              <span style="background:#FFBD2E"></span>
+              <span style="background:#27C93F"></span>
+            </div>
+            <div class="screen-mock-body" style="font-family: monospace; font-size: 13px; background: #1A1B26; color: #A9B1D6;">
+              <span style="color: #9ECE6A;">Login successful. Press Enter to continue...</span><br><br>
+              Accessing workspace:<br>
+              /Users/yourname<br><br>
+              <span style="color: #7DCFFF;">&gt; 1. Yes, I trust this folder</span><br>
+              &nbsp;&nbsp; 2. No, exit<br><br>
+              <span style="color: #6B7280;">Enter to confirm</span>
+            </div>
+          </div>
+          <p style="margin-top: 10px;">虫マーク（Claude Code）が表示されたら起動成功です。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 3 完了チェック</p>
+      <ul class="check-list">
+        <li>虫マークのアイコンが画面に表示された</li>
+        <li>「Welcome back ○○！」または「> Try...」という入力欄が出た</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 4 -->
+<section class="step-section" id="step4">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">4</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 4</p>
+        <h2>Superpowers プラグインの導入</h2>
+        <p>Claude Codeをパワーアップする必須プラグインです</p>
+      </div>
+    </div>
+
+    <div class="procedure">
+      <div class="proc-item">
+        <div class="proc-num">1</div>
+        <div class="proc-body">
+          <p>Claude Codeが起動している状態で、入力欄に下記を貼り付けてEnter</p>
+          <div class="terminal copyable">
+            <div class="terminal-bar">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+              <span class="terminal-label">Claude Code 入力欄</span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-prompt">&gt; </span><span class="t-cmd">/plugin install superpowers@claude-plugins-official</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">2</div>
+        <div class="proc-body">
+          <p>インストール先を選ぶ画面が出ます。<br>
+          <strong>「Install for you (user scope)」</strong> がすでに選ばれているので、そのまま <strong>Enter</strong> を押す。</p>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">3</div>
+        <div class="proc-body">
+          <p>「Installed superpowers」と出たら、続けて下記を入力してEnter</p>
+          <div class="terminal copyable">
+            <div class="terminal-bar">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-prompt">&gt; </span><span class="t-cmd">/reload-plugins</span><br>
+              <span class="t-success">Reloaded: 1 plugin ...</span><span class="t-output"> ← この表示で完了</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 4 完了チェック</p>
+      <ul class="check-list">
+        <li>「Installed superpowers」と表示された</li>
+        <li>「/reload-plugins」後に「Reloaded: 1 plugin」と表示された</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 5 -->
+<section class="step-section" id="step5">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">5</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 5</p>
+        <h2>UI/UX Pro Max スキルの導入</h2>
+        <p>デザイン・配色・レイアウトに強くなるスキルです</p>
+      </div>
+    </div>
+
+    <div class="info-box blue">
+      <p class="info-box-label">大事なポイント</p>
+      <p>このスキルは<strong>ターミナルのClaude Code</strong>（虫マークの画面）から導入します。<br>ブラウザで開くClaude.aiのチャット欄ではありません。</p>
+    </div>
+
+    <div class="procedure" style="margin-top: 20px;">
+      <div class="proc-item">
+        <div class="proc-num">1</div>
+        <div class="proc-body">
+          <p>Claude Codeの入力欄に下記をそのまま貼り付けてEnter</p>
+          <div class="terminal copyable">
+            <div class="terminal-bar">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+              <span class="terminal-label">Claude Code 入力欄</span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-prompt">&gt; </span><span class="t-cmd">https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git</span><br>
+              <span class="t-cmd">このスキルを導入してください</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">2</div>
+        <div class="proc-body">
+          <p>Claudeが確認してきます。入力欄に下記を打ってEnter</p>
+          <div class="terminal copyable">
+            <div class="terminal-bar">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-output">実行してよろしいですか？</span><br><br>
+              <span class="t-prompt">&gt; </span><span class="t-cmd">実行しても良い</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proc-item">
+        <div class="proc-num">3</div>
+        <div class="proc-body">
+          <p>「インストール完了しました」または「UI/UX Pro Max スキルが…にインストールされました」と出たら完了。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 5 完了チェック</p>
+      <ul class="check-list">
+        <li>「インストール完了しました」と表示された</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 6 -->
+<section class="step-section" id="step6">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">6</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 6</p>
+        <h2>Chrome拡張「Claude in Chrome」の導入</h2>
+        <p>ブラウザからClaudeを使えるようになります</p>
+      </div>
+    </div>
+
+    <div class="procedure">
+      <div class="proc-item">
+        <div class="proc-num">1</div>
+        <div class="proc-body">
+          <p>Google Chromeを開いて、Chromeウェブストアで「<strong>Claude in Chrome</strong>」または「<strong>Claude for Chrome</strong>」を検索する</p>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-num">2</div>
+        <div class="proc-body">
+          <p>「<strong>Chromeに追加</strong>」ボタンをクリックする</p>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-num">3</div>
+        <div class="proc-body">
+          <p>確認ダイアログが出たら「<strong>拡張機能を追加</strong>」をクリック</p>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-num">4</div>
+        <div class="proc-body">
+          <p>右上のパズルピースアイコンから「Claude in Chrome」をピン留めすると使いやすい</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 6 完了チェック</p>
+      <ul class="check-list">
+        <li>Chromeのツールバーにアイコンが追加された</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- トラブルシューティング -->
+<section class="step-section" id="trouble" style="background: var(--white);">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle" style="background: var(--amber);">
+        <span style="font-size: 20px; font-weight: 700;">?</span>
+      </div>
+      <div class="step-meta">
+        <p class="step-label">TROUBLE</p>
+        <h2>よくあるトラブルと解決方法</h2>
+        <p>詰まったときはここを確認してください</p>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <div class="info-box rose">
+        <p class="info-box-label">「zsh: command not found: claude」が出た</p>
+        <p>Claude Code がインストールされていません。<br>
+        STEP 2 に戻って <code style="font-family: monospace; font-size: 12px;">npm install -g @anthropic-ai/claude-code</code> を実行してください。</p>
+      </div>
+
+      <div class="info-box rose">
+        <p class="info-box-label">Windowsで赤い文字のエラー（スクリプトの実行が無効…）が出た</p>
+        <p>STEP 1 の「Windowsの方：管理者PowerShellでの設定」に戻ってください。<br>
+        <code style="font-family: monospace; font-size: 12px;">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code> を実行して「Y」でEnterです。</p>
+      </div>
+
+      <div class="info-box amber">
+        <p class="info-box-label">ログイン中に「OAuth error: status code 400」が出た</p>
+        <p>認証コードの時間切れです。「Press Enter to retry」と出たらEnterを押して最初からやり直してください。今度は素早く進めることがコツです。</p>
+      </div>
+
+      <div class="info-box amber">
+        <p class="info-box-label">「外部のGitHubリポジトリから導入できません」と言われた</p>
+        <p>ブラウザのClaude.aiにURLを貼ってしまっています。<br>
+        ターミナルでclaudeコマンドを起動して（STEP 3）、そちらの入力欄に貼ってください。</p>
+      </div>
+
+      <div class="info-box mint">
+        <p class="info-box-label">「リマインダーへのアクセスを許可しますか？」が出た（Mac）</p>
+        <p>「<strong>許可しない</strong>」で大丈夫です。どちらを選んでもClaude Codeは正常に使えます。</p>
+      </div>
+
+      <div class="info-box mint">
+        <p class="info-box-label">途中で確認画面が何度も出て困った</p>
+        <p>「Yes, I trust this folder」「Y」「承認する」「実行しても良い」——どの確認もすべて <strong>「はい」「Yes」「Enter」</strong> で進めて大丈夫です。</p>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 32px; background: var(--mint-light); border-radius: 12px; padding: 24px; text-align: center;">
+      <p style="font-weight: 700; font-size: 16px; color: var(--mint-dark); margin-bottom: 8px;">それでも解決しない場合</p>
+      <p style="font-size: 14px; color: var(--muted);">エラー画面のスクリーンショットを撮って、LINEまたはSlackでお送りください。<br>サポートします。</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- フッター -->
+<footer>
+  <p>Claude Code ワークショップ 公式サポート資料</p>
+  <p>このページはワークショップ参加者専用です</p>
+</footer>
+
+<script>
+  // OSタブの切り替え
+  function switchOS(stepId, os) {
+    const contents = document.querySelectorAll('[id^="' + stepId + '-"]');
+    const tabs = document.querySelectorAll('[onclick^="switchOS(\'' + stepId + '\'"]');
+    contents.forEach(c => c.classList.remove('active'));
+    tabs.forEach(t => t.classList.remove('active'));
+    document.getElementById(stepId + '-' + os).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // コピーボタン
+  document.querySelectorAll('.copyable').forEach(block => {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'コピー';
+    block.style.position = 'relative';
+    block.appendChild(btn);
+    btn.addEventListener('click', () => {
+      const code = block.querySelector('.terminal-body');
+      if (code) {
+        // t-cmdクラスのテキストだけ抽出
+        const cmds = code.querySelectorAll('.t-cmd');
+        const text = Array.from(cmds).map(c => c.textContent).join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = 'コピー完了';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = 'コピー';
+            btn.classList.remove('copied');
+          }, 2000);
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
