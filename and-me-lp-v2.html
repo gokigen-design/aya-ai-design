@@ -314,14 +314,18 @@
       padding: 0 24px;
     }
     .problems-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
       margin-top: 32px;
     }
 
-    /* Left: prob items */
-    .prob-list { display: flex; flex-direction: column; gap: 10px; }
+    /* Top: prob items – 2-col grid */
+    .prob-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 24px;
+    }
     .prob-item {
       display: flex;
       align-items: flex-start;
@@ -347,14 +351,15 @@
     }
     .prob-text { font-size: 14px; line-height: 1.65; }
 
-    /* Right: emotional close */
-    .prob-close-wrap { display: flex; flex-direction: column; justify-content: center; }
+    /* Bottom: emotional close – full width, centered */
+    .prob-close-wrap { display: flex; flex-direction: column; }
     .prob-close {
       background: linear-gradient(155deg, #fef0eb 0%, #fef8e8 100%);
       border-radius: var(--radius-lg);
-      padding: 32px;
+      padding: 48px 56px;
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
     .prob-close::before {
       content: '';
@@ -371,17 +376,23 @@
       line-height: 1.55;
       margin-bottom: 18px;
     }
-    .prob-chips { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .prob-chips {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
     .prob-chip {
       font-family: var(--font-h);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--accent);
       background: var(--white);
-      padding: 8px 18px;
+      padding: 10px 24px;
       border-radius: 40px;
       display: inline-block;
-      align-self: flex-start;
       box-shadow: var(--shadow);
     }
     .prob-close-p { font-size: 14px; color: var(--text-sub); line-height: 1.85; }
@@ -690,7 +701,8 @@
       .btn { width: 100%; text-align: center; }
 
       .problems-wrap { padding: 0 20px; }
-      .problems-grid { grid-template-columns: 1fr; gap: 28px; }
+      .prob-list { grid-template-columns: 1fr; }
+      .prob-close { padding: 32px 24px; }
 
       .ba-grid  { grid-template-columns: 1fr; gap: 16px; }
       .ba-arrow-col { transform: rotate(90deg); height: 44px; }
