@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code ワークショップ・トラブル解決ガイド</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --mint:       #7BBCB0;
+      --mint-light: #EEF7F5;
+      --mint-dark:  #5A9E92;
+      --rose:       #D97B8A;
+      --rose-light: #FEF0F3;
+      --amber:      #D4A054;
+      --amber-light:#FEF8EC;
+      --text:       #2A2A2A;
+      --muted:      #777;
+      --border:     #E4EDE9;
+      --bg:         #FAFBFA;
+      --white:      #fff;
+      --code-bg:    #1E1E2E;
+      --code-text:  #CDD6F4;
+    }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--text);
+      background: var(--bg);
+    }
+    img { display: block; max-width: 100%; }
+    a { color: var(--mint-dark); }
+
+    /* ヘッダー */
+    .site-header {
+      background: var(--mint-dark);
+      color: #fff;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .site-header .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 3px 12px;
+      margin-bottom: 10px;
+    }
+    .site-header h1 {
+      font-size: clamp(18px, 4vw, 26px);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .site-header p {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-top: 6px;
+    }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+
+    /* セクション */
+    section { padding: 48px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .sec-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--mint-dark);
+      background: var(--mint-light);
+      border-radius: 20px;
+      padding: 3px 12px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: clamp(18px, 3.5vw, 22px);
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .sec-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    /* 3つのツール */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 600px) {
+      .tools-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .tool-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .tool-num {
+      width: 32px; height: 32px;
+      background: var(--mint);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .tool-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .tool-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .tool-status {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-top: 10px;
+    }
+    .status-blocked { background: var(--rose-light); color: var(--rose); }
+    .status-ok { background: var(--mint-light); color: var(--mint-dark); }
+
+    /* 人別カード */
+    .person-cards { display: flex; flex-direction: column; gap: 24px; }
+    .person-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .person-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .person-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .icon-rose  { background: var(--rose); }
+    .icon-mint  { background: var(--mint); }
+    .icon-amber { background: var(--amber); }
+
+    .person-meta h3 { font-size: 16px; font-weight: 700; }
+    .person-meta p  { font-size: 12px; color: var(--muted); }
+    .person-step-badge {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .badge-pre   { background: var(--rose-light); color: var(--rose); }
+    .badge-mid   { background: var(--amber-light); color: var(--amber); }
+    .badge-almost { background: var(--mint-light); color: var(--mint-dark); }
+
+    .person-body { padding: 22px; }
+
+    /* エラーボックス */
+    .error-box {
+      background: #FFF5F5;
+      border: 1px solid #FECDD3;
+      border-left: 4px solid var(--rose);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+    }
+    .error-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--rose);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .error-box code {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #C0392B;
+      display: block;
+      word-break: break-all;
+    }
+
+    /* 原因ボックス */
+    .cause-box {
+      background: var(--amber-light);
+      border: 1px solid #F5DEB3;
+      border-left: 4px solid var(--amber);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .cause-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    /* 解決ステップ */
+    .solution-heading {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--mint-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .solution-heading::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 16px;
+      background: var(--mint);
+      border-radius: 2px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 12px; }
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 26px; height: 26px;
+      background: var(--mint);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-body p { font-size: 14px; line-height: 1.7; }
+
+    /* コードブロック */
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 10px 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .code-comment { color: #6C7086; }
+
+    /* 注意ボックス */
+    .note-box {
+      background: var(--mint-light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--mint-dark);
+      margin-top: 14px;
+      line-height: 1.7;
+    }
+    .note-box strong { font-weight: 700; }
+
+    /* まとめ表 */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .summary-table thead {
+      background: var(--mint-dark);
+      color: #fff;
+    }
+    .summary-table th {
+      padding: 12px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .summary-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.7;
+    }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table tr:nth-child(even) td { background: var(--bg); }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 2px 7px;
+      white-space: nowrap;
+    }
+    .tag-rose   { background: var(--rose-light); color: var(--rose); }
+    .tag-amber  { background: var(--amber-light); color: var(--amber); }
+    .tag-mint   { background: var(--mint-light); color: var(--mint-dark); }
+
+    /* Chrome拡張の注記 */
+    .chrome-note {
+      background: var(--white);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+    .chrome-note h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .chrome-note p { font-size: 14px; color: var(--muted); }
+
+    /* フッター */
+    footer {
+      background: var(--mint-dark);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 13px;
+    }
+    footer p { margin-bottom: 4px; }
+
+    /* ユーティリティ */
+    .mt-16 { margin-top: 16px; }
+    .mb-8  { margin-bottom: 8px; }
+
+    @media (max-width: 599px) {
+      .person-step-badge { display: none; }
+      .summary-table { font-size: 12px; }
+      .summary-table th, .summary-table td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="site-header">
+  <div class="badge">ワークショップ サポート資料</div>
+  <h1>Claude Code<br>トラブル解決ガイド</h1>
+  <p>つまずいた方向け・原因と解決方法の完全まとめ</p>
+</header>
+
+
+<!-- 1. 今日入れようとしていた3つ -->
+<section>
+  <div class="container">
+    <span class="sec-label">今回のゴール</span>
+    <h2>今日入れようとしていた3つのツール</h2>
+    <p class="sec-note">これらを導入するには、まず Claude Code（虫マーク）が起動できていることが大前提です。</p>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-num">1</div>
+        <h3>Superpowers</h3>
+        <p>Claude Codeをパワーアップするプラグイン。まず最初に入れるもの。</p>
+        <span class="tool-status status-blocked">多くの方が前段階で止まった</span>
+      </div>
+      <div class="tool-card">
+        <div class="tool-num">2</div>
+        <h3>UI/UX Pro Max</h3>
+        <p>デザイン・配色・レイアウトに強くなるスキル。GitHubから導入。</p>
+        <span class="tool-status status-blocked">途中で止まった方がいた</span>
+      </div>
+      <div class="tool-card">
+        <div class="tool-num">3</div>
+        <h3>Claude in Chrome</h3>
+        <p>ブラウザ拡張機能。Chromeに追加して使う。</p>
+        <span class="tool-status status-blocked">まだ誰も試せていない</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 2. 5人の状況 -->
+<section>
+  <div class="container">
+    <span class="sec-label">受講生サポート</span>
+    <h2>5人のつまずきと解決方法</h2>
+    <p class="sec-note">画面のエラーメッセージをもとに、原因と対処法を一人ずつ解説します。</p>
+
+    <div class="person-cards">
+
+      <!-- ===== まほさん・なつえさん・和田さん（3人まとめ） ===== -->
+      <div class="person-card">
+        <div class="person-header">
+          <div class="person-icon icon-rose">前</div>
+          <div class="person-meta">
+            <h3>まほさん・なつえさん・和田あゆみさん</h3>
+            <p>3名共通のつまずき（Mac）</p>
+          </div>
+          <span class="person-step-badge badge-pre">前段階で停止</span>
+        </div>
+        <div class="person-body">
+
+          <!-- エラー -->
+          <div class="error-box">
+            <p class="error-label">画面に出たエラー</p>
+            <code>zsh: command not found: claude</code>
+          </div>
+
+          <!-- 原因 -->
+          <div class="cause-box">
+            <p class="cause-label">原因</p>
+            <p>パソコン自体に「Claude Code」がインストールされていません。<br>
+            SuperpowersもUI/UX Pro Maxも、インストール作業にすら入れていない状態です。</p>
+            <p class="mt-16"><strong>和田さんの場合：</strong>インストール途中に「このフォルダを信頼しますか？」という確認が何度も出てきて止まってしまった可能性が高いです。確認はすべて「はい / Yes / Enter」で進めて大丈夫です。</p>
+          </div>
+
+          <!-- 解決 -->
+          <p class="solution-heading">解決手順（ターミナルに1行ずつ実行）</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p>Node.js（動かすための土台）が入っているか確認</p>
+                <div class="code-block">node --version</div>
+                <p>「v18.○○」などの数字が出ればOK。<br>「command not found」が出た場合は <a href="https://nodejs.org" target="_blank">nodejs.org</a> からLTS版をインストールしてください。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p>Claude Code をインストール</p>
+                <div class="code-block">npm install -g @anthropic-ai/claude-code</div>
+                <p>途中で「Y/N」「Yes/No」が出たら <strong>Y または Yes</strong> を選んでください。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p>起動確認</p>
+                <div class="code-block">claude</div>
+                <p>虫マークが出たら成功です。</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ===== はらのどかさん ===== -->
+      <div class="person-card">
+        <div class="person-header">
+          <div class="person-icon icon-amber">中</div>
+          <div class="person-meta">
+            <h3>はらのどかさん</h3>
+            <p>UI/UX Pro Max の導入中（Mac）</p>
+          </div>
+          <span class="person-step-badge badge-mid">作業途中</span>
+        </div>
+        <div class="person-body">
+
+          <!-- エラー -->
+          <div class="error-box">
+            <p class="error-label">画面に出たメッセージ</p>
+            <code>外部のGitHubリポジトリからスキルをダウンロード・導入することはできません<br>あなたの入力: ://github.</code>
+          </div>
+
+          <!-- 原因 -->
+          <div class="cause-box">
+            <p class="cause-label">原因（2つあります）</p>
+            <p><strong>原因1：</strong>黒いターミナル画面のClaude Codeではなく、ブラウザ（ChromeやSafari）で開く普通の「Claude.ai」のチャット欄にURLを貼ってしまいました。</p>
+            <p class="mt-16"><strong>原因2：</strong>URLが途中から貼られていて「https」が欠けた状態（<code>://github.</code>）になっています。</p>
+            <p class="mt-16">ブラウザのClaude.aiではスキルのインストールはできません。<strong>ターミナルのClaude Code</strong>で行う必要があります。</p>
+          </div>
+
+          <!-- 解決 -->
+          <p class="solution-heading">解決手順</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p>ターミナルを開いて <strong>claude</strong> と打ってEnter（虫マークを出す）</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p>虫マークが出たら、入力欄に以下をそのまま貼り付けてEnter</p>
+                <div class="code-block">https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git
+このスキルを導入してください</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p>「実行してよいですか？」と出たら、入力欄に打つ：</p>
+                <div class="code-block">実行しても良い</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>覚えておいてほしいこと：</strong><br>
+            ブラウザのClaude.ai = 普通の会話だけ<br>
+            ターミナルのClaude Code = スキルのインストール・ファイル作成もできる
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ===== 尾野さおりさん ===== -->
+      <div class="person-card">
+        <div class="person-header">
+          <div class="person-icon icon-mint">近</div>
+          <div class="person-meta">
+            <h3>尾野さおりさん</h3>
+            <p>UI/UX Pro Max の導入中（ほぼ完了直前）（Mac）</p>
+          </div>
+          <span class="person-step-badge badge-almost">あと一歩</span>
+        </div>
+        <div class="person-body">
+
+          <!-- エラー -->
+          <div class="error-box">
+            <p class="error-label">止まっている画面</p>
+            <code>インストールコマンド: npx uipro-cli init --ai claude
+実行してよろしいですか？</code>
+          </div>
+
+          <!-- 原因 -->
+          <div class="cause-box">
+            <p class="cause-label">原因</p>
+            <p>Claude Codeが「これを実行していいですか？」と許可を求めているのに、まだ返事をしていない状態です。画面が止まって見えますが、返事を待っているだけです。</p>
+          </div>
+
+          <!-- 解決 -->
+          <p class="solution-heading">解決手順（これだけでOK）</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p>止まっている画面の入力欄に打ち込むだけ：</p>
+                <div class="code-block">実行しても良い</div>
+                <p>「インストール完了しました」と出たら成功です。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>もし動かなかった場合：</strong>Claude Codeを一度閉じて、ターミナルに直接打ち込む：<br>
+            <code style="font-family: monospace; font-size: 12px; color: var(--mint-dark);">npx uipro-cli init --ai claude</code>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /person-cards -->
+  </div>
+</section>
+
+
+<!-- 3. まとめ表 -->
+<section>
+  <div class="container">
+    <span class="sec-label">一覧</span>
+    <h2>状況まとめ表</h2>
+    <p class="sec-note">どなたがどこで止まっているか、一目でわかる表です。</p>
+    <div style="overflow-x: auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>お名前</th>
+            <th>やろうとしていたこと</th>
+            <th>詰まりポイント</th>
+            <th>解決方法</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>まほさん</strong></td>
+            <td>Claude Code の起動<span class="tag tag-rose" style="margin-left:6px;">前段階</span></td>
+            <td>本体がインストールされていない</td>
+            <td>npm install からやり直す</td>
+          </tr>
+          <tr>
+            <td><strong>なつえさん</strong></td>
+            <td>Claude Code の起動<span class="tag tag-rose" style="margin-left:6px;">前段階</span></td>
+            <td>本体がインストールされていない</td>
+            <td>まほさんと同じ手順</td>
+          </tr>
+          <tr>
+            <td><strong>和田あゆみさん</strong></td>
+            <td>Claude Code の起動<span class="tag tag-rose" style="margin-left:6px;">前段階</span></td>
+            <td>確認画面の多さで止まってしまった</td>
+            <td>全部「Yes」で進めてOKと伝える</td>
+          </tr>
+          <tr>
+            <td><strong>はらのどかさん</strong></td>
+            <td>UI/UX Pro Max 導入中<span class="tag tag-amber" style="margin-left:6px;">途中</span></td>
+            <td>ブラウザのClaude.aiにURLを貼ってしまった</td>
+            <td>ターミナルのClaude Codeで貼り直す</td>
+          </tr>
+          <tr>
+            <td><strong>尾野さおりさん</strong></td>
+            <td>UI/UX Pro Max 導入中<span class="tag tag-mint" style="margin-left:6px;">ほぼ完了</span></td>
+            <td>Claudeの確認待ち状態で止まっている</td>
+            <td>「実行しても良い」と打ち込むだけ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- 4. Chrome拡張について -->
+<section>
+  <div class="container">
+    <span class="sec-label">補足</span>
+    <h2>Chrome拡張「Claude in Chrome」について</h2>
+    <p class="sec-note">3つ目のツールです。</p>
+    <div class="chrome-note">
+      <h3>まだ誰も試せていません</h3>
+      <p>今回は全員がその前段階（Claude Code の起動 / スキル導入）で止まっていたため、<br>Chrome拡張にはまだ誰も手をつけられていません。<br>上の問題が解決してから、次回または別途案内します。</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 5. Windows用補足 -->
+<section>
+  <div class="container">
+    <span class="sec-label">Windowsの方専用</span>
+    <h2>Windows でよく出るエラーと解決方法</h2>
+    <p class="sec-note">Macと異なる手順が必要な場合があります。</p>
+
+    <div class="person-cards">
+      <div class="person-card">
+        <div class="person-body">
+          <div class="error-box">
+            <p class="error-label">よく出るエラー</p>
+            <code>このシステムではスクリプトの実行が無効になっているため…
+PSSecurityException / UnauthorizedAccess</code>
+          </div>
+          <div class="cause-box">
+            <p class="cause-label">原因</p>
+            <p>Windows のセキュリティ設定がスクリプトの実行をブロックしています。</p>
+          </div>
+          <p class="solution-heading">解決手順</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p>Windowsキーを押して「PowerShell」と検索<br>「Windows PowerShell」を<strong>右クリック → 管理者として実行</strong></p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p>以下をコピペしてEnter：</p>
+                <div class="code-block">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p>「Y はい」と聞かれたら <strong>Y</strong> を打ってEnter</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <p>通常のターミナルで <code style="font-family: monospace;">claude</code> を実行</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box mt-16">
+            <strong>ログイン（認証）がうまくいかないとき：</strong><br>
+            「Browser didn't open?」と出たら → <strong>c</strong> キーでURLをコピー → ブラウザに貼り付けてログイン → コードをコピー → ターミナルに<strong>右クリック</strong>で貼り付けてEnter<br><br>
+            コードには<strong>時間制限</strong>があります。URLが出たらすぐ進めてください。失敗したら「Press Enter to retry」でやり直せます。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- フッター -->
+<footer>
+  <p>Claude Code ワークショップ・サポート資料</p>
+  <p>困ったときはLINEまたはSlackでご連絡ください</p>
+</footer>
+
+</body>
+</html>
