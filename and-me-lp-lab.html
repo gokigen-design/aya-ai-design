@@ -319,6 +319,16 @@ header .subtitle {
   font-family: var(--font-b);
 }
 
+.prompt-body-long {
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.prompt-body-long::-webkit-scrollbar { width: 4px; }
+.prompt-body-long::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
 /* Image attachment area */
 .prompt-image {
   margin: 0 20px 18px;
@@ -696,24 +706,24 @@ footer a:hover { color: var(--white); }
       </div>
       <div class="flow-step flow-step-2">
         <div class="flow-num">VER.02</div>
-        <h3>ChatGPT画像を追加</h3>
-        <p>AI生成の参考イメージを組み込む</p>
+        <h3>ChatGPT画像を参考添付</h3>
+        <p>ChatGPT生成の参考画像と詳細な変更指示を一緒に送る</p>
       </div>
       <div class="flow-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
       <div class="flow-step flow-step-3">
         <div class="flow-num">VER.03</div>
-        <h3>参考サイトのSS共有</h3>
-        <p>実在するサイトのスクリーンショットを見せる</p>
+        <h3>テキストで細かく指示</h3>
+        <p>フォント変更・レイアウト修正を言葉だけで具体的に伝える</p>
       </div>
       <div class="flow-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
       <div class="flow-step flow-step-4">
         <div class="flow-num">VER.04</div>
-        <h3>色・細部を言語化</h3>
-        <p>カラーコードや具体的な指示を追加</p>
+        <h3>参考SSで色を指定</h3>
+        <p>好みのサイトのSSを送り「この色に」と一言で伝える</p>
       </div>
     </div>
   </div>
@@ -746,23 +756,106 @@ footer a:hover { color: var(--white); }
                 <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
                 <span class="prompt-sender">あや → Claude Code</span>
               </div>
-              <div class="prompt-body">以下の内容でLPを作成してください。
+              <div class="prompt-body prompt-body-long">あなたは売れるLPを作るデザイナー兼コピーライターです。
+特に「女性をターゲットにしたLP」のデザイン・コピーが得意で、AIっぽい定型句を一切使わずに作ります。
+以下の「LP構成案」をもとに、HTMLとCSSでランディングページを作ってください。
+構成案の順序・文面はそのまま使ってください。
 
-【サービス名】& me
-【ターゲット】30〜40代のファッションに悩む女性
-【コンセプト】おしゃれを一緒に楽しむ仲間のいるコミュニティ
+【コピーのルール】
+- 主語は「あなた」、抽象語禁止（「自信がつく」「あなたの可能性を広げる」「理想の○○へ」など中身のない言葉は一切使わない）
+- AI定型句禁止（「さあ、始めましょう」「いかがでしょうか？」「〜の世界へようこそ」「革新的な」など）
+- 数字・固有名詞・動詞から始まる文を意識する
+- 架空のお客様の声や数字（「満足度97%」等）は作らない。プレースホルダーで置く
+- 女性ターゲットに感情を動かす言葉を使う（プリンセスマーケティング視点）
+- 機能的価値＋情緒的価値の両方を必ず盛り込む
+- キャッチコピーは「ターゲット × 悩み × ベネフィット」を内包
 
-【セクション構成】
-1. FV：キャッチコピー＋CTAボタン
-2. こんなお悩みありませんか？（6項目）
-3. Before / After
-4. サービス内容（3プラン）
-5. 申し込みCTA
+【デザインのルール】
+- 絵文字一切禁止（チェック等はCSS疑似要素で）
+- フォント最大3種類。明朝体を長文本文に使わない
+- 色：アクセント1色のみ。原色そのまま禁止、派手なグラデ禁止
+- テキスト#1e1e1e / 補足#6a6a6a / 背景#faf8f5（純白でなく少し色味のある白）
+- 角丸は8pxか16pxに統一
+- シャドウは薄く広く（0 8px 30px rgba(0,0,0,0.05)）
+- 女性ターゲット向けの柔らかさ・上質感
 
-【デザイン指定】
-- フォント：丸ゴシック
-- アクセントカラー：ピンク系
-- 絵文字禁止・本文14px以上</div>
+【フォントサイズ（clamp必須）】
+- 本文16px以上、H1 clamp(28px,7vw,48px)、H2 clamp(22px,5vw,32px)、H3 clamp(17px,4vw,22px)
+- 本文行間1.7〜1.8 / 見出し行間1.3〜1.4
+
+【スマホファースト】
+- ブレークポイント768px
+- 横スクロール禁止、タップ領域44px以上
+- 2カラム以上は必ずスマホで縦積み
+
+【余白・レイアウト】
+- セクション間：PC 80px / スマホ 48px
+- 要素間は8の倍数（8/16/24/32px）
+- 左右パディング最低20px、テキストmax-width: 720px
+
+【ビジュアル】
+- 全セクションに画像 or 図解必須。なければpicsum.photosやCSS図解
+- 絵文字をアイコン代わりにしない（SVG or CSS疑似要素）
+- 画像はwidth: 100%; max-width: 100%
+
+【セクションごとの推奨カラム】
+- FV: PC2col（左テキスト60%+右画像40%）/ スマホ縦積み
+- 共感: PC3colカード / スマホ1col
+- 未来: PC2col(Before/After) / スマホ縦積み
+- サービス: PC2col×3行 / スマホ1col
+- 信頼: PC3colカード / スマホ1col
+
+【出力フォーマット】
+- HTML 1枚完結、CSSはstyle内、altテキスト必須
+
+---
+
+# LP構成案（のどかさん作成）
+
+セクション1｜ファーストビュー
+
+キャッチコピー
+『なんとなくの私』を卒業する。
+"大人のおしゃれ部活"、始動。
+
+サービス名：&amp; me
+
+サブコピー
+診断を受けたのに、結局いつも同じ服。
+「これで合ってる？」を繰り返していた私が、
+"私らしい似合う"を楽しみながら選べるようになる場所。
+
+ターゲット
+✔ 診断を受けたけど活かしきれていない女性
+✔ 40代になって何を着ればいいかわからなくなった女性
+✔ 無難な服ばかり選んでしまう女性
+✔ 「似合う」と「好き」のバランスに悩んでいる女性
+✔ おしゃれを頑張りたいけど、一人だと続かない女性
+✔ 自分を後回しにしてきたけど、そろそろ自分を整えたい女性
+
+セクション2｜こんなお悩みありませんか？
+
+✔ 診断を受けた時は納得したのに、結局いつも同じ服に戻ってしまう
+✔ お店に行っても「何を買えばいいかわからない」と疲れて帰ってしまう
+✔ 「これ似合ってるのかな？」と不安で、無難な服ばかり選んでしまう
+✔ トレンドを見ても、自分にどう取り入れたらいいかわからない
+✔ 昔はもっとおしゃれを楽しめていたのに、最近は鏡を見るたびにモヤモヤする
+✔ 子育てや仕事を優先して、自分のことを後回しにしてきた
+
+でも本当は、もっとおしゃれを楽しみたい。
+もっと自分を好きになりたい。
+
+セクション3｜Before / After
+Before: 何を着てもピンとこない / 毎朝「何着よう…」で時間がかかる
+After: 自分に似合う服を自分で選べるようになる / 鏡を見るたび少し気分が上がる
+
+セクション4｜サービス内容（5つ）
+01 コーデ提案 / 02 トレンド解説 / 03 メイクアドバイス / 04 おしゃれ相談 / 05 イベント・企画
+
+【参考URL】
+- https://lp-fujiba-tomomi.vercel.app/
+- https://lp.chic-image.com/p/ZOIzQoKZAohW
+- https://shelikes.jp/</div>
             </div>
           </div>
 
@@ -822,8 +915,8 @@ footer a:hover { color: var(--white); }
       <div class="version-card-header">
         <span class="ver-badge ver-badge-2">VER.02</span>
         <div class="ver-title-group">
-          <h3>ChatGPT で作ったイメージ画像を渡す</h3>
-          <p>ChatGPTでファッション系のイメージ画像を生成し、スクリーンショットをClaude Codeに添付。「こういうムードで」と伝えたバージョン。</p>
+          <h3>ChatGPT生成の参考画像を添付して変更指示を出す</h3>
+          <p>ChatGPTで作ったファッションLP風の画像をそのまま添付し、「この雰囲気で直して」と具体的な変更点もテキストで一緒に伝えたバージョン。</p>
         </div>
       </div>
 
@@ -837,19 +930,29 @@ footer a:hover { color: var(--white); }
                 <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
                 <span class="prompt-sender">あや → Claude Code</span>
               </div>
-              <!-- 画像添付エリア -->
+              <!-- 実際に送った画像 -->
               <div class="prompt-image">
-                <p>ChatGPTで生成したイメージ画像をここに追加してください<br>（GitHubの画像URLか、imgタグで差し替え）</p>
+                <img src="lab-assets/ref-image-1.webp" alt="ChatGPTで作成したファッションLP参考画像（あやが実際に送ったもの）">
               </div>
-              <div class="prompt-body">この画像のようなムードで、Ver.01をリニューアルしてください。
+              <div class="prompt-body">こちらのLPに参考画像のテイストを反映してください
 
-追加してほしいこと：
-・BAセクションに「Before→After」の女性写真を追加
-・筆記体の装飾テキスト（"for you" など）
-・吹き出し風のコメントデザイン
-・お客様の声セクションを追加（顔写真＋テキスト）
-・FVの右側に女性の写真スペース
-・マガジン風のレイアウトにしてほしい</div>
+今Claudeで作ってもらったLPに、こちらで送付した画像の要素を入れ込んでください。
+
+具体的な修正内容は以下の通りです：
+
+1. ビフォーアフターのセクション
+   (a) 女性の写真やアイコンを追加する
+   (b) 筆記体の装飾、手書きの吹き出し文字を入れる
+2. 受講生の声
+   (a) こちらにも写真を差し込む
+3. ファーストビュー
+   (a) 参考画像のように、右側に女性を配置する
+
+全体のデザイン面については、ピンクからオレンジ、黄色への薄いグラデーションを使い、文字はカラーコード #545454 などの黒に近いグレーを使用してください。
+
+海外の雑誌風のような、スタイリッシュでモダンな雰囲気に仕上げたいです。サンセリフ体などの装飾も使って、海外チックでかっこいいLPにしてください。こちらの一番最初のポン出しのものは「ボリューム1」として取っておき、こちらの画像を追加したものを「ボリューム2」として、その過程を見せていきたいです。
+
+ですので、一つ目のURLはいじらずに、こちらをボリューム2としてください。</div>
             </div>
           </div>
 
@@ -909,8 +1012,8 @@ footer a:hover { color: var(--white); }
       <div class="version-card-header">
         <span class="ver-badge ver-badge-3">VER.03</span>
         <div class="ver-title-group">
-          <h3>参考サイトのスクリーンショットを送る</h3>
-          <p>実際に「いいな」と思ったファッション系LPのスクリーンショットを添付。「このサイトみたいにして」と伝えたバージョン。フォントも明朝体に変更、レイアウトも組み直し。</p>
+          <h3>テキストだけで細かく指示する（2回のやりとり）</h3>
+          <p>画像なし。「筆記体に変更して」「このセクションのレイアウトを組み直して」と、言葉だけで具体的な修正を2回に分けて伝えたバージョン。</p>
         </div>
       </div>
 
@@ -918,23 +1021,23 @@ footer a:hover { color: var(--white); }
         <div class="io-grid">
           <!-- INPUT -->
           <div>
-            <div class="io-label">Input — プロンプト＋スクリーンショット</div>
+            <div class="io-label">Input — 2回のプロンプト（テキストのみ）</div>
             <div class="prompt-card">
               <div class="prompt-card-header">
                 <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-                <span class="prompt-sender">あや → Claude Code</span>
+                <span class="prompt-sender">あや → Claude Code（1回目）</span>
               </div>
-              <!-- 参考サイトSSエリア -->
-              <div class="prompt-image">
-                <p>参考にしたサイトのスクリーンショットをここに追加してください</p>
+              <div class="prompt-body">筆記体に変更して</div>
+            </div>
+            <div style="margin-top:10px;">
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code（2回目）</span>
               </div>
-              <div class="prompt-body">このサイトのスタイルを参考に修正してほしいです。
-
-・見出しフォントを明朝体（Shippori Mincho）に変更
-・「こんなお悩みありませんか？」のセクションの
-　レイアウトを組み直してほしい
-　→ 問題リストを上、「もっとおしゃれを楽しみたい」
-　　 という締めの文章を下に移動して</div>
+              <div class="prompt-body">こんなお悩みありませんか？のところが変なセクションわけになっているので
+こんなお悩みありませんか？の下にもっとおしゃれを楽しみたいを下にレイアウトを組み直してください</div>
+            </div>
             </div>
           </div>
 
@@ -969,16 +1072,17 @@ footer a:hover { color: var(--white); }
             <div class="result-col">
               <h5>よかった点</h5>
               <ul class="good">
-                <li>明朝体でエレガントな雰囲気に</li>
-                <li>セクション構造が読みやすく整理された</li>
-                <li>参考サイトのムードが伝わった</li>
+                <li>一言「筆記体に変更して」で見出しフォントが変わった</li>
+                <li>セクションの問題点を具体的に説明したら意図通りに整理された</li>
+                <li>画像なしでも、言葉が具体的なら意図が伝わる</li>
               </ul>
             </div>
             <div class="result-col">
               <h5>改善できる点</h5>
               <ul class="bad">
-                <li>色味がまだ合っていない（オレンジ系が残る）</li>
-                <li>もう少し具体的な色指定が必要</li>
+                <li>「筆記体」→後で「明朝体」に言い直しが必要だった（言葉の確認が大事）</li>
+                <li>色味はまだVer.02のオレンジ系のまま</li>
+                <li>色指定だけ別で次に送ることになった</li>
               </ul>
             </div>
           </div>
@@ -992,8 +1096,8 @@ footer a:hover { color: var(--white); }
       <div class="version-card-header">
         <span class="ver-badge ver-badge-4">VER.04</span>
         <div class="ver-title-group">
-          <h3>色・雰囲気を具体的に言語化して指示する</h3>
-          <p>STORYwebのスクリーンショットを添付し、「グレー・ブラック・ホットピンク」と色を言語で明確に指定。もっとも精度の高い仕上がりになったバージョン。</p>
+          <h3>「好きなサイト」のSSを送って「この色にして」と一言</h3>
+          <p>STORYwebのスクリーンショットを1枚添付して「グレーと黒とピンクの色にして」と一言だけ。これだけでイメージ通りの配色に変わった最終版。</p>
         </div>
       </div>
 
@@ -1007,18 +1111,11 @@ footer a:hover { color: var(--white); }
                 <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
                 <span class="prompt-sender">あや → Claude Code</span>
               </div>
-              <!-- STORYweb SS エリア -->
+              <!-- 実際に送ったSTORYwebスクリーンショット -->
               <div class="prompt-image">
-                <p>STORYwebのスクリーンショットをここに追加してください</p>
+                <img src="lab-assets/ref-image-2.webp" alt="STORYweb スクリーンショット（あやが実際に送ったもの）">
               </div>
-              <div class="prompt-body">色味はこんな感じのグレーと黒とピンクの
-カラーにしてください。
-
-具体的には：
-・背景：ライトグレー（#f8f8f8）
-・テキスト：ほぼ黒（#1a1a1a）
-・アクセント：ホットピンク（#D4006E）
-・グラデーションもピンク系に統一</div>
+              <div class="prompt-body">色味はこんな感じのグレーと黒とピンクのからーにしてください</div>
             </div>
           </div>
 
@@ -1110,17 +1207,17 @@ footer a:hover { color: var(--white); }
           <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div><div class="star"></div></div></td>
         </tr>
         <tr>
-          <td><strong>Ver.03</strong><br><span style="font-size:12px;color:#888">参考サイトSS</span></td>
-          <td>テキスト＋参考サイトSS</td>
-          <td>フォント・構成が洗練</td>
-          <td>3〜4回</td>
+          <td><strong>Ver.03</strong><br><span style="font-size:12px;color:#888">テキストで細かく指示</span></td>
+          <td>画像なし・短いテキスト2回</td>
+          <td>フォント・構成の細かい修正が反映</td>
+          <td>2回（分けて送付）</td>
           <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div></div></td>
         </tr>
         <tr>
-          <td><strong>Ver.04</strong><br><span style="font-size:12px;color:#888">色を言語化</span></td>
-          <td>テキスト＋参考SS＋色の言語指定</td>
+          <td><strong>Ver.04</strong><br><span style="font-size:12px;color:#888">参考SS＋一言指示</span></td>
+          <td>参考サイトのSS＋「この色にして」一言</td>
           <td>ブランドの世界観が完成</td>
-          <td>4〜5回</td>
+          <td>1回</td>
           <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
         </tr>
       </tbody>
