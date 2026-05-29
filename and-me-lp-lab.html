@@ -30,6 +30,7 @@
   --ver4: #D4006E;
   --ver5: #b5005c;
   --ver6: #E8607A;
+  --ver7: #D05070;
 
   --font-h:    'Shippori Mincho', serif;
   --font-b:    'Noto Sans JP', sans-serif;
@@ -233,6 +234,7 @@ header .subtitle {
 .ver-badge-4 { background: var(--pink-light); color: var(--ver4); border: 1px solid #f9a8d4; }
 .ver-badge-5 { background: #fff0f8; color: var(--ver5); border: 1px solid #ffb3d9; }
 .ver-badge-6 { background: #fff0f5; color: var(--ver6); border: 1px solid #f9b4c0; }
+.ver-badge-7 { background: #ffeaee; color: var(--ver7); border: 1px solid #f7a8b8; }
 
 .ver-title-group h3 {
   font-family: var(--font-h);
@@ -439,6 +441,7 @@ header .subtitle {
 .result-box.ver4 { border-left-color: var(--ver4); }
 .result-box.ver5 { border-left-color: var(--ver5); }
 .result-box.ver6 { border-left-color: var(--ver6); }
+.result-box.ver7 { border-left-color: var(--ver7); }
 
 .result-box h4 {
   font-size: 13px;
@@ -680,7 +683,7 @@ footer a:hover { color: var(--white); }
   <div class="container">
     <div class="header-label">Prompt Experiment Lab</div>
     <h1>& me <span>LP Lab</span></h1>
-    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？6バージョン検証レポート</p>
+    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？7バージョン検証レポート</p>
     <div class="team-badges">
       <span class="team-badge">あや</span>
       <span class="team-badge">ゆみ</span>
@@ -697,7 +700,7 @@ footer a:hover { color: var(--white); }
   <div class="container">
     <h2>検証の目的</h2>
     <p>
-      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの種類・詳しさを段階的に変えながら6バージョン作成。<br>
+      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの種類・詳しさを段階的に変えながら7バージョン作成。<br>
       初心者でも再現できる指示の出し方を探り、どのレベルで品質が跳ね上がるかを確認します。
     </p>
 
@@ -746,6 +749,14 @@ footer a:hover { color: var(--white); }
         <div class="flow-num" style="color: var(--ver6);">VER.06</div>
         <h3>完成SSから再現</h3>
         <p>完成品のSSを渡して「このデザインで」と指示</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step" style="border-color: #f7a8b8;">
+        <div class="flow-num" style="color: var(--ver7);">VER.07</div>
+        <h3>全ページSS貼付け</h3>
+        <p>フルページSSを参照画像として読み込みLP再現</p>
       </div>
     </div>
   </div>
@@ -1357,9 +1368,11 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
                 <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
                 <span class="prompt-sender">あや → Claude Code</span>
               </div>
-              <div class="prompt-body prompt-body-long">（完成済みLPのスクリーンショットを添付）
-
-こちらの構成案を下記のプロンプトでLPを作ってください。
+              <!-- 実際に送ったVER.06参照スクリーンショット -->
+              <div class="prompt-image">
+                <img src="lab-assets/ref-image-3.webp" alt="あやが実際に送った参照スクリーンショット（VER.06作成時）">
+              </div>
+              <div class="prompt-body prompt-body-long">こちらの構成案を下記のプロンプトでLPを作ってください。
 色味などの参考は送付した画像を参考にしてください。
 
 【スクリーンショットから抽出したデザイン要素】
@@ -1456,6 +1469,86 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
       </div>
     </div><!-- /VER.06 -->
 
+
+    <!-- ========== VER.07 あや ========== -->
+    <div class="version-card" id="ver07">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-7">VER.07 あや</span>
+        <div class="ver-title-group">
+          <h3>フルページSSを「参照画像」として読み込んでそのまま再現</h3>
+          <p>完成済み & me LP の全セクションを含むフルページスクリーンショットを1枚貼り付け、「この画像のレイアウトで作って」と指示。画像＝設計図として機能するかを検証した版。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — フルページSS（実際に送った画像）</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <!-- 実際に送ったフルページSS -->
+              <div class="prompt-image">
+                <img src="lab-assets/ref-image-4.webp" alt="あやが実際に送ったフルページスクリーンショット（VER.07作成時）">
+              </div>
+              <div class="prompt-body">こちらこちらの画像を読み込んだバージョンだとどうなりますか?
+基本的には常に参照してもらって、LP制作を進めていってください。</div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp-ver7.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp-ver7.html" loading="lazy" title="& me LP Ver.07"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp-ver7.html" target="_blank" class="view-btn" style="background: var(--ver7);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              VER.07 LPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver7">
+          <h4>画像を「設計図」として渡すとどう変わるか</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>わかったこと</h5>
+              <ul class="good">
+                <li>フルページSSを渡すと全セクション構成がそのまま再現される</li>
+                <li>レイアウト（カラム数・並び順）が画像に忠実になる</li>
+                <li>「レイアウトを変えたいなら画像を変える方が早い」ことが実証</li>
+                <li>テキスト指示なしでも色・余白・ムードが伝わる</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>次の検証アイデア</h5>
+              <ul class="bad">
+                <li>スマホ幅のSSを渡すとモバイルファーストになるか？</li>
+                <li>3カラムレイアウトのSSでサイドバーは再現できるか？</li>
+                <li>競合サイトのSSを渡すとどこまで再現できるか？</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.07 -->
+
   </div>
 </section><!-- /versions-section -->
 
@@ -1465,7 +1558,7 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
 ============================================================ -->
 <section class="summary-section">
   <div class="container">
-    <h2 class="section-heading">6バージョン比較まとめ</h2>
+    <h2 class="section-heading">7バージョン比較まとめ</h2>
     <p class="section-sub">初心者がLPを作るときの「プロンプトの出し方」チェックリストとして活用できます</p>
 
     <table class="compare-table">
@@ -1519,6 +1612,13 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
           <td>完成LPのSS＋デザイン要素を言語化したプロンプト</td>
           <td>筆記体・吹き出し・バッジまで細部が一致</td>
           <td>1回（SS＋デザイン要素の言語化が必要）</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
+        </tr>
+        <tr style="background: #ffeaee;">
+          <td><strong>Ver.07</strong><br><span style="font-size:12px;color:#D05070;">フルページSS読み込み（あや）</span></td>
+          <td>フルページSSを1枚貼り付けるだけ</td>
+          <td>全セクション構成・レイアウトが画像に忠実に再現</td>
+          <td>1回（説明文ほぼ不要）</td>
           <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
         </tr>
       </tbody>
