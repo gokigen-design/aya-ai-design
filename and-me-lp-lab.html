@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>& me LP Lab | プロンプト検証サイト</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================================================
+   DESIGN TOKENS
+=================================================== */
+:root {
+  --pink:        #D4006E;
+  --pink-dark:   #A80057;
+  --pink-light:  #fce8f3;
+  --black:       #1a1a1a;
+  --gray-dark:   #4a4a4a;
+  --gray:        #7a7a7a;
+  --gray-light:  #b8b8b8;
+  --bg:          #f6f6f6;
+  --white:       #ffffff;
+  --border:      #e2e2e2;
+  --code-bg:     #1a1a2e;
+
+  --ver1: #6b7280;
+  --ver2: #0891b2;
+  --ver3: #7c3aed;
+  --ver4: #D4006E;
+
+  --font-h:    'Shippori Mincho', serif;
+  --font-b:    'Noto Sans JP', sans-serif;
+  --font-en:   'Montserrat', sans-serif;
+
+  --radius-sm: 6px;
+  --radius:    12px;
+  --radius-lg: 20px;
+  --shadow:    0 4px 20px rgba(0,0,0,0.07);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.11);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-b);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--black);
+  background: var(--bg);
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===================================================
+   HEADER
+=================================================== */
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0 36px;
+  text-align: center;
+}
+
+.header-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--pink);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+header h1 {
+  font-family: var(--font-h);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+header h1 span {
+  color: var(--pink);
+}
+
+header .subtitle {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+.team-badges {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.team-badge {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: var(--gray-dark);
+}
+
+/* ===================================================
+   OVERVIEW SECTION
+=================================================== */
+.overview {
+  background: var(--white);
+  padding: 52px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.overview h2 {
+  font-family: var(--font-h);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 12px;
+}
+
+.overview p {
+  font-size: 14px;
+  color: var(--gray-dark);
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.overview-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.flow-step {
+  flex: 1;
+  min-width: 160px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  text-align: center;
+  position: relative;
+}
+
+.flow-step + .flow-step {
+  margin-left: 8px;
+}
+
+.flow-num {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.flow-step h3 {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.flow-step p {
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.flow-step-1 .flow-num { color: var(--ver1); }
+.flow-step-2 .flow-num { color: var(--ver2); }
+.flow-step-3 .flow-num { color: var(--ver3); }
+.flow-step-4 .flow-num { color: var(--ver4); }
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  color: var(--gray-light);
+}
+
+/* ===================================================
+   VERSION CARDS
+=================================================== */
+.versions-section {
+  padding: 60px 0;
+}
+
+.version-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+
+.version-card-header {
+  padding: 28px 36px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.ver-badge {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 5px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.ver-badge-1 { background: #f3f4f6; color: var(--ver1); border: 1px solid #d1d5db; }
+.ver-badge-2 { background: #ecfeff; color: var(--ver2); border: 1px solid #a5f3fc; }
+.ver-badge-3 { background: #f5f3ff; color: var(--ver3); border: 1px solid #ddd6fe; }
+.ver-badge-4 { background: var(--pink-light); color: var(--ver4); border: 1px solid #f9a8d4; }
+
+.ver-title-group h3 {
+  font-family: var(--font-h);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.ver-title-group p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+.version-card-body {
+  padding: 32px 36px;
+}
+
+/* --- INPUT / OUTPUT grid --- */
+.io-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+
+.io-label {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--gray);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* Arrow between input and output */
+.io-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 28px;
+  color: var(--gray-light);
+}
+
+.io-arrow svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* --- Prompt card --- */
+.prompt-card {
+  background: var(--code-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.prompt-card-header {
+  background: rgba(255,255,255,0.06);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #ffbd2e; }
+.dot-g { background: #28ca41; }
+
+.prompt-sender {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  margin-left: 4px;
+}
+
+.prompt-body {
+  padding: 18px 20px;
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.88);
+  white-space: pre-wrap;
+  font-family: var(--font-b);
+}
+
+/* Image attachment area */
+.prompt-image {
+  margin: 0 20px 18px;
+  border: 1.5px dashed rgba(255,255,255,0.2);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+
+.prompt-image p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+.prompt-image img {
+  max-width: 100%;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* --- Browser mockup --- */
+.browser-mockup {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+
+.browser-bar {
+  background: #e8e8e8;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.browser-url {
+  background: var(--white);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 10px;
+  color: var(--gray);
+  flex: 1;
+  margin-left: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-en);
+}
+
+.iframe-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.iframe-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250%;
+  height: 800px;
+  transform: scale(0.4);
+  transform-origin: top left;
+  border: none;
+  pointer-events: none;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  background: var(--black);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  padding: 11px 0;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.view-btn:hover { background: #333; }
+
+.view-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* --- Result notes --- */
+.result-box {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  border-left: 3px solid var(--border);
+}
+
+.result-box.ver1 { border-left-color: var(--ver1); }
+.result-box.ver2 { border-left-color: var(--ver2); }
+.result-box.ver3 { border-left-color: var(--ver3); }
+.result-box.ver4 { border-left-color: var(--ver4); }
+
+.result-box h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.result-col h5 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.result-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.result-col ul li {
+  font-size: 13px;
+  color: var(--gray-dark);
+  line-height: 1.7;
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.result-col ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gray-light);
+}
+
+.good li::before { background: #22c55e; }
+.bad  li::before { background: #f87171; }
+
+/* ===================================================
+   SUMMARY TABLE
+=================================================== */
+.summary-section {
+  background: var(--white);
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section-heading {
+  font-family: var(--font-h);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.section-sub {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 36px;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.compare-table th {
+  background: var(--bg);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--gray-dark);
+  border-bottom: 2px solid var(--border);
+}
+
+.compare-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.compare-table tr:hover td { background: #fafafa; }
+
+.star-row { display: flex; gap: 2px; }
+.star {
+  width: 14px; height: 14px;
+  background: var(--gray-light);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.star.on { background: #f59e0b; }
+
+/* ===================================================
+   ADD ENTRY SECTION
+=================================================== */
+.add-section {
+  padding: 60px 0;
+}
+
+.add-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.add-card-header {
+  background: linear-gradient(135deg, var(--black) 0%, #2d2d2d 100%);
+  padding: 28px 36px;
+  color: var(--white);
+}
+
+.add-card-header h3 {
+  font-family: var(--font-h);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.add-card-header p {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.add-card-body {
+  padding: 32px 36px;
+}
+
+.add-step {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.add-step-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--pink);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-family: var(--font-en);
+}
+
+.add-step-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.add-step-content p {
+  font-size: 13px;
+  color: var(--gray-dark);
+  line-height: 1.7;
+}
+
+.code-block {
+  background: var(--code-bg);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.82);
+  font-family: 'Courier New', monospace;
+  line-height: 1.8;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-comment { color: #6b7280; }
+.code-tag { color: #a78bfa; }
+.code-attr { color: #6ee7b7; }
+.code-str { color: #fca5a5; }
+
+/* ===================================================
+   FOOTER
+=================================================== */
+footer {
+  background: var(--black);
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding: 28px 0;
+  font-size: 12px;
+}
+
+footer a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+}
+
+footer a:hover { color: var(--white); }
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media (max-width: 768px) {
+  .version-card-header { padding: 22px 20px 18px; flex-direction: column; gap: 12px; }
+  .version-card-body { padding: 22px 20px; }
+  .io-grid { grid-template-columns: 1fr; }
+  .io-arrow { display: none; }
+  .result-grid { grid-template-columns: 1fr; }
+  .overview-flow { flex-direction: column; }
+  .flow-step + .flow-step { margin-left: 0; margin-top: 8px; }
+  .add-card-header, .add-card-body { padding: 22px 20px; }
+  .compare-table { display: block; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header>
+  <div class="container">
+    <div class="header-label">Prompt Experiment Lab</div>
+    <h1>& me <span>LP Lab</span></h1>
+    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？4ステップ検証レポート</p>
+    <div class="team-badges">
+      <span class="team-badge">あや</span>
+      <span class="team-badge">ゆみ</span>
+      <span class="team-badge">ちゃかな</span>
+    </div>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     OVERVIEW
+============================================================ -->
+<section class="overview">
+  <div class="container">
+    <h2>検証の目的</h2>
+    <p>
+      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの詳しさを段階的に変えながら4回作成。<br>
+      初心者でも再現できる指示の出し方を探り、どのレベルで品質が跳ね上がるかを確認します。
+    </p>
+
+    <div class="overview-flow">
+      <div class="flow-step flow-step-1">
+        <div class="flow-num">VER.01</div>
+        <h3>テキスト仕様書のみ</h3>
+        <p>サービス内容・コピー・構成をテキストで渡す</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step flow-step-2">
+        <div class="flow-num">VER.02</div>
+        <h3>ChatGPT画像を追加</h3>
+        <p>AI生成の参考イメージを組み込む</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step flow-step-3">
+        <div class="flow-num">VER.03</div>
+        <h3>参考サイトのSS共有</h3>
+        <p>実在するサイトのスクリーンショットを見せる</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step flow-step-4">
+        <div class="flow-num">VER.04</div>
+        <h3>色・細部を言語化</h3>
+        <p>カラーコードや具体的な指示を追加</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     VERSION CARDS
+============================================================ -->
+<section class="versions-section">
+  <div class="container">
+
+    <!-- ========== VER.01 ========== -->
+    <div class="version-card" id="ver01">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-1">VER.01</span>
+        <div class="ver-title-group">
+          <h3>テキスト仕様書をそのまま渡す</h3>
+          <p>のどかさんが書いてくれたサービス概要・コピー・セクション構成を、ほぼそのままClaude Codeに貼り付けて作成。画像も参考サイトも提示なし。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — プロンプト</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <div class="prompt-body">以下の内容でLPを作成してください。
+
+【サービス名】& me
+【ターゲット】30〜40代のファッションに悩む女性
+【コンセプト】おしゃれを一緒に楽しむ仲間のいるコミュニティ
+
+【セクション構成】
+1. FV：キャッチコピー＋CTAボタン
+2. こんなお悩みありませんか？（6項目）
+3. Before / After
+4. サービス内容（3プラン）
+5. 申し込みCTA
+
+【デザイン指定】
+- フォント：丸ゴシック
+- アクセントカラー：ピンク系
+- 絵文字禁止・本文14px以上</div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp.html" loading="lazy" title="& me LP Ver.01"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp.html" target="_blank" class="view-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              このLPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver1">
+          <h4>結果・考察</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>よかった点</h5>
+              <ul class="good">
+                <li>仕様書通りのセクション構成で完成</li>
+                <li>清潔感のある読みやすいデザイン</li>
+                <li>CTAボタン・フォームの配置が的確</li>
+                <li>コピーテキストがそのまま反映</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>改善できる点</h5>
+              <ul class="bad">
+                <li>写真・ビジュアル要素が一切ない</li>
+                <li>デザインがやや無個性・汎用的</li>
+                <li>ブランドらしいムードが出にくい</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.01 -->
+
+
+    <!-- ========== VER.02 ========== -->
+    <div class="version-card" id="ver02">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-2">VER.02</span>
+        <div class="ver-title-group">
+          <h3>ChatGPT で作ったイメージ画像を渡す</h3>
+          <p>ChatGPTでファッション系のイメージ画像を生成し、スクリーンショットをClaude Codeに添付。「こういうムードで」と伝えたバージョン。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — プロンプト＋画像</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <!-- 画像添付エリア -->
+              <div class="prompt-image">
+                <p>ChatGPTで生成したイメージ画像をここに追加してください<br>（GitHubの画像URLか、imgタグで差し替え）</p>
+              </div>
+              <div class="prompt-body">この画像のようなムードで、Ver.01をリニューアルしてください。
+
+追加してほしいこと：
+・BAセクションに「Before→After」の女性写真を追加
+・筆記体の装飾テキスト（"for you" など）
+・吹き出し風のコメントデザイン
+・お客様の声セクションを追加（顔写真＋テキスト）
+・FVの右側に女性の写真スペース
+・マガジン風のレイアウトにしてほしい</div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp-snap-ver2.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp-snap-ver2.html" loading="lazy" title="& me LP Ver.02"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp-snap-ver2.html" target="_blank" class="view-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              このLPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver2">
+          <h4>結果・考察</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>よかった点</h5>
+              <ul class="good">
+                <li>写真スペース・吹き出しが追加された</li>
+                <li>マガジンらしいレイアウトに進化</li>
+                <li>筆記体デコで华やかさが出た</li>
+                <li>セクション数・情報量が増えた</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>改善できる点</h5>
+              <ul class="bad">
+                <li>色味がまだイメージと違う</li>
+                <li>フォントの雰囲気がポップすぎる</li>
+                <li>セクション間の余白・バランス調整が必要</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.02 -->
+
+
+    <!-- ========== VER.03 ========== -->
+    <div class="version-card" id="ver03">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-3">VER.03</span>
+        <div class="ver-title-group">
+          <h3>参考サイトのスクリーンショットを送る</h3>
+          <p>実際に「いいな」と思ったファッション系LPのスクリーンショットを添付。「このサイトみたいにして」と伝えたバージョン。フォントも明朝体に変更、レイアウトも組み直し。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — プロンプト＋スクリーンショット</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <!-- 参考サイトSSエリア -->
+              <div class="prompt-image">
+                <p>参考にしたサイトのスクリーンショットをここに追加してください</p>
+              </div>
+              <div class="prompt-body">このサイトのスタイルを参考に修正してほしいです。
+
+・見出しフォントを明朝体（Shippori Mincho）に変更
+・「こんなお悩みありませんか？」のセクションの
+　レイアウトを組み直してほしい
+　→ 問題リストを上、「もっとおしゃれを楽しみたい」
+　　 という締めの文章を下に移動して</div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp-snap-ver3.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp-snap-ver3.html" loading="lazy" title="& me LP Ver.03"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp-snap-ver3.html" target="_blank" class="view-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              このLPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver3">
+          <h4>結果・考察</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>よかった点</h5>
+              <ul class="good">
+                <li>明朝体でエレガントな雰囲気に</li>
+                <li>セクション構造が読みやすく整理された</li>
+                <li>参考サイトのムードが伝わった</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>改善できる点</h5>
+              <ul class="bad">
+                <li>色味がまだ合っていない（オレンジ系が残る）</li>
+                <li>もう少し具体的な色指定が必要</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.03 -->
+
+
+    <!-- ========== VER.04 ========== -->
+    <div class="version-card" id="ver04">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-4">VER.04</span>
+        <div class="ver-title-group">
+          <h3>色・雰囲気を具体的に言語化して指示する</h3>
+          <p>STORYwebのスクリーンショットを添付し、「グレー・ブラック・ホットピンク」と色を言語で明確に指定。もっとも精度の高い仕上がりになったバージョン。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — プロンプト＋参考SS</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <!-- STORYweb SS エリア -->
+              <div class="prompt-image">
+                <p>STORYwebのスクリーンショットをここに追加してください</p>
+              </div>
+              <div class="prompt-body">色味はこんな感じのグレーと黒とピンクの
+カラーにしてください。
+
+具体的には：
+・背景：ライトグレー（#f8f8f8）
+・テキスト：ほぼ黒（#1a1a1a）
+・アクセント：ホットピンク（#D4006E）
+・グラデーションもピンク系に統一</div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp-v2.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp-v2.html" loading="lazy" title="& me LP Ver.04"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp-v2.html" target="_blank" class="view-btn" style="background: var(--pink);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              最終版LPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver4">
+          <h4>結果・考察</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>よかった点</h5>
+              <ul class="good">
+                <li>カラーがイメージ通りに仕上がった</li>
+                <li>ブランドの世界観がしっかり表現できた</li>
+                <li>STORYwebのエレガントさを再現</li>
+                <li>4ステップ中もっとも完成度が高い</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>ポイント</h5>
+              <ul class="good">
+                <li>色名だけでなくカラーコードも伝えると確実</li>
+                <li>参考SSと言語説明の組み合わせが効果的</li>
+                <li>「グレー×黒×ピンク」と3色に絞るのがコツ</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.04 -->
+
+  </div>
+</section><!-- /versions-section -->
+
+
+<!-- ============================================================
+     SUMMARY TABLE
+============================================================ -->
+<section class="summary-section">
+  <div class="container">
+    <h2 class="section-heading">4バージョン比較まとめ</h2>
+    <p class="section-sub">初心者がLPを作るときの「プロンプトの出し方」チェックリストとして活用できます</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>バージョン</th>
+          <th>指示の内容</th>
+          <th>デザイン精度</th>
+          <th>所要ラリー数</th>
+          <th>おすすめ度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Ver.01</strong><br><span style="font-size:12px;color:#888">テキスト仕様書のみ</span></td>
+          <td>コピー＋構成のテキスト</td>
+          <td>構成はOK、ビジュアル弱め</td>
+          <td>1〜2回</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star"></div><div class="star"></div><div class="star"></div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Ver.02</strong><br><span style="font-size:12px;color:#888">ChatGPT画像追加</span></td>
+          <td>テキスト＋AI生成画像</td>
+          <td>ムード感UP・色は未調整</td>
+          <td>2〜3回</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div><div class="star"></div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Ver.03</strong><br><span style="font-size:12px;color:#888">参考サイトSS</span></td>
+          <td>テキスト＋参考サイトSS</td>
+          <td>フォント・構成が洗練</td>
+          <td>3〜4回</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Ver.04</strong><br><span style="font-size:12px;color:#888">色を言語化</span></td>
+          <td>テキスト＋参考SS＋色の言語指定</td>
+          <td>ブランドの世界観が完成</td>
+          <td>4〜5回</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     ADD ENTRY SECTION
+============================================================ -->
+<section class="add-section">
+  <div class="container">
+    <div class="add-card">
+      <div class="add-card-header">
+        <h3>新しい検証を追加するには</h3>
+        <p>ゆみ・ちゃかな：自分が試したプロンプトをここに追加できます</p>
+      </div>
+      <div class="add-card-body">
+
+        <div class="add-step">
+          <div class="add-step-num">1</div>
+          <div class="add-step-content">
+            <h4>このHTMLファイルを GitHub で開く</h4>
+            <p>
+              <a href="https://github.com/gokigen-design/aya-ai-design/edit/main/and-me-lp-lab.html" target="_blank" style="color:var(--pink);">GitHubのエディタでファイルを開く</a>　（要ログイン・コラボレーター権限）
+            </p>
+          </div>
+        </div>
+
+        <div class="add-step">
+          <div class="add-step-num">2</div>
+          <div class="add-step-content">
+            <h4>下のテンプレートをコピーして貼り付ける</h4>
+            <p>VER.04 の閉じタグ <code style="background:#f3f3f3;padding:2px 6px;border-radius:4px;font-size:12px;">&lt;!-- /VER.04 --&gt;</code> の直後に貼り付けてください</p>
+            <div class="code-block"><span class="code-comment">&lt;!-- ========== VER.05 ゆみ追加分 ========== --&gt;</span>
+<span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-str">"version-card"</span> <span class="code-attr">id</span>=<span class="code-str">"ver05"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-str">"version-card-header"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-str">"ver-badge ver-badge-4"</span><span class="code-tag">&gt;</span>VER.05<span class="code-tag">&lt;/span&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-str">"ver-title-group"</span><span class="code-tag">&gt;</span>
+      <span class="code-tag">&lt;h3&gt;</span>ここにタイトルを入れる<span class="code-tag">&lt;/h3&gt;</span>
+      <span class="code-tag">&lt;p&gt;</span>どんな検証をしたかを1〜2文で説明<span class="code-tag">&lt;/p&gt;</span>
+    <span class="code-tag">&lt;/div&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-str">"version-card-body"</span><span class="code-tag">&gt;</span>
+    <span class="code-comment">&lt;!-- io-grid / prompt-card / browser-mockup を
+         既存のver04カードからコピーして中身を書き換える --&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span></div>
+          </div>
+        </div>
+
+        <div class="add-step">
+          <div class="add-step-num">3</div>
+          <div class="add-step-content">
+            <h4>Commit changes で保存する</h4>
+            <p>ページ下部の「Commit changes」ボタンを押して保存。数分後に公開URLに反映されます。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="container">
+    <p>& me LP Lab &nbsp;|&nbsp; <a href="and-me-lp-v2.html" target="_blank">最終版LP</a> &nbsp;|&nbsp; <a href="https://github.com/gokigen-design/aya-ai-design" target="_blank">GitHub</a></p>
+    <p style="margin-top:8px;">制作：あや &times; Claude Code</p>
+  </div>
+</footer>
+
+</body>
+</html>

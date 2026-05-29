@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>& me | 大人のおしゃれ部活</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================
+       DESIGN TOKENS
+    ============================ */
+    :root {
+      --accent:         #e8906a;
+      --accent-dark:    #d0784f;
+      --accent-light:   #fef2ec;
+      --grad:           linear-gradient(135deg, #f48c7f 0%, #e8906a 55%, #f5c07a 100%);
+      --grad-light:     linear-gradient(160deg, #fdf4f0 0%, #fdf9f0 100%);
+      --text:           #545454;
+      --text-sub:       #888888;
+      --text-light:     #b8b8b8;
+      --bg:             #fdfaf7;
+      --white:          #ffffff;
+      --border:         #ede9e4;
+      --radius-sm:      8px;
+      --radius-lg:      16px;
+      --radius-xl:      24px;
+      --shadow:         0 8px 30px rgba(0,0,0,0.05);
+      --shadow-md:      0 12px 40px rgba(0,0,0,0.09);
+      --font-script:    'Dancing Script', cursive;
+      --font-sans:      'Montserrat', sans-serif;
+      --font-h:         'Zen Maru Gothic', sans-serif;
+      --font-b:         'Noto Sans JP', sans-serif;
+    }
+
+    /* ============================
+       RESET & BASE
+    ============================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+    img { width: 100%; max-width: 100%; height: auto; display: block; }
+    a   { color: inherit; text-decoration: none; }
+    ul  { list-style: none; }
+
+    /* ============================
+       TYPOGRAPHY
+    ============================ */
+    h1 {
+      font-family: var(--font-h);
+      font-size: clamp(28px, 7vw, 48px);
+      line-height: 1.35;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    h2 {
+      font-family: var(--font-h);
+      font-size: clamp(22px, 5vw, 32px);
+      line-height: 1.4;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    h3 {
+      font-family: var(--font-h);
+      font-size: clamp(17px, 4vw, 22px);
+      line-height: 1.4;
+      font-weight: 700;
+    }
+    p { line-height: 1.8; }
+
+    /* ============================
+       LAYOUT
+    ============================ */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section    { padding: 80px 0; }
+    .bg-white   { background: var(--white); }
+    .bg-warm    { background: var(--grad-light); }
+
+    /* ============================
+       SHARED COMPONENTS
+    ============================ */
+
+    /* Cursive script section decorator */
+    .script-deco {
+      display: block;
+      font-family: var(--font-script);
+      font-size: clamp(24px, 4.5vw, 42px);
+      font-weight: 600;
+      color: var(--accent);
+      opacity: 0.65;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    /* Montserrat uppercase label */
+    .mono-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 4px 14px;
+      border-radius: 40px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    /* Gradient divider */
+    .divider {
+      width: 40px; height: 3px;
+      background: var(--grad);
+      border-radius: 2px;
+      margin: 14px 0 24px;
+    }
+    .divider-center { margin-left: auto; margin-right: auto; }
+
+    /* Gradient text */
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Accent highlight */
+    .hl { color: var(--accent); font-weight: 700; }
+
+    /* CTA button – gradient */
+    .btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--grad);
+      color: var(--white);
+      font-family: var(--font-h);
+      font-weight: 700;
+      padding: 18px 40px;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: opacity 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+      min-height: 60px;
+      letter-spacing: 0.05em;
+      border: none;
+    }
+    .btn:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(232,144,106,0.38);
+    }
+    .btn-lg  { font-size: 17px; padding: 20px 56px; }
+    .btn-sub { font-size: 12px; font-weight: 400; opacity: 0.9; margin-bottom: 4px; letter-spacing: 0.08em; }
+    .btn-main{ font-size: 16px; }
+
+    /* Check list */
+    .check-list { display: flex; flex-direction: column; gap: 10px; }
+    .check-list li {
+      position: relative;
+      padding-left: 30px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .check-list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 3px;
+      width: 20px; height: 20px;
+      background-color: var(--accent);
+      border-radius: 5px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10l4.5 4.5L16 7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+      background-size: contain;
+    }
+
+    /* ============================
+       SECTION 1: FIRST VIEW
+    ============================ */
+    .fv {
+      padding: 64px 0 80px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Decorative soft circle bg */
+    .fv::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(248,176,148,0.10) 0%, transparent 68%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .fv-grid {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Category bar */
+    .fv-cat {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      border-left: 2px solid var(--accent);
+      padding-left: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* Brand name */
+    .fv-brand {
+      font-family: var(--font-sans);
+      font-size: clamp(44px, 8vw, 70px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .fv h1 { margin-bottom: 20px; }
+
+    .fv-sub {
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--text-sub);
+      margin-bottom: 32px;
+    }
+    .fv-sub strong { color: var(--text); font-weight: 700; }
+
+    .fv-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .fv-note { font-size: 13px; color: var(--text-light); }
+
+    /* Right: image frame */
+    .fv-img-wrap { position: relative; }
+    .fv-img-frame {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+    }
+    .fv-img-frame img {
+      object-fit: cover;
+      height: 540px;
+      width: 100%;
+      display: block;
+    }
+    /* Warm tint overlay on image */
+    .fv-img-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(248,176,148,0.18) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* Script text over image */
+    .fv-script-over {
+      position: absolute;
+      top: 28px; right: 20px;
+      font-family: var(--font-script);
+      font-size: clamp(20px, 3vw, 30px);
+      font-weight: 600;
+      color: var(--white);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      line-height: 1.55;
+      text-align: right;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Vertical keywords */
+    .fv-keywords {
+      position: absolute;
+      bottom: 28px; right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      z-index: 2;
+    }
+    .fv-keywords span {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-shadow: 0 1px 5px rgba(0,0,0,0.25);
+      opacity: 0.85;
+      text-transform: lowercase;
+    }
+
+    /* ============================
+       SECTION 2: PROBLEMS
+    ============================ */
+    .problems-wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .problems-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 32px;
+    }
+
+    /* Left: prob items */
+    .prob-list { display: flex; flex-direction: column; gap: 10px; }
+    .prob-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--accent);
+    }
+    .prob-dot {
+      flex-shrink: 0;
+      margin-top: 2px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      position: relative;
+    }
+    .prob-dot::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10l3.5 3.5L15 7' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+      background-size: contain;
+    }
+    .prob-text { font-size: 14px; line-height: 1.65; }
+
+    /* Right: emotional close */
+    .prob-close-wrap { display: flex; flex-direction: column; justify-content: center; }
+    .prob-close {
+      background: linear-gradient(155deg, #fef0eb 0%, #fef8e8 100%);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .prob-close::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--grad);
+    }
+    .prob-close-lead { font-family: var(--font-h); font-size: 13px; color: var(--text-sub); margin-bottom: 10px; }
+    .prob-close-h {
+      font-family: var(--font-h);
+      font-size: clamp(17px, 3vw, 21px);
+      font-weight: 700;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+    .prob-chips { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .prob-chip {
+      font-family: var(--font-h);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--white);
+      padding: 8px 18px;
+      border-radius: 40px;
+      display: inline-block;
+      align-self: flex-start;
+      box-shadow: var(--shadow);
+    }
+    .prob-close-p { font-size: 14px; color: var(--text-sub); line-height: 1.85; }
+
+    /* ============================
+       SECTION 3: BEFORE / AFTER
+    ============================ */
+    .ba-lead { font-size: 15px; color: var(--text-sub); max-width: 580px; margin-bottom: 40px; }
+
+    .ba-grid {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr;
+      align-items: stretch;
+      margin-bottom: 48px;
+    }
+
+    .ba-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .ba-card.before { border-top: 4px solid #d8d4cf; }
+    .ba-card.after  { position: relative; }
+    .ba-card.after::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: var(--grad);
+    }
+
+    /* Photo in BA card */
+    .ba-photo {
+      width: 100%; height: 190px;
+      object-fit: cover;
+      display: block;
+    }
+    .ba-content { padding: 24px 28px; }
+
+    /* BA label – Dancing Script */
+    .ba-label {
+      font-family: var(--font-script);
+      font-size: 30px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .ba-card.before .ba-label { color: #b8b4b0; }
+    .ba-card.after  .ba-label { color: var(--accent); }
+    .ba-label::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+
+    .ba-list { display: flex; flex-direction: column; gap: 11px; }
+    .ba-list li { position: relative; padding-left: 22px; font-size: 14px; line-height: 1.65; }
+
+    .ba-card.before .ba-list li::before {
+      content: '';
+      position: absolute; left: 0; top: 7px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 2px solid #c8c4be;
+    }
+    .ba-card.after .ba-list li::before {
+      content: '';
+      position: absolute; left: 0; top: 5px;
+      width: 16px; height: 16px;
+      background-color: var(--accent);
+      border-radius: 4px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l3.5 3.5L13 5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+      background-size: contain;
+    }
+
+    /* Arrow between cards */
+    .ba-arrow-col {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ba-arrow-circle {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Philosophy – 3 columns */
+    .ba-philosophy {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .ba-phil-p { font-size: 14px; color: var(--text-sub); line-height: 1.9; }
+    .ba-phil-p strong { color: var(--text); }
+
+    /* Speech bubble (handwritten style) */
+    .ba-bubble {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      position: relative;
+      min-width: 200px;
+    }
+    .ba-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -11px; left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--white);
+      filter: drop-shadow(0 3px 2px rgba(0,0,0,0.04));
+    }
+    .ba-bubble-text {
+      font-family: var(--font-script);
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.55;
+    }
+
+    /* ============================
+       SECTION 4: SERVICES
+    ============================ */
+    /* 5-col horizontal grid */
+    .svc-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .svc-card {
+      background: var(--bg);
+      border-radius: var(--radius-lg);
+      padding: 24px 18px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 200ms ease, transform 200ms ease;
+    }
+    .svc-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .svc-num {
+      font-family: var(--font-sans);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .svc-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .svc-card h3 { font-size: 15px; margin-bottom: 8px; }
+    .svc-card p  { font-size: 13px; color: var(--text-sub); line-height: 1.75; }
+
+    /* Philosophy card (wide) */
+    .svc-phil-card {
+      margin-top: 28px;
+      background: linear-gradient(135deg, #fef2ec 0%, #fef8ec 100%);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 48px;
+      align-items: center;
+    }
+    .svc-phil-text h3 { margin-bottom: 10px; }
+    .svc-phil-text p  { font-size: 14px; color: var(--text-sub); line-height: 1.85; }
+    .svc-phil-q {
+      font-family: var(--font-script);
+      font-size: clamp(20px, 3.5vw, 30px);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.55;
+      margin: 16px 0;
+    }
+    .svc-phil-img img {
+      border-radius: var(--radius-lg);
+      object-fit: cover;
+      height: 200px; width: 100%;
+    }
+
+    /* ============================
+       SECTION 5: VOICE
+    ============================ */
+    .voice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .voice-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 200ms ease, transform 200ms ease;
+    }
+    .voice-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+    .voice-head {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 16px;
+    }
+    .voice-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 3px solid var(--accent-light);
+    }
+    .voice-tag {
+      font-family: var(--font-sans);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      background: var(--grad);
+      padding: 3px 12px;
+      border-radius: 40px;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+    .voice-title {
+      font-family: var(--font-h);
+      font-size: 13px; font-weight: 700;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .voice-quote {
+      font-family: var(--font-h);
+      font-size: 14px; font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.55;
+    }
+    .voice-body { font-size: 13px; color: var(--text-sub); line-height: 1.8; }
+    .voice-note {
+      font-size: 12px; color: var(--text-light);
+      text-align: right; margin-top: 24px;
+      font-family: var(--font-sans);
+    }
+
+    /* ============================
+       FINAL CTA
+    ============================ */
+    .final-cta {
+      padding: 80px 0;
+      background: linear-gradient(160deg, #fef0e8 0%, #fdf7e5 55%, #fdfaf0 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Large script watermark */
+    .final-cta::after {
+      content: 'Join us!';
+      position: absolute;
+      bottom: 16px; right: 48px;
+      font-family: var(--font-script);
+      font-size: 72px; font-weight: 700;
+      color: var(--accent);
+      opacity: 0.10;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .final-cta-inner { text-align: center; position: relative; z-index: 1; }
+    .final-cta-lead {
+      font-family: var(--font-h);
+      font-size: 15px; color: var(--text-sub);
+      margin-bottom: 10px;
+    }
+    .final-cta h2 { margin-bottom: 16px; }
+    .final-cta-body {
+      font-size: 16px; color: var(--text-sub);
+      max-width: 480px; margin: 0 auto 32px;
+      line-height: 1.85;
+    }
+    .final-cta-btns { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .final-note { font-size: 13px; color: var(--text-light); }
+
+    /* ============================
+       FOOTER
+    ============================ */
+    .site-footer {
+      background: #3a3a3a;
+      color: rgba(255,255,255,0.38);
+      text-align: center;
+      padding: 28px 24px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================
+       RESPONSIVE — 768px
+    ============================ */
+    @media (max-width: 768px) {
+      .section { padding: 48px 0; }
+      .fv       { padding: 40px 0 48px; }
+
+      .fv-grid  { grid-template-columns: 1fr; gap: 32px; }
+      .fv-img-frame img { height: 300px; }
+      .fv-script-over { font-size: 18px; top: 16px; right: 16px; }
+      .fv-keywords { bottom: 16px; right: 16px; }
+      .fv-cta { align-items: stretch; }
+      .btn { width: 100%; text-align: center; }
+
+      .problems-wrap { padding: 0 20px; }
+      .problems-grid { grid-template-columns: 1fr; gap: 28px; }
+
+      .ba-grid  { grid-template-columns: 1fr; gap: 16px; }
+      .ba-arrow-col { transform: rotate(90deg); height: 44px; }
+      .ba-philosophy {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .ba-bubble::after { display: none; }
+
+      .svc-grid { grid-template-columns: 1fr 1fr; }
+      .svc-phil-card { grid-template-columns: 1fr; gap: 24px; }
+
+      .voice-grid { grid-template-columns: 1fr; }
+
+      .final-cta { padding: 48px 0; }
+      .final-cta::after { font-size: 48px; bottom: 12px; right: 20px; }
+      .btn-lg { padding: 20px 32px; }
+    }
+
+    @media (max-width: 480px) {
+      .svc-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==============================
+       SECTION 1: FIRST VIEW
+  ============================== -->
+  <section class="fv">
+    <div class="container">
+      <div class="fv-grid">
+
+        <!-- Left: copy -->
+        <div>
+          <div class="fv-cat">大人女性のためのおしゃれコミュニティ</div>
+
+          <div class="fv-brand">
+            <span class="grad-text">&amp;</span> me
+          </div>
+
+          <h1>
+            「なんとなくの私」を卒業する。<br>
+            "大人のおしゃれ部活"、始動。
+          </h1>
+
+          <div class="fv-sub">
+            診断を受けたのに、結局いつも同じ服。<br>
+            「これで合ってる？」を繰り返していた私が、<br>
+            <strong>"私らしい似合う"を楽しみながら選べるようになる場所。</strong>
+          </div>
+
+          <div class="fv-cta">
+            <a href="#entry" class="btn">
+              <span class="btn-sub">＼ 大人のおしゃれ部活に参加する ／</span>
+              <span class="btn-main">申し込みはこちら</span>
+            </a>
+            <span class="fv-note">詳細は下記をご確認ください</span>
+          </div>
+        </div>
+
+        <!-- Right: woman photo -->
+        <div class="fv-img-wrap">
+          <div class="fv-img-frame">
+            <img
+              src="https://picsum.photos/seed/andme-fv2/460/540"
+              alt="おしゃれを楽しむ大人の女性（実際の写真に差し替えてください）"
+              loading="eager"
+            >
+          </div>
+          <!-- Script overlay -->
+          <div class="fv-script-over" aria-hidden="true">
+            Be myself.<br>Enjoy fashion.
+          </div>
+          <!-- Keyword list -->
+          <div class="fv-keywords" aria-hidden="true">
+            <span>fashion</span>
+            <span>make</span>
+            <span>color</span>
+            <span>my style</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SECTION 2: PROBLEMS
+  ============================== -->
+  <section class="section bg-white">
+    <div class="problems-wrap">
+      <span class="script-deco">Are you worried?</span>
+      <h2>こんな<span class="hl">お悩み</span>ありませんか？</h2>
+      <div class="divider"></div>
+
+      <div class="problems-grid">
+
+        <!-- Left: problem list -->
+        <div class="prob-list">
+
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">診断を受けた時は納得したのに、結局いつも同じ服に戻ってしまう</p>
+          </div>
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">お店に行っても「何を買えばいいかわからない」と疲れて帰ってしまう</p>
+          </div>
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">「これ似合ってるのかな？」と不安で、無難な服ばかり選んでしまう</p>
+          </div>
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">トレンドを見ても、自分にどう取り入れたらいいかわからない</p>
+          </div>
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">昔はもっとおしゃれを楽しめていたのに、最近は鏡を見るたびにモヤモヤする</p>
+          </div>
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">子育てや仕事を優先して、自分のことを後回しにしてきた</p>
+          </div>
+          <div class="prob-item">
+            <div class="prob-dot" aria-hidden="true"></div>
+            <p class="prob-text">"私らしいおしゃれ"がわからなくなっている</p>
+          </div>
+
+        </div>
+
+        <!-- Right: emotional close -->
+        <div class="prob-close-wrap">
+          <div class="prob-close">
+            <p class="prob-close-lead">でも本当は、</p>
+            <p class="prob-close-h">
+              もっとおしゃれを楽しみたい。<br>
+              もっと自分を好きになりたい。
+            </p>
+            <div class="prob-chips">
+              <span class="prob-chip">「これ好き」</span>
+              <span class="prob-chip">「今日の私、なんかいい感じ」</span>
+            </div>
+            <p class="prob-close-p">
+              そう思える毎日を、もう一度取り戻したい。<br>
+              そんな女性のための場所です。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SECTION 3: BEFORE / AFTER
+  ============================== -->
+  <section class="section bg-warm">
+    <div class="container">
+
+      <span class="script-deco">Change!</span>
+      <h2>このサービスを受けると</h2>
+      <div class="divider"></div>
+      <p class="ba-lead">
+        & me に参加すると、"なんとなく"で選んでいた毎日が、少しずつ変わっていきます。
+      </p>
+
+      <div class="ba-grid">
+
+        <!-- Before -->
+        <div class="ba-card before">
+          <img
+            class="ba-photo"
+            src="https://picsum.photos/seed/andme-before/500/190"
+            alt="参加前のイメージ（実際の写真に差し替えてください）"
+            loading="lazy"
+          >
+          <div class="ba-content">
+            <div class="ba-label">Before</div>
+            <ul class="ba-list">
+              <li>何を着てもピンとこない</li>
+              <li>服を買っても結局着なくなる</li>
+              <li>毎朝「何着よう…」で時間がかかる</li>
+              <li>無難で隠れる服ばかり選ぶ</li>
+              <li>おしゃれが楽しくない</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="ba-arrow-col" aria-hidden="true">
+          <div class="ba-arrow-circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4 9h10M10 5l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- After -->
+        <div class="ba-card after">
+          <img
+            class="ba-photo"
+            src="https://picsum.photos/seed/andme-after/500/190"
+            alt="参加後のイメージ（実際の写真に差し替えてください）"
+            loading="lazy"
+          >
+          <div class="ba-content">
+            <div class="ba-label">After</div>
+            <ul class="ba-list">
+              <li>自分に似合う服を、自分で選べるようになる</li>
+              <li>買い物で迷う時間が減る</li>
+              <li>診断結果を"日常"で活かせるようになる</li>
+              <li>「これ好き」「これ似合う」が一致してくる</li>
+              <li>鏡を見るたび、少し気分が上がる</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Philosophy – 3 cols with speech bubble -->
+      <div class="ba-philosophy">
+
+        <p class="ba-phil-p">
+          おしゃれは、<br>
+          誰かになるためのものじゃありません。<br>
+          <strong>"私らしさ"を楽しむためのもの。</strong>
+          <br><br>
+          外見が整うと、<br>
+          人は少しずつ前を向けるようになります。
+        </p>
+
+        <!-- Handwritten speech bubble -->
+        <div class="ba-bubble">
+          <div class="ba-bubble-text">
+            「今日の私、<br>ちょっと好きかも」
+          </div>
+        </div>
+
+        <p class="ba-phil-p">
+          「私なんて」ではなく、<br>
+          そんな感覚を<br>
+          毎日の中で育てていく場所です。
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SECTION 4: SERVICES
+  ============================== -->
+  <section class="section bg-white">
+    <div class="container">
+
+      <span class="script-deco">Service</span>
+      <h2>& me でできること</h2>
+      <div class="divider"></div>
+
+      <!-- 5-col grid -->
+      <div class="svc-grid">
+
+        <!-- 01 -->
+        <div class="svc-card">
+          <div class="svc-num">01</div>
+          <div class="svc-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M11 8V5" stroke="#e8906a" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M11 5c0 0 1.8-1.5 1.8-2.4C12.8 1.7 12.1 1 11.4 1S10 1.7 10 2.6" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M3 19h16L11 8 3 19Z" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>コーデ提案</h3>
+          <p>日常に落とし込みやすいコーデを提案。"理論だけで終わらない"リアルなおしゃれ力を育てます。</p>
+        </div>
+
+        <!-- 02 -->
+        <div class="svc-card">
+          <div class="svc-num">02</div>
+          <div class="svc-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <polyline points="3,16 8,10 13,14 20,6" stroke="#e8906a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="15,6 20,6 20,11" stroke="#e8906a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>トレンド解説</h3>
+          <p>"自分に似合う形"でトレンドを楽しめるように。40代でも取り入れやすいおしゃれをわかりやすく解説。</p>
+        </div>
+
+        <!-- 03 -->
+        <div class="svc-card">
+          <div class="svc-num">03</div>
+          <div class="svc-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="8" r="4" stroke="#e8906a" stroke-width="1.5"/>
+              <path d="M3 20c0-4.42 3.58-8 8-8s8 3.58 8 8" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>メイクアドバイス</h3>
+          <p>顔タイプ・カラーに合わせた今の自分のメイクを提案。"頑張りすぎない垢抜け"をサポートします。</p>
+        </div>
+
+        <!-- 04 -->
+        <div class="svc-card">
+          <div class="svc-num">04</div>
+          <div class="svc-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 4h16v12H12l-3.5 3.5V16H3V4Z" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 9h8M7 12h5" stroke="#e8906a" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>おしゃれ相談</h3>
+          <p>「この組み合わせ合ってる？」日常のおしゃれの悩みを気軽に相談できる環境をご用意。</p>
+        </div>
+
+        <!-- 05 -->
+        <div class="svc-card">
+          <div class="svc-num">05</div>
+          <div class="svc-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="4" width="16" height="15" rx="2" stroke="#e8906a" stroke-width="1.5"/>
+              <path d="M7 2v4M15 2v4M3 9h16" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M7 13h2M11 13h2M7 16h2" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>イベント・企画</h3>
+          <p>同行ショッピング・撮影イベント・限定ライブ配信など、楽しみながら変化できる企画も開催予定です。</p>
+        </div>
+
+      </div>
+
+      <!-- Philosophy wide card -->
+      <div class="svc-phil-card">
+        <div class="svc-phil-text">
+          <h3>& me が大切にしていること</h3>
+          <div class="divider" style="margin-top:12px;"></div>
+          <p>& me は、ただ知識を学ぶ場所ではありません。</p>
+          <div class="svc-phil-q">
+            「私にはこれが似合う」<br>「私はこれが好き」
+          </div>
+          <p>を、自分で選べるようになること。<br>正解探しではなく、<strong>"私らしさ"を育てていくコミュニティです。</strong></p>
+        </div>
+        <div class="svc-phil-img">
+          <img
+            src="https://picsum.photos/seed/andme-stil/300/200"
+            alt="おしゃれのイメージ（実際の写真に差し替えてください）"
+            loading="lazy"
+          >
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================
+       SECTION 5: VOICE（参加者の声）
+  ============================== -->
+  <section class="section bg-warm">
+    <div class="container">
+
+      <span class="script-deco">Voice</span>
+      <h2>参加者の声</h2>
+      <div class="divider"></div>
+
+      <div class="voice-grid">
+
+        <!-- Card 1 (プレースホルダー) -->
+        <div class="voice-card">
+          <div class="voice-head">
+            <img
+              class="voice-avatar"
+              src="https://picsum.photos/seed/voice-a/120/120"
+              alt="参加者の写真（プレースホルダー）"
+              loading="lazy"
+            >
+            <div>
+              <span class="voice-tag">42歳 会社員</span>
+              <p class="voice-title">診断結果をどう使えばいいかわからなかった私が、自分で選べるように！</p>
+            </div>
+          </div>
+          <p class="voice-quote">「いつも無難な服ばかりで、おしゃれが楽しくなかった」</p>
+          <p class="voice-body">& me に参加してから買い物が本当に楽しくなりました。自分に何が似合うかがわかるって、こんなに気持ちが変わるんだ、と実感しています。</p>
+        </div>
+
+        <!-- Card 2 (プレースホルダー) -->
+        <div class="voice-card">
+          <div class="voice-head">
+            <img
+              class="voice-avatar"
+              src="https://picsum.photos/seed/voice-b/120/120"
+              alt="参加者の写真（プレースホルダー）"
+              loading="lazy"
+            >
+            <div>
+              <span class="voice-tag">45歳 主婦</span>
+              <p class="voice-title">メイクも服も、"今の私"にアップデート！</p>
+            </div>
+          </div>
+          <p class="voice-quote">「昔のメイクのまま、ずっと変えられなかった」</p>
+          <p class="voice-body">メイクアドバイスで一気に垢抜け！鏡を見るのが楽しみになり、外出が増えました。同じ悩みを持つ仲間がいるのも心強いです。</p>
+        </div>
+
+        <!-- Card 3 (プレースホルダー) -->
+        <div class="voice-card">
+          <div class="voice-head">
+            <img
+              class="voice-avatar"
+              src="https://picsum.photos/seed/voice-c/120/120"
+              alt="参加者の写真（プレースホルダー）"
+              loading="lazy"
+            >
+            <div>
+              <span class="voice-tag">48歳 パート</span>
+              <p class="voice-title">一人で悩まなくていいのが、本当に心強いです</p>
+            </div>
+          </div>
+          <p class="voice-quote">「おしゃれ相談できる場所がなかった」</p>
+          <p class="voice-body">気軽に「これ似合う？」と聞けるのがありがたい！おしゃれ相談できるのが本当に助かります。同じ悩みを持つ仲間がいるのも励みになります。</p>
+        </div>
+
+      </div>
+
+      <p class="voice-note">※個人の感想です</p>
+
+    </div>
+  </section>
+
+  <!-- ==============================
+       FINAL CTA
+  ============================== -->
+  <section class="final-cta" id="entry">
+    <div class="container">
+      <div class="final-cta-inner">
+        <p class="final-cta-lead">あなたの「好き」と「似合う」を、もっと楽しもう。</p>
+        <h2>大人のおしゃれ部活、始めませんか</h2>
+        <div class="divider divider-center"></div>
+        <p class="final-cta-body">
+          "似合う"を育てる仲間と一緒に、<br>
+          毎日の鏡が少し楽しみになる場所です。
+        </p>
+        <div class="final-cta-btns">
+          <a href="#" class="btn btn-lg">
+            <span class="btn-sub">＼ 大人のおしゃれ部活に参加する ／</span>
+            <span class="btn-main">申し込みはこちら</span>
+          </a>
+          <span class="final-note">詳細はお申し込みページをご確認ください</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>&copy; 2026 &amp; me. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
