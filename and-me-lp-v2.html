@@ -13,15 +13,15 @@
        DESIGN TOKENS
     ============================ */
     :root {
-      --accent:         #e8906a;
-      --accent-dark:    #d0784f;
-      --accent-light:   #fef2ec;
-      --grad:           linear-gradient(135deg, #f48c7f 0%, #e8906a 55%, #f5c07a 100%);
-      --grad-light:     linear-gradient(160deg, #fdf4f0 0%, #fdf9f0 100%);
-      --text:           #545454;
-      --text-sub:       #888888;
+      --accent:         #D4006E;
+      --accent-dark:    #B5005C;
+      --accent-light:   #fce8f3;
+      --grad:           linear-gradient(135deg, #e8097a 0%, #d4006e 100%);
+      --grad-light:     linear-gradient(160deg, #f5f5f5 0%, #efefef 100%);
+      --text:           #1a1a1a;
+      --text-sub:       #6a6a6a;
       --text-light:     #b8b8b8;
-      --bg:             #fdfaf7;
+      --bg:             #f8f8f8;
       --white:          #ffffff;
       --border:         #ede9e4;
       --radius-sm:      8px;
@@ -198,7 +198,7 @@
       position: absolute;
       top: -100px; right: -100px;
       width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(248,176,148,0.10) 0%, transparent 68%);
+      background: radial-gradient(circle, rgba(212,0,110,0.06) 0%, transparent 68%);
       border-radius: 50%;
       pointer-events: none;
     }
@@ -265,7 +265,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(160deg, rgba(248,176,148,0.18) 0%, transparent 55%);
+      background: linear-gradient(160deg, rgba(212,0,110,0.08) 0%, transparent 55%);
       pointer-events: none;
     }
 
@@ -354,7 +354,7 @@
     /* Bottom: emotional close – full width, centered */
     .prob-close-wrap { display: flex; flex-direction: column; }
     .prob-close {
-      background: linear-gradient(155deg, #fef0eb 0%, #fef8e8 100%);
+      background: linear-gradient(155deg, #fdf0f6 0%, #f8f8f8 100%);
       border-radius: var(--radius-lg);
       padding: 48px 56px;
       position: relative;
@@ -553,7 +553,7 @@
     /* Philosophy card (wide) */
     .svc-phil-card {
       margin-top: 28px;
-      background: linear-gradient(135deg, #fef2ec 0%, #fef8ec 100%);
+      background: linear-gradient(135deg, #fce8f3 0%, #f8f8f8 100%);
       border-radius: var(--radius-lg);
       padding: 40px;
       display: grid;
@@ -642,7 +642,7 @@
     ============================ */
     .final-cta {
       padding: 80px 0;
-      background: linear-gradient(160deg, #fef0e8 0%, #fdf7e5 55%, #fdfaf0 100%);
+      background: linear-gradient(160deg, #fce8f3 0%, #f5f5f5 60%, #f0f0f0 100%);
       position: relative;
       overflow: hidden;
     }
@@ -978,9 +978,9 @@
           <div class="svc-num">01</div>
           <div class="svc-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <path d="M11 8V5" stroke="#e8906a" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M11 5c0 0 1.8-1.5 1.8-2.4C12.8 1.7 12.1 1 11.4 1S10 1.7 10 2.6" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M3 19h16L11 8 3 19Z" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 8V5" stroke="#D4006E" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M11 5c0 0 1.8-1.5 1.8-2.4C12.8 1.7 12.1 1 11.4 1S10 1.7 10 2.6" stroke="#D4006E" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M3 19h16L11 8 3 19Z" stroke="#D4006E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <h3>コーデ提案</h3>
@@ -992,8 +992,8 @@
           <div class="svc-num">02</div>
           <div class="svc-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <polyline points="3,16 8,10 13,14 20,6" stroke="#e8906a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <polyline points="15,6 20,6 20,11" stroke="#e8906a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="3,16 8,10 13,14 20,6" stroke="#D4006E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="15,6 20,6 20,11" stroke="#D4006E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <h3>トレンド解説</h3>
@@ -1005,8 +1005,8 @@
           <div class="svc-num">03</div>
           <div class="svc-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <circle cx="11" cy="8" r="4" stroke="#e8906a" stroke-width="1.5"/>
-              <path d="M3 20c0-4.42 3.58-8 8-8s8 3.58 8 8" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="11" cy="8" r="4" stroke="#D4006E" stroke-width="1.5"/>
+              <path d="M3 20c0-4.42 3.58-8 8-8s8 3.58 8 8" stroke="#D4006E" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
           <h3>メイクアドバイス</h3>
@@ -1018,8 +1018,8 @@
           <div class="svc-num">04</div>
           <div class="svc-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <path d="M3 4h16v12H12l-3.5 3.5V16H3V4Z" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M7 9h8M7 12h5" stroke="#e8906a" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M3 4h16v12H12l-3.5 3.5V16H3V4Z" stroke="#D4006E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 9h8M7 12h5" stroke="#D4006E" stroke-width="1.3" stroke-linecap="round"/>
             </svg>
           </div>
           <h3>おしゃれ相談</h3>
@@ -1031,9 +1031,9 @@
           <div class="svc-num">05</div>
           <div class="svc-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <rect x="3" y="4" width="16" height="15" rx="2" stroke="#e8906a" stroke-width="1.5"/>
-              <path d="M7 2v4M15 2v4M3 9h16" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M7 13h2M11 13h2M7 16h2" stroke="#e8906a" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="3" y="4" width="16" height="15" rx="2" stroke="#D4006E" stroke-width="1.5"/>
+              <path d="M7 2v4M15 2v4M3 9h16" stroke="#D4006E" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M7 13h2M11 13h2M7 16h2" stroke="#D4006E" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
           <h3>イベント・企画</h3>
