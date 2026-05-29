@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>& me | 大人のおしゃれコミュニティ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   CSS VARIABLES
+============================================= */
+:root {
+  --pink:        #E8607A;
+  --pink-dark:   #C94565;
+  --pink-light:  #FEF0F3;
+  --pink-mid:    #F9D0DA;
+  --text:        #333333;
+  --text-sub:    #888888;
+  --text-light:  #bbbbbb;
+  --bg:          #FFFFFF;
+  --bg-soft:     #FDF8F9;
+  --border:      #F0DDE2;
+  --white:       #ffffff;
+
+  --font-script: 'Great Vibes', cursive;
+  --font-dance:  'Dancing Script', cursive;
+  --font-b:      'Noto Sans JP', sans-serif;
+  --font-en:     'Montserrat', sans-serif;
+
+  --radius-sm: 8px;
+  --radius:    16px;
+  --radius-lg: 24px;
+  --shadow:    0 4px 20px rgba(232,96,122,0.10);
+  --shadow-md: 0 8px 32px rgba(232,96,122,0.15);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text);
+  background: var(--bg);
+}
+
+img { width: 100%; max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+section { padding: 72px 0; }
+
+/* =============================================
+   SCRIPT DECORATOR
+============================================= */
+.script-deco {
+  font-family: var(--font-script);
+  font-size: clamp(28px, 5vw, 42px);
+  color: var(--pink);
+  display: block;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.script-inline {
+  font-family: var(--font-dance);
+  font-size: inherit;
+  color: var(--pink);
+  font-style: italic;
+}
+
+/* =============================================
+   PINK CHECK (CSS, no emoji)
+============================================= */
+.pink-list { list-style: none; padding: 0; }
+.pink-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.pink-list li::before {
+  content: '';
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background: var(--pink);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l4 4 6-6' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* gray check for before */
+.gray-list { list-style: none; padding: 0; }
+.gray-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #888;
+  margin-bottom: 10px;
+}
+.gray-list li::before {
+  content: '';
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background: #cccccc;
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l4 4 6-6' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* =============================================
+   CTA BUTTON
+============================================= */
+.btn-cta {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F07090 0%, #E8607A 60%, #D45070 100%);
+  color: var(--white);
+  border-radius: 50px;
+  padding: 16px 40px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+  min-height: 56px;
+  min-width: 280px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(232,96,122,0.35);
+}
+.btn-cta:hover {
+  box-shadow: 0 6px 28px rgba(232,96,122,0.45);
+  transform: translateY(-1px);
+}
+.btn-cta-main {
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.btn-cta-sub {
+  font-family: var(--font-b);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+.btn-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================================
+   HERO / FV
+   PC: 2col (left text, right photo)
+============================================= */
+.hero {
+  background: var(--white);
+  padding: 60px 0 0;
+  overflow: hidden;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 56% 44%;
+  gap: 0;
+  align-items: stretch;
+  min-height: 560px;
+}
+
+.hero-text {
+  padding: 48px 40px 60px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-tagline {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.hero-brand {
+  font-family: var(--font-en);
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.hero-h1 {
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.hero-h1 .highlight {
+  position: relative;
+  display: inline;
+}
+.hero-h1 .highlight::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 2px;
+  height: 8px;
+  background: var(--pink-light);
+  z-index: -1;
+  border-radius: 2px;
+}
+
+.hero-subcopy {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--text-sub);
+  margin-bottom: 32px;
+}
+
+.hero-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.hero-script-deco {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  font-family: var(--font-dance);
+  font-size: 22px;
+  color: var(--pink);
+  line-height: 1.4;
+  text-align: right;
+  font-style: italic;
+}
+
+.hero-categories {
+  position: absolute;
+  bottom: 32px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.hero-cat-item {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-sub);
+  letter-spacing: 0.08em;
+}
+
+.hero-cat-item.active {
+  color: var(--pink);
+  font-weight: 700;
+}
+
+/* =============================================
+   PROBLEMS
+============================================= */
+.problems {
+  background: var(--bg-soft);
+}
+
+.sec-hd {
+  margin-bottom: 40px;
+}
+
+.sec-h2 {
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.sec-h2 .pink-em {
+  color: var(--pink);
+}
+
+.prob-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Speech bubble */
+.speech-bubble {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px 36px;
+  position: relative;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--pink-mid);
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 40px;
+  border: 10px solid transparent;
+  border-right-color: var(--pink-mid);
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 41px;
+  border: 9px solid transparent;
+  border-right-color: var(--white);
+}
+
+.bubble-lead {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 16px;
+}
+
+.bubble-main {
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.bubble-main .pink-em { color: var(--pink); }
+
+.bubble-quotes {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 2;
+  margin-bottom: 16px;
+  border-left: 3px solid var(--pink);
+  padding-left: 14px;
+}
+
+.bubble-close {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.8;
+}
+
+/* =============================================
+   BEFORE / AFTER
+============================================= */
+.change {
+  background: var(--white);
+}
+
+.ba-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: stretch;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin: 32px 0 40px;
+}
+
+.ba-col {
+  padding: 36px 32px;
+}
+
+.ba-before { background: #f6f6f6; }
+.ba-after  { background: var(--pink-light); }
+
+.ba-col-label {
+  font-family: var(--font-dance);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+.ba-before .ba-col-label { color: #aaaaaa; }
+.ba-after  .ba-col-label { color: var(--pink); }
+
+.ba-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  padding: 0 12px;
+}
+
+.ba-arrow-icon {
+  width: 36px; height: 36px;
+  background: var(--pink);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ba-arrow-icon svg {
+  width: 18px; height: 18px;
+}
+
+.change-philosophy {
+  background: var(--bg-soft);
+  border-radius: var(--radius-lg);
+  padding: 40px 56px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.phi-col {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 2;
+}
+
+.phi-quote-big {
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 700;
+  color: var(--pink);
+  text-align: center;
+  line-height: 1.6;
+  padding: 0 16px;
+  border-left: 2px solid var(--pink-mid);
+  border-right: 2px solid var(--pink-mid);
+}
+
+.phi-col-r {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 2;
+  text-align: right;
+}
+
+/* =============================================
+   SERVICES  — 5col grid
+============================================= */
+.services {
+  background: var(--bg-soft);
+}
+
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.svc-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px 16px 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.svc-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.svc-icon {
+  width: 44px; height: 44px;
+  background: var(--pink-light);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svc-icon svg { width: 22px; height: 22px; }
+
+.svc-num {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pink);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.svc-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.svc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.svc-tag {
+  font-size: 10px;
+  background: var(--pink-light);
+  color: var(--pink-dark);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.svc-desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  text-align: left;
+}
+
+/* philosophy card */
+.phi-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--pink);
+}
+
+.phi-card-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+
+.phi-card-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.9;
+}
+
+/* =============================================
+   TESTIMONIALS / VOICE
+============================================= */
+.voice {
+  background: var(--white);
+}
+
+.voice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.voice-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+
+.voice-card:hover { box-shadow: var(--shadow-md); }
+
+.voice-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.voice-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--pink-mid);
+}
+
+.voice-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.badge-1 { background: var(--pink); }
+.badge-2 { background: #F0906A; }
+.badge-3 { background: #C97080; }
+
+.voice-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.voice-body {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.8;
+}
+
+.voice-note {
+  font-size: 11px;
+  color: var(--text-light);
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* =============================================
+   FINAL CTA
+============================================= */
+.cta-final {
+  background: linear-gradient(135deg, #f7a0b4 0%, #e8607a 50%, #d04060 100%);
+  padding: 72px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-final::before {
+  content: 'Join us!';
+  font-family: var(--font-script);
+  font-size: 160px;
+  color: rgba(255,255,255,0.08);
+  position: absolute;
+  bottom: -20px;
+  right: 40px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cta-final-text {
+  font-size: clamp(15px, 2.5vw, 18px);
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.cta-final-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 36px;
+}
+
+.btn-cta-white {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  color: var(--pink);
+  border-radius: 50px;
+  padding: 16px 48px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+  min-height: 56px;
+  min-width: 280px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.btn-cta-white:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+.btn-cta-white .btn-cta-main {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pink);
+}
+.btn-cta-white .btn-cta-sub {
+  font-size: 13px;
+  color: var(--pink);
+  opacity: 0.8;
+}
+
+/* =============================================
+   RESPONSIVE  768px
+============================================= */
+@media (max-width: 768px) {
+  section { padding: 48px 0; }
+  .container { padding: 0 20px; }
+
+  /* hero */
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .hero-img-wrap {
+    height: 280px;
+    order: -1;
+  }
+  .hero-text { padding: 32px 0; }
+  .hero-categories { display: none; }
+
+  /* problems */
+  .prob-layout { grid-template-columns: 1fr; }
+  .speech-bubble::before,
+  .speech-bubble::after { display: none; }
+
+  /* ba */
+  .ba-grid { grid-template-columns: 1fr; }
+  .ba-divider {
+    padding: 12px 0;
+    justify-content: center;
+  }
+  .ba-arrow-icon {
+    transform: rotate(90deg);
+  }
+  .change-philosophy {
+    grid-template-columns: 1fr;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .phi-col-r { text-align: center; }
+  .phi-quote-big { border: none; border-top: 2px solid var(--pink-mid); border-bottom: 2px solid var(--pink-mid); padding: 16px 0; }
+
+  /* services */
+  .svc-grid { grid-template-columns: repeat(2, 1fr); }
+  .phi-card { grid-template-columns: 1fr; }
+
+  /* voice */
+  .voice-grid { grid-template-columns: 1fr; }
+
+  /* cta */
+  .btn-cta, .btn-cta-white { min-width: 100%; }
+  .cta-final::before { font-size: 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     HERO (FV)
+============================================= -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left: text -->
+      <div class="hero-text">
+        <p class="hero-tagline">
+          診断を受けたその先をサポートする<br>
+          大人女性のためのおしゃれコミュニティ
+        </p>
+
+        <div class="hero-brand">& me</div>
+
+        <h1 class="hero-h1">
+          「なんとなくの私」を卒業する。<br>
+          "<span class="highlight">大人のおしゃれ部活</span>"、始動。
+        </h1>
+
+        <p class="hero-subcopy">
+          診断を受けたのに、<br>
+          結局いつも同じ服。<br><br>
+          「これで合ってる？」<br>
+          を繰り返していた私が、<br><br>
+          "私らしい似合う"を<br>
+          楽しみながら選べるようになる場所。
+        </p>
+
+        <a href="#" class="btn-cta">
+          <span class="btn-cta-main">大人のおしゃれ部活に参加する</span>
+          <span class="btn-cta-sub">【申し込みはこちら】</span>
+          <span class="btn-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Right: photo -->
+      <div class="hero-img-wrap">
+        <img
+          src="https://picsum.photos/seed/andme-hero-v6/480/600"
+          alt="おしゃれを楽しむ女性"
+          loading="eager">
+        <div class="hero-script-deco">
+          Be myself,<br>Enjoy fashion.
+        </div>
+        <div class="hero-categories">
+          <span class="hero-cat-item active">fashion</span>
+          <span class="hero-cat-item">make</span>
+          <span class="hero-cat-item">color</span>
+          <span class="hero-cat-item">my style</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     PROBLEMS
+============================================= -->
+<section class="problems">
+  <div class="container">
+
+    <div class="sec-hd">
+      <span class="script-deco">Are you worried?</span>
+      <h2 class="sec-h2">こんな<span class="pink-em">お悩み</span>ありませんか？</h2>
+    </div>
+
+    <div class="prob-layout">
+      <!-- Left: problem list -->
+      <ul class="pink-list">
+        <li>診断を受けた時は納得したのに、結局いつも同じ服に戻ってしまう</li>
+        <li>お店に行っても「何を買えばいいかわからない」と疲れて帰ってしまう</li>
+        <li>「これ似合ってるのかな？」と不安で、無難な服ばかり選んでしまう</li>
+        <li>トレンドを見ても、自分にどう取り入れたらいいかわからない</li>
+        <li>昔はもっとおしゃれを楽しめていたのに、最近は鏡を見るたびにモヤモヤする</li>
+        <li>子育てや仕事を優先して、自分のことを後回しにしてきた</li>
+        <li>"私らしいおしゃれ"がわからなくなっている</li>
+      </ul>
+
+      <!-- Right: speech bubble -->
+      <div class="speech-bubble">
+        <p class="bubble-lead">でも本当は、</p>
+        <p class="bubble-main">
+          もっとおしゃれを<span class="pink-em">楽しみたい。</span><br>
+          もっと自分を<span class="pink-em">好きになりたい。</span>
+        </p>
+        <div class="bubble-quotes">
+          「これ好き」<br>
+          「今日の私、なんかいい感じ」<br>
+          そう思える毎日を、<br>もう一度取り戻したい。
+        </div>
+        <p class="bubble-close">そんな女性のための場所です。</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     BEFORE / AFTER
+============================================= -->
+<section class="change">
+  <div class="container">
+
+    <div class="sec-hd">
+      <span class="script-deco">Change!</span>
+      <h2 class="sec-h2">このサービスを受けると</h2>
+      <p style="font-size:14px;color:var(--text-sub);margin-top:8px;">
+        & me に参加すると、"なんとなく"で選んでいた毎日が、少しずつ変わっていきます。
+      </p>
+    </div>
+
+    <div class="ba-grid">
+      <!-- Before -->
+      <div class="ba-col ba-before">
+        <div class="ba-col-label">Before</div>
+        <ul class="gray-list">
+          <li>何を着てもピンとこない</li>
+          <li>服を買っても結局着なくなる</li>
+          <li>毎朝「何着よう…」で時間がかかる</li>
+          <li>無難で隠れる服ばかり選ぶ</li>
+          <li>おしゃれが楽しくない</li>
+        </ul>
+      </div>
+
+      <!-- Arrow divider -->
+      <div class="ba-divider">
+        <div class="ba-arrow-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+
+      <!-- After -->
+      <div class="ba-col ba-after">
+        <div class="ba-col-label">After</div>
+        <ul class="pink-list">
+          <li>自分に似合う服を、自分で選べるようになる</li>
+          <li>買い物で迷う時間が減る</li>
+          <li>診断結果を"日常"で活かせるようになる</li>
+          <li>「これ好き」「これ似合う」が一致してくる</li>
+          <li>鏡を見るたび、少し気分が上がる</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Philosophy -->
+    <div class="change-philosophy">
+      <p class="phi-col">
+        おしゃれは、<br>
+        誰かになるためのものじゃありません。<br>
+        "私らしさ"を楽しむためのもの。
+      </p>
+      <div class="phi-quote-big">
+        「今日の私、<br>ちょっと好きかも」
+      </div>
+      <p class="phi-col-r">
+        外見が整うと、<br>
+        人は少しずつ前を向けるようになります。<br>
+        そんな感覚を、毎日の中で育てていく場所です。
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     SERVICES
+============================================= -->
+<section class="services">
+  <div class="container">
+
+    <div class="sec-hd">
+      <span class="script-deco">Service!</span>
+      <h2 class="sec-h2">& me でできること</h2>
+    </div>
+
+    <div class="svc-grid">
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <!-- hanger icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#E8607A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.38 18H3.62a1 1 0 01-.7-1.7L12 8l9.08 8.3A1 1 0 0120.38 18z"/>
+            <path d="M12 8V5a2 2 0 012-2"/>
+            <circle cx="14" cy="3" r="1" fill="#E8607A"/>
+          </svg>
+        </div>
+        <div class="svc-num">01</div>
+        <div class="svc-name">コーデ提案</div>
+        <p class="svc-desc">診断結果をもとに、日常に落とし込みやすいコーデを提案。"理論だけで終わらない"リアルなおしゃれ力を育てていきます。</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <!-- trend/star icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#E8607A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </div>
+        <div class="svc-num">02</div>
+        <div class="svc-name">トレンド解説</div>
+        <p class="svc-desc">流行を"自分に似合う形"で楽しめるように。40代女性でも取り入れやすい大人のおしゃれをわかりやすく解説します。</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <!-- makeup icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#E8607A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 013 3v1H9V5a3 3 0 013-3z"/>
+            <path d="M9 6v2a6 6 0 006 0V6"/>
+            <path d="M7 8c0 5 10 5 10 0"/>
+            <path d="M12 14v8"/>
+            <path d="M10 22h4"/>
+          </svg>
+        </div>
+        <div class="svc-num">03</div>
+        <div class="svc-name">メイクアドバイス</div>
+        <p class="svc-desc">顔タイプ・カラー・雰囲気に合わせて、今の自分に合うメイクを提案。"頑張りすぎない垢抜け"をサポートします。</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <!-- chat icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#E8607A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          </svg>
+        </div>
+        <div class="svc-num">04</div>
+        <div class="svc-name">おしゃれ相談</div>
+        <p class="svc-desc">日常のおしゃれの悩みを気軽に相談できる環境をご用意。一人で悩まなくていいから、おしゃれがもっと楽しくなります。</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <!-- calendar icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#E8607A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="svc-num">05</div>
+        <div class="svc-name">イベント・企画<br><span style="font-size:10px;font-weight:400;">(不定期)</span></div>
+        <div class="svc-tags">
+          <span class="svc-tag">同行ショッピング</span>
+          <span class="svc-tag">撮影イベント</span>
+          <span class="svc-tag">季節ごとの企画</span>
+          <span class="svc-tag">限定ライブ配信</span>
+        </div>
+        <p class="svc-desc">など、楽しみながら変化できる企画を開催！</p>
+      </div>
+
+    </div><!-- /svc-grid -->
+
+    <!-- Philosophy card -->
+    <div class="phi-card">
+      <div class="phi-card-label">& me が<br>大切にしていること</div>
+      <p class="phi-card-text">
+        & me は、ただ知識を学ぶ場所ではありません。大切なのは、「私にはこれが似合う」「私はこれが好き」を、自分で選べるようになること。
+        正解探しではなく、<strong>"私らしさ"を育てていく</strong>コミュニティです。
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     VOICE / TESTIMONIALS
+============================================= -->
+<section class="voice">
+  <div class="container">
+
+    <div class="sec-hd">
+      <span class="script-deco">Voice!</span>
+      <h2 class="sec-h2">参加者の声</h2>
+    </div>
+
+    <div class="voice-grid">
+
+      <div class="voice-card">
+        <div class="voice-head">
+          <img
+            class="voice-avatar"
+            src="https://picsum.photos/seed/voice-a/120/120"
+            alt="参加者の写真（プレースホルダー）"
+            loading="lazy">
+          <div>
+            <div class="voice-badge badge-1">42歳 会社員</div>
+            <div class="voice-title">診断結果をどう使えばいいかわからなかった私が、自分で選べるように！</div>
+          </div>
+        </div>
+        <p class="voice-body">いつも無難な服ばかりでしたが、& me に参加してから買い物が本当に楽しくなりました。</p>
+      </div>
+
+      <div class="voice-card">
+        <div class="voice-head">
+          <img
+            class="voice-avatar"
+            src="https://picsum.photos/seed/voice-b/120/120"
+            alt="参加者の写真（プレースホルダー）"
+            loading="lazy">
+          <div>
+            <div class="voice-badge badge-2">45歳 主婦</div>
+            <div class="voice-title">メイクも服も、"今の私"にアップデート！</div>
+          </div>
+        </div>
+        <p class="voice-body">昔のメイクのままでしたが、メイクアドバイスで一気に垢抜け！鏡を見るのが楽しみになりました。</p>
+      </div>
+
+      <div class="voice-card">
+        <div class="voice-head">
+          <img
+            class="voice-avatar"
+            src="https://picsum.photos/seed/voice-c/120/120"
+            alt="参加者の写真（プレースホルダー）"
+            loading="lazy">
+          <div>
+            <div class="voice-badge badge-3">48歳 パート</div>
+            <div class="voice-title">一人で悩まなくていいのが心強いです</div>
+          </div>
+        </div>
+        <p class="voice-body">おしゃれ相談ができるのが本当にありがたい！同じ悩みを持つ仲間がいるのも励みになります。</p>
+      </div>
+
+    </div>
+
+    <p class="voice-note">※個人の感想です</p>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     FINAL CTA
+============================================= -->
+<section class="cta-final">
+  <div class="container">
+    <p class="cta-final-text">
+      あなたの「好き」と「似合う」を、もっと楽しもう。
+    </p>
+    <p class="cta-final-sub">大人のおしゃれ部活に参加する</p>
+    <a href="#" class="btn-cta-white">
+      <span class="btn-cta-main">【申し込みはこちら】</span>
+    </a>
+  </div>
+</section>
+
+</body>
+</html>
