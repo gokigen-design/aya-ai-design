@@ -28,6 +28,8 @@
   --ver2: #0891b2;
   --ver3: #7c3aed;
   --ver4: #D4006E;
+  --ver5: #b5005c;
+  --ver6: #E8607A;
 
   --font-h:    'Shippori Mincho', serif;
   --font-b:    'Noto Sans JP', sans-serif;
@@ -229,6 +231,8 @@ header .subtitle {
 .ver-badge-2 { background: #ecfeff; color: var(--ver2); border: 1px solid #a5f3fc; }
 .ver-badge-3 { background: #f5f3ff; color: var(--ver3); border: 1px solid #ddd6fe; }
 .ver-badge-4 { background: var(--pink-light); color: var(--ver4); border: 1px solid #f9a8d4; }
+.ver-badge-5 { background: #fff0f8; color: var(--ver5); border: 1px solid #ffb3d9; }
+.ver-badge-6 { background: #fff0f5; color: var(--ver6); border: 1px solid #f9b4c0; }
 
 .ver-title-group h3 {
   font-family: var(--font-h);
@@ -433,6 +437,8 @@ header .subtitle {
 .result-box.ver2 { border-left-color: var(--ver2); }
 .result-box.ver3 { border-left-color: var(--ver3); }
 .result-box.ver4 { border-left-color: var(--ver4); }
+.result-box.ver5 { border-left-color: var(--ver5); }
+.result-box.ver6 { border-left-color: var(--ver6); }
 
 .result-box h4 {
   font-size: 13px;
@@ -674,7 +680,7 @@ footer a:hover { color: var(--white); }
   <div class="container">
     <div class="header-label">Prompt Experiment Lab</div>
     <h1>& me <span>LP Lab</span></h1>
-    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？4ステップ検証レポート</p>
+    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？6バージョン検証レポート</p>
     <div class="team-badges">
       <span class="team-badge">あや</span>
       <span class="team-badge">ゆみ</span>
@@ -691,7 +697,7 @@ footer a:hover { color: var(--white); }
   <div class="container">
     <h2>検証の目的</h2>
     <p>
-      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの詳しさを段階的に変えながら4回作成。<br>
+      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの種類・詳しさを段階的に変えながら6バージョン作成。<br>
       初心者でも再現できる指示の出し方を探り、どのレベルで品質が跳ね上がるかを確認します。
     </p>
 
@@ -724,6 +730,22 @@ footer a:hover { color: var(--white); }
         <div class="flow-num">VER.04</div>
         <h3>参考SSで色を指定</h3>
         <p>好みのサイトのSSを送り「この色に」と一言で伝える</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step" style="border-color: #ffb3d9;">
+        <div class="flow-num" style="color: var(--ver5);">VER.05</div>
+        <h3>改良プロンプト（ゆみ）</h3>
+        <p>ルールを詳細化した独自プロンプトで一発生成</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step" style="border-color: #f9b4c0;">
+        <div class="flow-num" style="color: var(--ver6);">VER.06</div>
+        <h3>完成SSから再現</h3>
+        <p>完成品のSSを渡して「このデザインで」と指示</p>
       </div>
     </div>
   </div>
@@ -1314,6 +1336,126 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
       </div>
     </div><!-- /VER.05 -->
 
+
+    <!-- ========== VER.06 あや ========== -->
+    <div class="version-card" id="ver06">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-6">VER.06 あや</span>
+        <div class="ver-title-group">
+          <h3>完成LPのスクリーンショットを渡して「このデザインで作って」</h3>
+          <p>出来上がったLPのスクリーンショットを添付し、構成案と合わせてデザイン要素を言語化したプロンプトで再現依頼。筆記体デコ・吹き出し・年齢バッジなど細部まで指定した最新版。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — スクリーンショット＋プロンプト</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <div class="prompt-body prompt-body-long">（完成済みLPのスクリーンショットを添付）
+
+こちらの構成案を下記のプロンプトでLPを作ってください。
+色味などの参考は送付した画像を参考にしてください。
+
+【スクリーンショットから抽出したデザイン要素】
+
+■ カラーパレット
+- メインピンク： #E8607A（コーラルピンク）
+- ダークピンク： #C94565
+- 淡ピンク背景： #FEF0F3 / #F9D0DA
+- テキスト：     #333333
+- サブテキスト： #888888
+
+■ フォント
+- 筆記体デコレーター： Great Vibes
+  （"Are you worried?" "Change!" "Service!" "Voice!" などのセクションラベル）
+- 本文・見出し日本語： Noto Sans JP
+- 英語ラベル・サブ：  Montserrat
+
+■ FV（ファーストビュー）
+- 左：大見出し（日本語）＋サブコピー＋ターゲットリスト＋CTAボタン
+- 右：女性写真（picsum）
+- 背景に "Be myself, Enjoy fashion." を Great Vibes で薄く大きく透かし表示
+- カテゴリタグ：「#40代」「#ファッション」「#おしゃれコミュニティ」
+
+■ セクション構成
+1. FV
+2. お悩みセクション（"Are you worried?" ラベル）
+   - 3列カードグリッド
+   - 右端に吹き出し（speech bubble）でクロージングメッセージ
+3. Before / After（"Change!" ラベル） - 左右2分割パネル
+4. サービス（"Service!" ラベル） - 5列アイコングリッド（SVGアイコン付き）
+5. 参加者の声（"Voice!" ラベル）
+   - 3列証言カード
+   - 年齢バッジ（42歳会社員 / 45歳主婦 / 48歳パート）
+6. 最終CTA
+   - ピンクグラデーション背景
+   - "Join us!" を Great Vibes で薄く大きく透かし
+
+■ 共通デザイン
+- セクション番号ラベル： Great Vibes でイタリック装飾
+- 角丸：8px or 16px 統一
+- シャドウ：薄いピンク系（rgba(232,96,122,0.1)）
+- 絵文字禁止、アイコンはSVG
+- 架空の数字・名前は作らずプレースホルダーで置く</div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp-ver6.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp-ver6.html" loading="lazy" title="& me LP Ver.06"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp-ver6.html" target="_blank" class="view-btn" style="background: var(--ver6);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              VER.06 LPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver6">
+          <h4>VER.04〜05 との主な違い</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>このアプローチの特徴</h5>
+              <ul class="good">
+                <li>完成イメージをSSで見せるので認識ズレがほぼゼロ</li>
+                <li>筆記体デコ・吹き出し・年齢バッジなど細部まで再現</li>
+                <li>カラーコードをSSから直接拾って指定できる</li>
+                <li>デザイン経験がなくてもSSがあれば依頼できる</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>注意点・次に試すこと</h5>
+              <ul class="bad">
+                <li>SSの品質・解像度で再現精度が変わる</li>
+                <li>テキストコピーは別途構成案が必要</li>
+                <li>似たデザインの他社SSを使うとオリジナリティが薄くなる</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.06 -->
+
   </div>
 </section><!-- /versions-section -->
 
@@ -1323,7 +1465,7 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
 ============================================================ -->
 <section class="summary-section">
   <div class="container">
-    <h2 class="section-heading">4バージョン比較まとめ</h2>
+    <h2 class="section-heading">6バージョン比較まとめ</h2>
     <p class="section-sub">初心者がLPを作るときの「プロンプトの出し方」チェックリストとして活用できます</p>
 
     <table class="compare-table">
@@ -1370,6 +1512,13 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
           <td>ルールを詳細化したプロンプト＋のどかさん構成案</td>
           <td>構成・デザイン・コピーが一段洗練</td>
           <td>1回（プロンプト作成コストあり）</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
+        </tr>
+        <tr style="background: #fff5f7;">
+          <td><strong>Ver.06</strong><br><span style="font-size:12px;color:#E8607A;">完成SSから再現（あや）</span></td>
+          <td>完成LPのSS＋デザイン要素を言語化したプロンプト</td>
+          <td>筆記体・吹き出し・バッジまで細部が一致</td>
+          <td>1回（SS＋デザイン要素の言語化が必要）</td>
           <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
         </tr>
       </tbody>
