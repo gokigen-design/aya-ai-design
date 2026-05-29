@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>& me | 大人のおしゃれコミュニティ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   CSS VARIABLES  (ゆみルール準拠)
+============================================= */
+:root {
+  --accent:       #8C6FAE;
+  --accent-light: #f3eff8;
+  --accent-dark:  #6b4e8e;
+  --text:         #1e1e1e;
+  --text-sub:     #6a6a6a;
+  --bg:           #faf8f5;
+  --white:        #ffffff;
+  --border:       #ede9e4;
+
+  --radius-sm:  8px;
+  --radius:     16px;
+  --shadow:     0 8px 30px rgba(0,0,0,0.05);
+  --shadow-md:  0 12px 40px rgba(0,0,0,0.09);
+
+  --font-h:  'Shippori Mincho', serif;
+  --font-b:  'Noto Sans JP', sans-serif;
+  --font-en: 'Montserrat', sans-serif;
+}
+
+/* =============================================
+   RESET & BASE
+============================================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text);
+  background: var(--bg);
+}
+
+img { width: 100%; max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { padding: 80px 0; }
+
+/* =============================================
+   SECTION LABELS & HEADINGS
+============================================= */
+.sec-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: var(--font-h);
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+h3 {
+  font-family: var(--font-h);
+  font-size: clamp(17px, 4vw, 22px);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.section-intro {
+  font-size: 15px;
+  color: var(--text-sub);
+  line-height: 1.8;
+  max-width: 600px;
+  margin-top: 12px;
+}
+
+/* =============================================
+   CTA BUTTON
+============================================= */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--white);
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 18px 40px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  min-height: 56px;
+  letter-spacing: 0.03em;
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--accent-dark);
+  box-shadow: 0 6px 24px rgba(140,111,174,0.35);
+  transform: translateY(-1px);
+}
+
+/* =============================================
+   CHECK / MARK ELEMENTS  (絵文字禁止 → CSS実装)
+============================================= */
+/* circle dot (target list) */
+.dot-list { list-style: none; padding: 0; }
+.dot-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+  padding: 8px 14px;
+  background: var(--accent-light);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+.dot-list li::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* check mark via SVG data uri (after items) */
+.check-list { list-style: none; padding: 0; }
+.check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--white);
+}
+.check-list li::before {
+  content: '';
+  width: 20px; height: 20px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l4 4 6-6' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: 1px;
+}
+
+/* left-border list (before items, problems) */
+.border-list { list-style: none; padding: 0; }
+.border-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+.border-list li::before {
+  content: '';
+  width: 4px; height: 4px;
+  background: var(--text-sub);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+/* =============================================
+   HERO (FV)  — PC 2col, スマホ縦積み(画像上)
+============================================= */
+.hero {
+  background: var(--white);
+  overflow: hidden;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 56px;
+  align-items: center;
+}
+
+.hero-service-tag {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+
+.hero-h1 {
+  font-family: var(--font-h);
+  font-size: clamp(28px, 7vw, 48px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+.hero-subcopy {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--text-sub);
+  border-left: 3px solid var(--accent);
+  padding-left: 18px;
+  margin-bottom: 32px;
+}
+
+.hero-desc {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 2;
+  margin-bottom: 28px;
+}
+
+.target-block {
+  margin-bottom: 36px;
+}
+
+.target-block-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  font-family: var(--font-en);
+  margin-bottom: 12px;
+}
+
+.hero-img-wrap { position: relative; }
+.hero-img-wrap img {
+  border-radius: var(--radius);
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  box-shadow: var(--shadow-md);
+}
+
+/* =============================================
+   PROBLEMS — PC 3col, スマホ 1col
+============================================= */
+.problems { background: var(--bg); }
+
+.section-hd {
+  margin-bottom: 40px;
+}
+
+.prob-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.prob-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  border-left: 3px solid var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.prob-card p {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.prob-full-card {
+  background: var(--accent-light);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+}
+
+.prob-full-card p {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.8;
+}
+
+.prob-close {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 52px 60px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.prob-close-lead {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 20px;
+}
+
+.prob-close-quote {
+  font-family: var(--font-h);
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--text);
+  line-height: 1.9;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.prob-close-tail {
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+/* =============================================
+   BEFORE / AFTER — PC 2col, スマホ縦積み
+============================================= */
+.change { background: var(--white); }
+
+.ba-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin: 40px 0;
+}
+
+.ba-before, .ba-after { padding: 40px 44px; }
+.ba-before { background: #f5f5f5; }
+.ba-after  { background: var(--accent); }
+
+.ba-col-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.ba-before .ba-col-label { color: var(--text-sub); }
+.ba-after  .ba-col-label { color: rgba(255,255,255,0.6); }
+
+.philosophy-wrap {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 48px 56px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.philosophy-body {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 2;
+  margin-bottom: 20px;
+}
+
+.philosophy-quote {
+  font-family: var(--font-h);
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--text);
+  line-height: 1.9;
+}
+
+/* =============================================
+   SERVICES — PC 2col(左番号/右説明), スマホ 1col
+============================================= */
+.services { background: var(--bg); }
+
+.svc-table {
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 2px;
+  margin-bottom: 32px;
+}
+
+.svc-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  background: var(--white);
+  transition: background 0.2s;
+  cursor: default;
+}
+.svc-row:hover { background: var(--accent-light); }
+
+.svc-id {
+  padding: 28px 24px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.svc-num {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.svc-name {
+  font-family: var(--font-h);
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.svc-body {
+  padding: 28px 32px;
+}
+
+.svc-hook {
+  font-size: 13px;
+  color: var(--text-sub);
+  font-style: italic;
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.svc-desc {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+/* 05 special: tag list */
+.svc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.svc-tag {
+  font-size: 12px;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-weight: 500;
+}
+
+/* philosophy card */
+.phi-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 40px 48px;
+  box-shadow: var(--shadow);
+  border-top: 3px solid var(--accent);
+}
+.phi-card h3 {
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.phi-card p {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 2;
+}
+
+/* =============================================
+   FINAL CTA
+============================================= */
+.cta-section {
+  background: var(--text);
+  padding: 80px 0;
+  text-align: center;
+}
+
+.cta-section .sec-label { color: var(--accent); }
+
+.cta-section h2 {
+  color: var(--white);
+  margin: 12px 0 14px;
+}
+
+.cta-section .cta-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 36px;
+}
+
+.cta-btn-wrap {
+  max-width: 360px;
+  margin: 0 auto;
+}
+.cta-btn-wrap .btn-primary {
+  width: 100%;
+  font-size: 16px;
+  padding: 20px;
+}
+
+/* =============================================
+   RESPONSIVE  768px
+============================================= */
+@media (max-width: 768px) {
+  section { padding: 48px 0; }
+
+  /* hero */
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .hero-img-wrap { order: -1; }
+  .hero-img-wrap img { aspect-ratio: 4/3; }
+
+  /* problems */
+  .prob-grid { grid-template-columns: 1fr; }
+  .prob-close { padding: 32px 24px; }
+
+  /* ba */
+  .ba-wrap { grid-template-columns: 1fr; }
+  .ba-before, .ba-after { padding: 28px 24px; }
+  .philosophy-wrap { padding: 28px 20px; }
+
+  /* services */
+  .svc-row { grid-template-columns: 1fr; }
+  .svc-id {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px 12px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .svc-body { padding: 12px 20px 20px; }
+  .phi-card { padding: 28px 20px; }
+
+  /* cta */
+  .cta-btn-wrap { max-width: 100%; }
+}
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     HERO (FV)
+============================================= -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left: text -->
+      <div>
+        <div class="hero-service-tag">& me</div>
+
+        <h1 class="hero-h1">
+          『なんとなくの私』を卒業する。<br>
+          <span style="font-size: 0.8em; font-weight: 500;">"大人のおしゃれ部活"、始動。</span>
+        </h1>
+
+        <div class="hero-subcopy">
+          診断を受けたのに、<br>
+          結局いつも同じ服。<br><br>
+          「これで合ってる？」<br>
+          を繰り返していた私が、<br><br>
+          "私らしい似合う"を<br>
+          楽しみながら選べるようになる場所。
+        </div>
+
+        <div class="target-block">
+          <div class="target-block-label">こんな方へ</div>
+          <ul class="dot-list">
+            <li>診断を受けたけど活かしきれていない女性</li>
+            <li>40代になって何を着ればいいかわからなくなった女性</li>
+            <li>無難な服ばかり選んでしまう女性</li>
+            <li>「似合う」と「好き」のバランスに悩んでいる女性</li>
+            <li>おしゃれを頑張りたいけど、一人だと続かない女性</li>
+            <li>自分を後回しにしてきたけど、そろそろ自分を整えたい女性</li>
+          </ul>
+        </div>
+
+        <p class="hero-desc">
+          & me は、診断を受けたその先をサポートする大人女性のためのおしゃれコミュニティです。<br>
+          服・メイク・色選びを、"なんとなく"で終わらせない。<br>
+          「これ好き」「これ似合う」を楽しみながら、<em style="font-style:normal; color:var(--text);">"私らしい似合う"</em>を育てていきます。
+        </p>
+
+        <a href="#" class="btn-primary">大人のおしゃれ部活に参加する</a>
+      </div>
+
+      <!-- Right: image -->
+      <div class="hero-img-wrap">
+        <img
+          src="https://picsum.photos/seed/andme-fv/480/600"
+          alt="おしゃれを楽しむ大人の女性"
+          loading="eager">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     PROBLEMS (こんなお悩み)
+============================================= -->
+<section class="problems">
+  <div class="container">
+
+    <div class="section-hd">
+      <span class="sec-label">Your Concerns</span>
+      <h2>あなたのお悩み</h2>
+      <p class="section-intro">診断を受けてもなお、続く迷いがありませんか。</p>
+    </div>
+
+    <!-- 3-col grid -->
+    <div class="prob-grid">
+      <div class="prob-card">
+        <p>診断を受けた時は納得したのに、結局いつも同じ服に戻ってしまう</p>
+      </div>
+      <div class="prob-card">
+        <p>お店に行っても「何を買えばいいかわからない」と疲れて帰ってしまう</p>
+      </div>
+      <div class="prob-card">
+        <p>「これ似合ってるのかな？」と不安で、無難な服ばかり選んでしまう</p>
+      </div>
+      <div class="prob-card">
+        <p>トレンドを見ても、自分にどう取り入れたらいいかわからない</p>
+      </div>
+      <div class="prob-card">
+        <p>昔はもっとおしゃれを楽しめていたのに、最近は鏡を見るたびにモヤモヤする</p>
+      </div>
+      <div class="prob-card">
+        <p>子育てや仕事を優先して、自分のことを後回しにしてきた</p>
+      </div>
+    </div>
+
+    <!-- 全幅カード -->
+    <div class="prob-full-card" style="margin-bottom: 32px;">
+      <p style="text-align:center;">"私らしいおしゃれ"がわからなくなっている</p>
+    </div>
+
+    <!-- emotional close -->
+    <div class="prob-close">
+      <p class="prob-close-lead">でも本当は、</p>
+      <div class="prob-close-quote">
+        もっとおしゃれを楽しみたい。<br>
+        もっと自分を好きになりたい。<br><br>
+        「これ好き」<br>
+        「今日の私、なんかいい感じ」<br><br>
+        そう思える毎日を、もう一度取り戻したい。
+      </div>
+      <p class="prob-close-tail">そんな女性のための場所です。</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     BEFORE / AFTER
+============================================= -->
+<section class="change">
+  <div class="container">
+
+    <div class="section-hd">
+      <span class="sec-label">Before / After</span>
+      <h2>受講後のあなた</h2>
+      <p class="section-intro">
+        & me に参加すると、"なんとなく"で選んでいた毎日が、少しずつ変わっていきます。
+      </p>
+    </div>
+
+    <!-- BA split panel -->
+    <div class="ba-wrap">
+      <div class="ba-before">
+        <div class="ba-col-label">Before</div>
+        <ul class="border-list">
+          <li>何を着てもピンとこない</li>
+          <li>服を買っても結局着なくなる</li>
+          <li>毎朝「何着よう…」で時間がかかる</li>
+          <li>無難で隠れる服ばかり選ぶ</li>
+          <li>おしゃれが楽しくない</li>
+        </ul>
+      </div>
+      <div class="ba-after">
+        <div class="ba-col-label">After</div>
+        <ul class="check-list">
+          <li>自分に似合う服を、自分で選べるようになる</li>
+          <li>買い物で迷う時間が減る</li>
+          <li>診断結果を"日常"で活かせるようになる</li>
+          <li>「これ好き」「これ似合う」が一致してくる</li>
+          <li>鏡を見るたび、少し気分が上がる</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- philosophy -->
+    <div class="philosophy-wrap">
+      <p class="philosophy-body">
+        おしゃれは、誰かになるためのものじゃありません。<br>
+        "私らしさ"を楽しむためのもの。<br><br>
+        外見が整うと、人は少しずつ前を向けるようになります。
+      </p>
+      <div class="philosophy-quote">
+        「私なんて」ではなく、<br>
+        「今日の私、ちょっと好きかも」<br><br>
+        そんな感覚を、毎日の中で育てていく場所です。
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     SERVICES (& me でできること)
+============================================= -->
+<section class="services">
+  <div class="container">
+
+    <div class="section-hd">
+      <span class="sec-label">What you get</span>
+      <h2>& me でできること</h2>
+      <p class="section-intro">5つのサポートで、おしゃれを日常に根づかせます。</p>
+    </div>
+
+    <div class="svc-table">
+
+      <div class="svc-row">
+        <div class="svc-id">
+          <span class="svc-num">01</span>
+          <div class="svc-name">コーデ提案</div>
+        </div>
+        <div class="svc-body">
+          <p class="svc-hook">「診断結果はわかったけど、実際どう着ればいいかわからない」</p>
+          <p class="svc-desc">日常に落とし込みやすいコーデを提案。理論だけで終わらないリアルなおしゃれ力を育てていきます。</p>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-id">
+          <span class="svc-num">02</span>
+          <div class="svc-name">トレンド解説</div>
+        </div>
+        <div class="svc-body">
+          <p class="svc-hook">流行をただ追いかけるのではなく、自分に似合う形でトレンドを楽しめるように。</p>
+          <p class="svc-desc">40代女性でも取り入れやすい大人のおしゃれをわかりやすく解説します。</p>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-id">
+          <span class="svc-num">03</span>
+          <div class="svc-name">メイクアドバイス</div>
+        </div>
+        <div class="svc-body">
+          <p class="svc-hook">「なんとなく昔のメイクのまま」そんな女性に向けて。</p>
+          <p class="svc-desc">顔タイプ・カラー・雰囲気に合わせて今の自分に合うメイクを提案。頑張りすぎない垢抜けをサポートします。</p>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-id">
+          <span class="svc-num">04</span>
+          <div class="svc-name">おしゃれ相談</div>
+        </div>
+        <div class="svc-body">
+          <p class="svc-hook">「これ買おうと思うんだけどどうかな？」「この組み合わせ合ってる？」</p>
+          <p class="svc-desc">日常のおしゃれの悩みを気軽に相談できる環境をご用意。一人で悩まないから、おしゃれがもっと楽しくなります。</p>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-id">
+          <span class="svc-num">05</span>
+          <div class="svc-name">イベント・企画</div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-tags">
+            <span class="svc-tag">同行ショッピング</span>
+            <span class="svc-tag">撮影イベント</span>
+            <span class="svc-tag">季節ごとの企画</span>
+            <span class="svc-tag">限定ライブ配信</span>
+          </div>
+          <p class="svc-desc">学ぶだけじゃなく、実際に楽しみながら変化できる企画も開催予定です（不定期）。</p>
+        </div>
+      </div>
+
+    </div><!-- /svc-table -->
+
+    <!-- philosophy card -->
+    <div class="phi-card">
+      <h3>& me が大切にしていること</h3>
+      <p>
+        & me は、ただ知識を学ぶ場所ではありません。<br>
+        大切なのは、「私にはこれが似合う」「私はこれが好き」を、自分で選べるようになること。<br>
+        正解探しではなく、<em style="font-style:normal; color:var(--text); font-weight:500;">"私らしさ"を育てていく</em>場所です。
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     FINAL CTA
+============================================= -->
+<section class="cta-section">
+  <div class="container">
+    <span class="sec-label">Join us</span>
+    <h2>大人のおしゃれ部活、始めませんか。</h2>
+    <p class="cta-sub">まず一歩、& me に参加してみてください。</p>
+    <div class="cta-btn-wrap">
+      <a href="#" class="btn-primary">大人のおしゃれ部活に参加する</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
