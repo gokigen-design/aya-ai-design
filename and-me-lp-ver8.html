@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>& me | 大人のおしゃれコミュニティ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+JP:wght@300;400;500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+    ============================================= */
+    :root {
+      --accent:       #C4687A;
+      --accent-light: #fdf0f2;
+      --accent-mid:   #e8b4bc;
+      --accent-dark:  #a84f61;
+      --text:         #1e1e1e;
+      --text-sub:     #6a6a6a;
+      --bg:           #faf8f5;
+      --bg-white:     #ffffff;
+      --border:       #e8e0d8;
+      --shadow:       0 8px 30px rgba(0,0,0,0.05);
+      --shadow-md:    0 12px 40px rgba(0,0,0,0.09);
+      --radius:       8px;
+      --font-script:  'Great Vibes', cursive;
+      --font-body:    'Noto Sans JP', sans-serif;
+      --font-en:      'Montserrat', sans-serif;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { width: 100%; max-width: 100%; display: block; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    strong { font-weight: 700; }
+    ul { list-style: none; }
+
+    /* =============================================
+       LAYOUT
+    ============================================= */
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    section { padding: 80px 0; }
+    @media (max-width: 768px) {
+      .wrap  { padding: 0 20px; }
+      section { padding: 48px 0; }
+    }
+
+    /* =============================================
+       TYPOGRAPHY SCALE
+    ============================================= */
+    h1 { font-size: clamp(28px, 7vw, 48px);   line-height: 1.3;  font-weight: 700; }
+    h2 { font-size: clamp(22px, 5vw, 32px);   line-height: 1.35; font-weight: 700; }
+    h3 { font-size: clamp(17px, 4vw, 22px);   line-height: 1.4;  font-weight: 500; }
+    p  { line-height: 1.75; }
+
+    .c-accent { color: var(--accent); }
+
+    /* Script decorator */
+    .script-label {
+      font-family: var(--font-script);
+      font-size: clamp(36px, 5.5vw, 52px);
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* =============================================
+       CSS CHECKMARK LIST
+    ============================================= */
+    .clist li {
+      position: relative;
+      padding-left: 26px;
+      margin-bottom: 10px;
+      font-size: clamp(13px, 2.2vw, 15px);
+      line-height: 1.65;
+    }
+    .clist li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 15px;
+      height: 15px;
+      border: 2px solid var(--accent);
+      border-radius: 3px;
+      background: var(--accent-light);
+    }
+    .clist li::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 8px;
+      width: 9px;
+      height: 5px;
+      border-left: 2.5px solid var(--accent);
+      border-bottom: 2.5px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+
+    /* =============================================
+       BUTTON
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: clamp(15px, 2.8vw, 17px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 16px 48px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      min-height: 56px;
+      transition: background 0.2s, box-shadow 0.2s;
+      gap: 2px;
+    }
+    .btn:hover {
+      background: var(--accent-dark);
+      box-shadow: 0 8px 28px rgba(196,104,122,0.38);
+    }
+    .btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .btn-eyebrow {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: .85;
+      letter-spacing: .05em;
+    }
+    .btn-white {
+      background: #fff;
+      color: var(--accent);
+    }
+    .btn-white:hover {
+      background: #fdeef1;
+      box-shadow: 0 8px 28px rgba(0,0,0,.15);
+    }
+    @media (max-width: 768px) {
+      .btn { width: 100%; max-width: 400px; padding: 16px 24px; }
+    }
+
+    /* =============================================
+       SECTION 1: FV
+    ============================================= */
+    .fv { background: var(--bg); }
+    .fv-inner {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      gap: 56px;
+      align-items: center;
+    }
+    .fv-eyebrow {
+      font-size: 12px;
+      color: var(--text-sub);
+      letter-spacing: .07em;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+    .fv-logo {
+      font-family: var(--font-script);
+      font-size: clamp(48px, 9vw, 72px);
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    .fv-catch {
+      font-size: clamp(22px, 4.5vw, 36px);
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+    .fv-catch em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .fv-sub {
+      font-size: clamp(14px, 2.4vw, 16px);
+      color: var(--text-sub);
+      line-height: 2;
+      margin-bottom: 24px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent-mid);
+    }
+    .fv-sub strong { color: var(--text); }
+    .fv-list-head {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .fv-clist { margin-bottom: 32px; }
+    /* FV right column */
+    .fv-img-col { position: relative; }
+    .fv-img-frame {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      aspect-ratio: 3 / 4;
+    }
+    .fv-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .fv-deco {
+      position: absolute;
+      bottom: -10px;
+      right: -4px;
+      font-family: var(--font-script);
+      font-size: clamp(20px, 3vw, 34px);
+      color: var(--accent);
+      opacity: .2;
+      pointer-events: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    @media (max-width: 768px) {
+      .fv-inner { grid-template-columns: 1fr; gap: 32px; }
+      .fv-img-col { order: -1; }
+      .fv-img-frame { aspect-ratio: 4 / 3; max-width: 480px; margin: 0 auto; }
+    }
+
+    /* =============================================
+       SECTION 2: PAIN
+    ============================================= */
+    .pain { background: var(--bg-white); }
+    .pain-head { text-align: center; margin-bottom: 40px; }
+    .pain-head h2 { margin-bottom: 8px; }
+    .pain-head p { font-size: 14px; color: var(--text-sub); }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .pain-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+    .pain-card:hover { box-shadow: var(--shadow-md); }
+    /* 7th card centered in middle column */
+    .pain-card:last-child { grid-column: 2; }
+
+    .pain-dot {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      position: relative;
+      margin-top: 3px;
+    }
+    .pain-dot::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 5px;
+      width: 8px;
+      height: 5px;
+      border-left: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+    .pain-card p { font-size: 14px; line-height: 1.65; color: var(--text); }
+
+    /* Bridge box */
+    .pain-bridge {
+      max-width: 620px;
+      margin: 0 auto;
+      background: var(--accent-light);
+      border-radius: var(--radius);
+      border-top: 3px solid var(--accent);
+      padding: 40px 48px;
+      text-align: center;
+    }
+    .pb-lead {
+      font-size: clamp(18px, 3.5vw, 24px);
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .pb-body {
+      font-size: clamp(15px, 2.8vw, 18px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .pb-quote {
+      font-size: clamp(17px, 3.2vw, 22px);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .pb-close {
+      font-size: 15px;
+      color: var(--text-sub);
+      line-height: 1.9;
+    }
+
+    @media (max-width: 768px) {
+      .pain-grid { grid-template-columns: 1fr; }
+      .pain-card:last-child { grid-column: auto; }
+      .pain-bridge { padding: 32px 20px; }
+    }
+
+    /* =============================================
+       SECTION 3: CHANGE (Before/After)
+    ============================================= */
+    .change { background: var(--bg); }
+    .change-head { text-align: center; margin-bottom: 48px; }
+    .change-head h2 { margin-top: 4px; margin-bottom: 12px; }
+    .change-head p { font-size: 15px; color: var(--text-sub); max-width: 560px; margin: 0 auto; }
+
+    .change-ba {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr;
+      gap: 0;
+      margin-bottom: 48px;
+      align-items: stretch;
+    }
+    .ba-card {
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .ba-card.before { background: #f3efee; }
+    .ba-card.after  { background: var(--accent-light); }
+
+    .ba-label {
+      font-family: var(--font-script);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 400;
+      display: block;
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+    .before .ba-label { color: #9a8e8e; }
+    .after  .ba-label { color: var(--accent); }
+
+    .ba-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 12px;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    .before .ba-list li::before {
+      content: '×';
+      position: absolute;
+      left: 0;
+      top: 1px;
+      color: #b0a5a5;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .after .ba-list li::before {
+      content: '';
+      position: absolute;
+      left: 1px;
+      top: 8px;
+      width: 10px;
+      height: 6px;
+      border-left: 2.5px solid var(--accent);
+      border-bottom: 2.5px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+    /* Arrow between cards */
+    .ba-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ba-arrow svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--accent);
+      opacity: .7;
+    }
+    /* Closing quote */
+    .change-quote {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .change-quote p {
+      font-size: clamp(14px, 2.4vw, 16px);
+      color: var(--text-sub);
+      line-height: 2;
+    }
+    .q-main {
+      font-size: clamp(17px, 3.2vw, 21px);
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+      margin: 8px 0;
+    }
+    .q-accent {
+      font-size: clamp(18px, 3.5vw, 22px);
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 768px) {
+      .change-ba {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .ba-card { padding: 24px; }
+      .ba-card.before { border-radius: var(--radius) var(--radius) 0 0; }
+      .ba-card.after  { border-radius: 0 0 var(--radius) var(--radius); }
+      .ba-arrow {
+        height: 40px;
+      }
+      .ba-arrow svg { transform: rotate(90deg); }
+    }
+
+    /* =============================================
+       SECTION 4: SERVICE
+    ============================================= */
+    .service { background: var(--bg-white); }
+    .service-head {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .s-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow 0.2s;
+    }
+    .s-card:hover { box-shadow: var(--shadow-md); }
+    .s-num {
+      font-family: var(--font-en);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      color: var(--accent);
+    }
+    .s-card h3 { font-size: clamp(17px, 3vw, 20px); font-weight: 700; }
+    .s-highlight {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+    .s-card p { font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+    .s-card-wide { grid-column: 1 / -1; }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .tag-list li {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--accent-mid);
+    }
+    /* Values block */
+    .values-block {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 48px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--accent);
+    }
+    .values-block h2 { margin-bottom: 20px; }
+    .values-block > p {
+      font-size: 15px;
+      color: var(--text-sub);
+      line-height: 1.9;
+      max-width: 620px;
+      margin-bottom: 20px;
+    }
+    .values-block > p strong { color: var(--text); }
+    .values-quote {
+      padding: 20px 24px;
+      background: var(--accent-light);
+      border-radius: var(--radius);
+      font-size: clamp(15px, 2.5vw, 17px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    @media (max-width: 768px) {
+      .service-grid { grid-template-columns: 1fr; }
+      .s-card-wide  { grid-column: auto; }
+      .s-card { padding: 24px; }
+      .values-block { padding: 32px 20px; }
+    }
+
+    /* =============================================
+       SECTION 5: FINAL CTA
+    ============================================= */
+    .cta-final {
+      background: var(--accent);
+      padding: 80px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-final::before {
+      content: 'Join us';
+      font-family: var(--font-script);
+      font-size: clamp(100px, 18vw, 200px);
+      color: rgba(255,255,255,.06);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-final h2 {
+      color: #fff;
+      font-size: clamp(20px, 4vw, 28px);
+      margin-bottom: 8px;
+      line-height: 1.45;
+    }
+    .cta-final p {
+      color: rgba(255,255,255,.88);
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 768px) {
+      .cta-final { padding: 48px 0; }
+      .cta-final .wrap { display: flex; flex-direction: column; align-items: center; }
+    }
+
+    /* =============================================
+       ACCESSIBILITY
+    ============================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       SECTION 1: FV
+  ========================================== -->
+  <section class="fv" aria-label="ファーストビュー">
+    <div class="wrap">
+      <div class="fv-inner">
+
+        <!-- Left: Text -->
+        <div class="fv-text">
+          <p class="fv-eyebrow">診断を受けたその先をサポートする&nbsp;/&nbsp;大人女性のためのおしゃれコミュニティ</p>
+          <div class="fv-logo" aria-label="& me">& me</div>
+          <h1 class="fv-catch">
+            『なんとなくの私』を卒業する。<br>
+            <em>"大人のおしゃれ部活"</em>、始動。
+          </h1>
+          <p class="fv-sub">
+            診断を受けたのに、結局いつも同じ服。<br>
+            「これで合ってる？」を繰り返していた私が、<br>
+            <strong>"私らしい似合う"</strong>を楽しみながら選べるようになる場所。
+          </p>
+          <p class="fv-list-head">こんな方に向けたコミュニティです</p>
+          <ul class="clist fv-clist">
+            <li>診断を受けたけど活かしきれていない</li>
+            <li>40代になって何を着ればいいかわからなくなった</li>
+            <li>無難な服ばかり選んでしまう</li>
+            <li>「似合う」と「好き」のバランスに悩んでいる</li>
+            <li>おしゃれを頑張りたいけど、一人だと続かない</li>
+            <li>そろそろ自分のことを、ちゃんと整えたい</li>
+          </ul>
+          <a href="#cta" class="btn">
+            <span class="btn-eyebrow">大人のおしゃれ部活に参加する</span>
+            <span>【申し込みはこちら】</span>
+          </a>
+        </div>
+
+        <!-- Right: Image -->
+        <div class="fv-img-col">
+          <div class="fv-img-frame">
+            <img
+              src="https://picsum.photos/id/1027/600/800"
+              alt="ファッションを楽しむ女性のポートレート（画像は制作中のプレースホルダーです）"
+              loading="eager"
+            >
+          </div>
+          <span class="fv-deco" aria-hidden="true">Be myself. Enjoy fashion.</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 2: お悩みありませんか
+  ========================================== -->
+  <section class="pain" aria-label="お悩みセクション">
+    <div class="wrap">
+      <div class="pain-head">
+        <h2>こんな<span class="c-accent">お悩み</span>、ありませんか？</h2>
+        <p>1つでも当てはまれば、& me はあなたのための場所です</p>
+      </div>
+
+      <ul class="pain-grid">
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>診断を受けた時は納得したのに、<strong>結局いつも同じ服に戻ってしまう</strong></p>
+        </li>
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>お店に行っても「何を買えばいいかわからない」と<strong>疲れて帰ってしまう</strong></p>
+        </li>
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>「これ似合ってるのかな？」と不安で、<strong>無難な服ばかり選んでしまう</strong></p>
+        </li>
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>トレンドを見ても、<strong>自分にどう取り入れたらいいかわからない</strong></p>
+        </li>
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>昔はもっとおしゃれを楽しめていたのに、<strong>最近は鏡を見るたびにモヤモヤする</strong></p>
+        </li>
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>子育てや仕事を優先して、<strong>自分のことを後回しにしてきた</strong></p>
+        </li>
+        <li class="pain-card">
+          <span class="pain-dot" aria-hidden="true"></span>
+          <p>"私らしいおしゃれ"が<strong>わからなくなっている</strong></p>
+        </li>
+      </ul>
+
+      <div class="pain-bridge">
+        <p class="pb-lead">でも本当は、</p>
+        <p class="pb-body">
+          もっとおしゃれを楽しみたい。<br>
+          もっと自分を好きになりたい。
+        </p>
+        <p class="pb-quote">
+          「これ好き」<br>
+          「今日の私、なんかいい感じ」
+        </p>
+        <p class="pb-close">
+          そう思える毎日を、もう一度取り戻したい。<br>
+          そんな女性のための場所です。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 3: Change / Before-After
+  ========================================== -->
+  <section class="change" aria-label="サービスを受けるとどう変わるか">
+    <div class="wrap">
+      <div class="change-head">
+        <span class="script-label" aria-hidden="true">Change!</span>
+        <h2>このサービスを受けると</h2>
+        <p>& me に参加すると、"なんとなく"で選んでいた毎日が、少しずつ変わっていきます。</p>
+      </div>
+
+      <div class="change-ba" role="group" aria-label="参加前・参加後の比較">
+        <!-- Before -->
+        <div class="ba-card before">
+          <span class="ba-label">Before</span>
+          <ul class="ba-list">
+            <li>何を着てもピンとこない</li>
+            <li>服を買っても結局着なくなる</li>
+            <li>毎朝「何着よう…」で時間がかかる</li>
+            <li>無難で隠れる服ばかり選ぶ</li>
+            <li>おしゃれが楽しくない</li>
+          </ul>
+        </div>
+        <!-- Arrow -->
+        <div class="ba-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
+          </svg>
+        </div>
+        <!-- After -->
+        <div class="ba-card after">
+          <span class="ba-label">After</span>
+          <ul class="ba-list">
+            <li>自分に似合う服を、<strong>自分で選べるようになる</strong></li>
+            <li>買い物で<strong>迷う時間が減る</strong></li>
+            <li>診断結果を<strong>"日常"で活かせるようになる</strong></li>
+            <li>「これ好き」「これ似合う」が<strong>一致してくる</strong></li>
+            <li>鏡を見るたび、<strong>少し気分が上がる</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="change-quote">
+        <p>おしゃれは、誰かになるためのものじゃありません。</p>
+        <span class="q-main">"私らしさ"を楽しむためのもの。</span>
+        <p>外見が整うと、人は少しずつ前を向けるようになります。<br>「私なんて」ではなく、</p>
+        <span class="q-accent">「今日の私、ちょっと好きかも」</span>
+        <p>そんな感覚を、毎日の中で育てていく場所です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 4: Service
+  ========================================== -->
+  <section class="service" aria-label="サービス内容">
+    <div class="wrap">
+      <div class="service-head">
+        <h2>& me で<span class="c-accent">できること</span></h2>
+        <span class="script-label" style="font-size: clamp(28px, 4vw, 44px); margin-bottom:0;" aria-hidden="true">Service!</span>
+      </div>
+
+      <div class="service-grid">
+
+        <div class="s-card">
+          <span class="s-num">01</span>
+          <h3>コーデ提案</h3>
+          <span class="s-highlight">診断結果を、毎日のコーデに落とし込む</span>
+          <p>「診断結果はわかったけど、実際どう着ればいいかわからない」——そんな悩みに日常に落とし込みやすいコーデを提案。理論だけで終わらないリアルなおしゃれ力を育てていきます。</p>
+        </div>
+
+        <div class="s-card">
+          <span class="s-num">02</span>
+          <h3>トレンド解説</h3>
+          <span class="s-highlight">流行を「自分に似合う形」で楽しめるように</span>
+          <p>ただ追いかけるのではなく、40代女性でも取り入れやすい大人のおしゃれとして、わかりやすく解説します。</p>
+        </div>
+
+        <div class="s-card">
+          <span class="s-num">03</span>
+          <h3>メイクアドバイス</h3>
+          <span class="s-highlight">「昔のメイクのまま」から卒業する</span>
+          <p>顔タイプ・カラー・雰囲気に合わせて、今の自分に合うメイクを提案。頑張りすぎない垢抜けをサポートします。</p>
+        </div>
+
+        <div class="s-card">
+          <span class="s-num">04</span>
+          <h3>おしゃれ相談</h3>
+          <span class="s-highlight">「これ買っていい？」を気軽に聞ける環境</span>
+          <p>日常のおしゃれの悩みを気軽に相談できる場所をご用意。一人で悩まなくていいから、おしゃれがもっと楽しくなります。</p>
+        </div>
+
+        <div class="s-card s-card-wide">
+          <span class="s-num">05</span>
+          <h3>イベント・企画（不定期）</h3>
+          <span class="s-highlight">"学ぶ"だけじゃなく、実際に動きながら変化を体感できる企画を開催</span>
+          <p>同じ仲間と動き、楽しみながら変化できる場をご用意しています。</p>
+          <ul class="tag-list">
+            <li>同行ショッピング</li>
+            <li>撮影イベント</li>
+            <li>季節ごとの企画</li>
+            <li>限定ライブ配信</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="values-block">
+        <h2>& me が<span class="c-accent">大切にしていること</span></h2>
+        <p>
+          & me は、ただ知識を学ぶ場所ではありません。<br>
+          大切なのは、「私にはこれが似合う」「私はこれが好き」を、<strong>自分で選べるようになること</strong>。
+        </p>
+        <p class="values-quote">
+          正解探しではなく、"私らしさ"を育てていく——<br>
+          そのために、& me はあります。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 5: Final CTA
+  ========================================== -->
+  <section class="cta-final" id="cta" aria-label="お申し込み">
+    <div class="wrap cta-inner">
+      <h2>
+        あなたの「好き」と「似合う」を、<br>
+        もっと楽しもう。
+      </h2>
+      <p>大人のおしゃれ部活に参加する</p>
+      <a href="#" class="btn btn-white">
+        <span class="btn-eyebrow">大人のおしゃれ部活に参加する</span>
+        <span>【申し込みはこちら】</span>
+      </a>
+    </div>
+  </section>
+
+</body>
+</html>

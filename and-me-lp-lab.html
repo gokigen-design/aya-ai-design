@@ -31,6 +31,7 @@
   --ver5: #b5005c;
   --ver6: #E8607A;
   --ver7: #D05070;
+  --ver8: #C4687A;
 
   --font-h:    'Shippori Mincho', serif;
   --font-b:    'Noto Sans JP', sans-serif;
@@ -235,6 +236,7 @@ header .subtitle {
 .ver-badge-5 { background: #fff0f8; color: var(--ver5); border: 1px solid #ffb3d9; }
 .ver-badge-6 { background: #fff0f5; color: var(--ver6); border: 1px solid #f9b4c0; }
 .ver-badge-7 { background: #ffeaee; color: var(--ver7); border: 1px solid #f7a8b8; }
+.ver-badge-8 { background: #fde8ed; color: var(--ver8); border: 1px solid #f5afc0; }
 
 .ver-title-group h3 {
   font-family: var(--font-h);
@@ -442,6 +444,7 @@ header .subtitle {
 .result-box.ver5 { border-left-color: var(--ver5); }
 .result-box.ver6 { border-left-color: var(--ver6); }
 .result-box.ver7 { border-left-color: var(--ver7); }
+.result-box.ver8 { border-left-color: var(--ver8); }
 
 .result-box h4 {
   font-size: 13px;
@@ -683,7 +686,7 @@ footer a:hover { color: var(--white); }
   <div class="container">
     <div class="header-label">Prompt Experiment Lab</div>
     <h1>& me <span>LP Lab</span></h1>
-    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？7バージョン検証レポート</p>
+    <p class="subtitle">プロンプトの違いで LP の仕上がりはどう変わる？8バージョン検証レポート</p>
     <div class="team-badges">
       <span class="team-badge">あや</span>
       <span class="team-badge">ゆみ</span>
@@ -700,7 +703,7 @@ footer a:hover { color: var(--white); }
   <div class="container">
     <h2>検証の目的</h2>
     <p>
-      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの種類・詳しさを段階的に変えながら7バージョン作成。<br>
+      同じサービス「& me（ファッションコミュニティ）」のLPを、プロンプトの種類・詳しさを段階的に変えながら8バージョン作成。<br>
       初心者でも再現できる指示の出し方を探り、どのレベルで品質が跳ね上がるかを確認します。
     </p>
 
@@ -757,6 +760,14 @@ footer a:hover { color: var(--white); }
         <div class="flow-num" style="color: var(--ver7);">VER.07</div>
         <h3>全ページSS貼付け</h3>
         <p>フルページSSを参照画像として読み込みLP再現</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-step" style="border-color: #f5afc0;">
+        <div class="flow-num" style="color: var(--ver8);">VER.08</div>
+        <h3>デザイン＋コピー全ルール指定</h3>
+        <p>LP構成案＋デザイン・コピーのルールをすべて明文化して一発生成</p>
       </div>
     </div>
   </div>
@@ -1549,6 +1560,88 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
       </div>
     </div><!-- /VER.07 -->
 
+    <!-- ========== VER.08 あや ========== -->
+    <div class="version-card" id="ver08">
+      <div class="version-card-header">
+        <span class="ver-badge ver-badge-8">VER.08 あや</span>
+        <div class="ver-title-group">
+          <h3>デザインルール＋コピールール＋LP構成案をすべてプロンプトに含めて一発生成</h3>
+          <p>「LP構成案」の文面をそのまま渡しつつ、色・フォント・余白・レスポンシブ・コピーの禁止ワードまで細かくルール化。デザイナー兼コピーライターとしてのペルソナを与えた上で生成した版。</p>
+        </div>
+      </div>
+
+      <div class="version-card-body">
+        <div class="io-grid">
+          <!-- INPUT -->
+          <div>
+            <div class="io-label">Input — デザイン＋コピー全ルール指定プロンプト</div>
+            <div class="prompt-card">
+              <div class="prompt-card-header">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <span class="prompt-sender">あや → Claude Code</span>
+              </div>
+              <div class="prompt-body" style="font-size:12px; line-height:1.7;">
+                あなたは売れるLPを作るデザイナー兼コピーライターです。<br>
+                【コピーのルール】主語は「あなた」、抽象語禁止、AI定型句禁止、数字・固有名詞・動詞から始める文を意識…<br>
+                【デザインのルール】絵文字禁止、フォント最大3種類、アクセント1色のみ（#faf8f5背景・#1e1e1eテキスト）…<br>
+                【フォントサイズ】clamp必須・H1 clamp(28px,7vw,48px)…<br>
+                【レスポンシブ】768pxブレークポイント、横スクロール禁止…<br>
+                + LP構成案（全セクション文面をそのまま記載）
+              </div>
+            </div>
+          </div>
+
+          <!-- ARROW -->
+          <div class="io-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+
+          <!-- OUTPUT -->
+          <div>
+            <div class="io-label">Output — 完成LP</div>
+            <div class="browser-mockup">
+              <div class="browser-bar">
+                <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                <div class="browser-url">gokigen-design.github.io/aya-ai-design/and-me-lp-ver8.html</div>
+              </div>
+              <div class="iframe-wrap">
+                <iframe src="and-me-lp-ver8.html" loading="lazy" title="& me LP Ver.08"></iframe>
+              </div>
+            </div>
+            <a href="and-me-lp-ver8.html" target="_blank" class="view-btn" style="background: var(--ver8);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              VER.08 LPを全画面で見る
+            </a>
+          </div>
+        </div>
+
+        <!-- RESULT NOTES -->
+        <div class="result-box ver8">
+          <h4>ルールをすべて言語化するとどこまで変わるか</h4>
+          <div class="result-grid">
+            <div class="result-col">
+              <h5>わかったこと</h5>
+              <ul class="good">
+                <li>デザイントークン（色・フォント・シャドウ）が意図どおりに出力される</li>
+                <li>clamp()でフォントサイズが自動でレスポンシブ対応</li>
+                <li>コピールールを渡すと「AI定型句」がほぼ消える</li>
+                <li>LP構成案の文面をそのまま入れると誤字・抜けが起きない</li>
+                <li>参照サイトURLを渡すとデザインの方向性がより絞られる</li>
+              </ul>
+            </div>
+            <div class="result-col">
+              <h5>次の検証アイデア</h5>
+              <ul class="bad">
+                <li>同じプロンプトでVER.05（ゆみ版）と比較するとどう違うか？</li>
+                <li>参照サイトURLを変えると色・雰囲気はどこまで変わるか？</li>
+                <li>コピーだけ人間が書いて渡すとさらに変わるか？</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /VER.08 -->
+
   </div>
 </section><!-- /versions-section -->
 
@@ -1558,7 +1651,7 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
 ============================================================ -->
 <section class="summary-section">
   <div class="container">
-    <h2 class="section-heading">7バージョン比較まとめ</h2>
+    <h2 class="section-heading">8バージョン比較まとめ</h2>
     <p class="section-sub">初心者がLPを作るときの「プロンプトの出し方」チェックリストとして活用できます</p>
 
     <table class="compare-table">
@@ -1619,6 +1712,13 @@ After: 自分に似合う服を自分で選べるようになる / 鏡を見る�
           <td>フルページSSを1枚貼り付けるだけ</td>
           <td>全セクション構成・レイアウトが画像に忠実に再現</td>
           <td>1回（説明文ほぼ不要）</td>
+          <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
+        </tr>
+        <tr style="background: #fde8ed;">
+          <td><strong>Ver.08</strong><br><span style="font-size:12px;color:#C4687A;">デザイン＋コピー全ルール指定（あや）</span></td>
+          <td>LP構成案＋デザイン・コピーのルールをすべて明文化</td>
+          <td>色・フォント・余白・コピーが意図どおりに一発完成</td>
+          <td>1回（プロンプト作成コストあり・再利用可）</td>
           <td><div class="star-row"><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div></div></td>
         </tr>
       </tbody>
