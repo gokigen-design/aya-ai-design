@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Node.js インストール手順 | くわもんさん専用ガイド</title>
+  <title>Node.js インストール手順 | Claude Code セットアップ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -227,6 +227,10 @@
       font-size: 12px;
       color: var(--mint-dark);
     }
+    /* 小さめ表示（パスワード画面など縦長の画像用） */
+    .screenshot.small {
+      max-width: 320px;
+    }
 
     /* リンクボタン */
     .link-btn {
@@ -427,7 +431,7 @@
 
 <!-- ヘッダー -->
 <header class="header">
-  <div class="header-badge">くわもんさん・和田さん 専用ガイド</div>
+  <div class="header-badge">Claude Code セットアップサポート</div>
   <h1>Node.js から Claude Code まで<br>完全インストール手順</h1>
   <p>原因がわかったので、ここから一気にいきましょう</p>
 </header>
@@ -562,7 +566,7 @@
           <div class="mini-step-text">パスワード入力の小窓が出るので、<strong>Macのログインパスワード</strong>を入力して<strong>「ソフトウェアをインストール」</strong>を押す<br>
           <span style="font-size: 13px; color: var(--muted);">※いつもMacを起動するときのパスワード。Touch IDの方は指紋認証でもOK</span></div>
         </div>
-        <div class="screenshot">
+        <div class="screenshot small">
           <img src="nodejs-installer-password-annotated.png" alt="パスワード入力ダイアログ。ソフトウェアをインストールを押す">
           <div class="screenshot-caption">↑ パスワードを入力したら青い「ソフトウェアをインストール」を押す</div>
         </div>
@@ -831,7 +835,7 @@
 
 <!-- フッター -->
 <footer>
-  <p>くわもんさん・和田あゆみさん 専用サポート資料</p>
+  <p>Claude Code セットアップサポート資料</p>
 </footer>
 
 <script>
