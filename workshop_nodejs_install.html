@@ -507,15 +507,15 @@
       <div class="mini-step">
         <div class="mini-step-head">
           <div class="mini-step-num">3</div>
-          <div class="mini-step-text">ダウンロードしたファイル（<code style="font-family:monospace; background:#F0F0F0; padding:1px 6px; border-radius:3px;">node-v24.16.0.pkg</code> など）を<strong>ダブルクリック</strong>して開く</div>
+          <div class="mini-step-text"><strong>ダウンロードフォルダ</strong>を開いて、ダウンロードしたファイル（<code style="font-family:monospace; background:#F0F0F0; padding:1px 6px; border-radius:3px;">node-v24.16.0.pkg</code> など）を<strong>ダブルクリック</strong>して開く<br>
+          <span style="font-size: 13px; color: var(--muted);">※Finderの左サイドバーの「ダウンロード」フォルダ、またはDockのダウンロードアイコンから</span></div>
         </div>
       </div>
 
       <div class="mini-step">
         <div class="mini-step-head">
           <div class="mini-step-num">4</div>
-          <div class="mini-step-text">「Node.jsのインストール」画面が開く。<strong>右下の「続ける」</strong>を押して進める<br>
-          <span style="font-size: 13px; color: var(--muted);">「使用許諾契約」→「続ける」→「同意する」と進む</span></div>
+          <div class="mini-step-text">「Node.jsのインストール」画面（ようこそ画面）が開く。<strong>右下の「続ける」</strong>を押す</div>
         </div>
         <div class="screenshot">
           <img src="nodejs-installer-welcome-annotated.png" alt="Node.jsインストーラーのようこそ画面">
@@ -526,34 +526,83 @@
       <div class="mini-step">
         <div class="mini-step-head">
           <div class="mini-step-num">5</div>
-          <div class="mini-step-text"><strong>「インストール」</strong>を押す<br>
-          <span style="font-size: 13px; color: var(--muted);">※Macのログインパスワード（またはTouch ID）を求められます。いつもMacを起動するときのパスワードを入力</span></div>
+          <div class="mini-step-text">次は<strong>「使用許諾契約」</strong>画面が出るので、右下の<strong>「続ける」</strong>を押す</div>
+        </div>
+        <div class="screenshot">
+          <img src="nodejs-installer-license-annotated.png" alt="使用許諾契約画面。右下の続けるボタンを押す">
+          <div class="screenshot-caption">↑ 右下の「続ける」を押す</div>
         </div>
       </div>
 
       <div class="mini-step">
         <div class="mini-step-head">
           <div class="mini-step-num">6</div>
-          <div class="mini-step-text">「インストールが完了しました」と出たら成功！</div>
+          <div class="mini-step-text">小窓が出てきます。<strong>「同意する」</strong>（青いボタン）を押す</div>
         </div>
         <div class="screenshot">
-          <img src="nodejs-installer-complete-annotated.png" alt="Node.jsインストール完了画面。Node.js v24.16.0とnpm v11.13.0がインストールされた表示">
-          <div class="screenshot-caption">↑ 「インストールが完了しました」が出ればOK</div>
-        </div>
-
-        <div class="mini-step-head" style="margin-top: 20px;">
-          <div class="mini-step-num" style="background: var(--mint-light); color: var(--mint-dark);">＋</div>
-          <div class="mini-step-text"><strong>「インストーラをゴミ箱に入れますか？」</strong>が出たら、<strong>「ゴミ箱に入れる」</strong>を押してOK</div>
-        </div>
-        <div class="screenshot">
-          <img src="nodejs-installer-trash-annotated.png" alt="Node.jsのインストーラをゴミ箱に入れますか?という確認ダイアログ">
-          <div class="screenshot-caption">↑ 「ゴミ箱に入れる」を押して問題なし</div>
+          <img src="nodejs-installer-agree-annotated.png" alt="同意するか確認のポップアップ。同意するボタンを押す">
+          <div class="screenshot-caption">↑ 右側の青い「同意する」を押す</div>
         </div>
       </div>
 
       <div class="mini-step">
         <div class="mini-step-head">
           <div class="mini-step-num">7</div>
+          <div class="mini-step-text"><strong>「Macintosh HDに標準インストール」</strong>画面が出るので、右下の<strong>「インストール」</strong>を押す</div>
+        </div>
+        <div class="screenshot">
+          <img src="nodejs-installer-type-annotated.png" alt="インストールの種類画面。右下のインストールボタンを押す">
+          <div class="screenshot-caption">↑ 右下の青い「インストール」を押す</div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">8</div>
+          <div class="mini-step-text">パスワード入力の小窓が出るので、<strong>Macのログインパスワード</strong>を入力して<strong>「ソフトウェアをインストール」</strong>を押す<br>
+          <span style="font-size: 13px; color: var(--muted);">※いつもMacを起動するときのパスワード。Touch IDの方は指紋認証でもOK</span></div>
+        </div>
+        <div class="screenshot">
+          <img src="nodejs-installer-password-annotated.png" alt="パスワード入力ダイアログ。ソフトウェアをインストールを押す">
+          <div class="screenshot-caption">↑ パスワードを入力したら青い「ソフトウェアをインストール」を押す</div>
+        </div>
+      </div>
+
+      <div class="info-box mint" style="margin-left: 44px;">
+        <p class="info-box-label">⑤〜⑧ の流れをまとめると</p>
+        <p style="line-height: 2;">
+          <strong>右下のボタンを順番に押していくだけ：</strong><br>
+          続ける → 同意する → インストール → パスワード入力
+        </p>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">9</div>
+          <div class="mini-step-text">「インストールが完了しました」と出たら成功！<br>
+          右下の<strong>「閉じる」</strong>を押す</div>
+        </div>
+        <div class="screenshot">
+          <img src="nodejs-installer-complete-annotated.png" alt="Node.jsインストール完了画面。Node.js v24.16.0とnpm v11.13.0がインストールされた表示">
+          <div class="screenshot-caption">↑ 「インストールが完了しました」が出たら右下の「閉じる」を押す</div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">10</div>
+          <div class="mini-step-text"><strong>「インストーラをゴミ箱に入れますか？」</strong>が出てきます。<br>
+          <strong>「ゴミ箱に入れる」</strong>を押してOK（インストール完了後はもう不要なので捨てて大丈夫です）</div>
+        </div>
+        <div class="screenshot">
+          <img src="nodejs-installer-trash-annotated.png" alt="Node.jsのインストーラをゴミ箱に入れますか?という確認ダイアログ">
+          <div class="screenshot-caption">↑ 「ゴミ箱に入れる」を押してOK</div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">11</div>
           <div class="mini-step-text" style="color: var(--amber);"><strong>【ここが一番大事！】</strong></div>
         </div>
         <div class="important-box">
