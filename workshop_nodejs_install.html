@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js インストール手順 | くわもんさん専用ガイド</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --mint:        #7BBCB0;
+      --mint-dark:   #5A9E92;
+      --mint-light:  #EEF7F5;
+      --rose:        #D97B8A;
+      --rose-light:  #FEF0F3;
+      --amber:       #D4A054;
+      --amber-light: #FEF8EC;
+      --blue:        #5B8DE8;
+      --blue-light:  #EEF3FD;
+      --green:       #5BAE6C;
+      --green-light: #EAF7ED;
+      --text:        #2A2A2A;
+      --muted:       #6B7280;
+      --border:      #E5EAE8;
+      --bg:          #F8FAF9;
+      --white:       #FFFFFF;
+    }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text);
+      background: var(--bg);
+    }
+    img { display: block; max-width: 100%; }
+    a { color: var(--mint-dark); }
+
+    /* ヘッダー */
+    .header {
+      background: linear-gradient(135deg, var(--mint-dark) 0%, #3D7A70 100%);
+      color: #fff;
+      padding: 36px 24px 44px;
+      text-align: center;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .header h1 {
+      font-size: clamp(20px, 4.5vw, 28px);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+    /* 例えセクション */
+    .analogy-section {
+      background: var(--mint-light);
+      padding: 32px 20px;
+    }
+    .analogy-box {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      border-left: 4px solid var(--mint);
+    }
+    .analogy-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--mint-dark);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .analogy-text {
+      font-size: 15px;
+      line-height: 1.85;
+    }
+    .analogy-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    @media (max-width: 599px) {
+      .analogy-comparison { grid-template-columns: 1fr; }
+    }
+    .analogy-card {
+      background: var(--mint-light);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .analogy-card-icon {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+    .analogy-card-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .analogy-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--mint-dark);
+    }
+
+    /* ステップセクション */
+    section.step {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .step-circle {
+      width: 48px; height: 48px;
+      background: var(--mint);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .step-circle .num { font-size: 20px; }
+    .step-meta { flex: 1; }
+    .step-meta .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--mint-dark);
+      margin-bottom: 4px;
+    }
+    .step-meta h2 {
+      font-size: clamp(17px, 3.5vw, 22px);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .step-meta p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ミニステップ */
+    .mini-steps { display: flex; flex-direction: column; gap: 24px; }
+    .mini-step { }
+    .mini-step-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .mini-step-num {
+      width: 30px; height: 30px;
+      background: var(--mint-light);
+      color: var(--mint-dark);
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .mini-step-text {
+      flex: 1;
+      font-size: 15px;
+      line-height: 1.75;
+      padding-top: 3px;
+    }
+    .mini-step-text strong { font-weight: 700; }
+
+    /* スクショプレースホルダー */
+    .screenshot-placeholder {
+      background: #F0F0F0;
+      border: 2px dashed #B0B0B0;
+      border-radius: 10px;
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin: 12px 0 0 44px;
+    }
+    .screenshot-placeholder strong {
+      display: block;
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    /* 実際のスクショ画像 */
+    .screenshot {
+      margin: 12px 0 0 44px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .screenshot img { width: 100%; height: auto; }
+    .screenshot-caption {
+      background: var(--mint-light);
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--mint-dark);
+    }
+
+    /* リンクボタン */
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--mint);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin: 8px 0 0 44px;
+    }
+    .link-btn:hover { background: var(--mint-dark); }
+
+    /* ターミナル */
+    .terminal {
+      background: #1A1B26;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 12px 0 0 44px;
+      position: relative;
+    }
+    .terminal-bar {
+      background: #2D2F40;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .t-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .t-dot.red    { background: #FF5F56; }
+    .t-dot.yellow { background: #FFBD2E; }
+    .t-dot.green  { background: #27C93F; }
+    .terminal-label {
+      margin-left: auto;
+      font-size: 10px;
+      color: #6B7280;
+      font-family: monospace;
+    }
+    .terminal-body {
+      padding: 14px 18px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.85;
+      color: #A9B1D6;
+    }
+    .t-prompt { color: #7DCFFF; }
+    .t-cmd    { color: #C3E88D; }
+    .t-output { color: #A9B1D6; }
+    .t-success{ color: #9ECE6A; }
+    .copy-btn {
+      position: absolute;
+      top: 38px; right: 10px;
+      background: rgba(255,255,255,0.1);
+      color: #A9B1D6;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+    .copy-btn.copied { color: #9ECE6A; }
+
+    /* インフォボックス */
+    .info-box {
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 12px 0 0 44px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .info-box.amber {
+      background: var(--amber-light);
+      border-left: 4px solid var(--amber);
+    }
+    .info-box.mint {
+      background: var(--mint-light);
+      border-left: 4px solid var(--mint);
+      color: var(--mint-dark);
+    }
+    .info-box.rose {
+      background: var(--rose-light);
+      border-left: 4px solid var(--rose);
+    }
+    .info-box-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .info-box.amber .info-box-label { color: var(--amber); }
+    .info-box.mint  .info-box-label { color: var(--mint-dark); }
+    .info-box.rose  .info-box-label { color: var(--rose); }
+
+    /* 大事ポイント */
+    .important-box {
+      background: linear-gradient(135deg, #FFF5E6 0%, #FFEED1 100%);
+      border: 2px solid var(--amber);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 16px 0 0 44px;
+    }
+    .important-label {
+      display: inline-block;
+      background: var(--amber);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      letter-spacing: 0.08em;
+    }
+    .important-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #8B6914;
+      line-height: 1.7;
+    }
+
+    /* 完了チェック */
+    .check-card {
+      background: var(--green-light);
+      border: 1px solid var(--green);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 24px;
+      font-size: 14px;
+    }
+    .check-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .check-list { list-style: none; margin-top: 8px; }
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      padding: 4px 0;
+      color: var(--green);
+    }
+    .check-list li::before {
+      content: '';
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%235BAE6C'/%3E%3Cpath d='M5 9.5L7.5 12L13 7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
+    /* 完了セクション */
+    .complete-section {
+      background: linear-gradient(135deg, var(--mint-dark) 0%, #3D7A70 100%);
+      color: #fff;
+      text-align: center;
+      padding: 48px 20px;
+    }
+    .complete-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .complete-section h2 {
+      font-size: clamp(22px, 5vw, 30px);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .complete-section p {
+      font-size: 14px;
+      opacity: 0.9;
+      line-height: 1.85;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    footer {
+      background: #2A4A45;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="header">
+  <div class="header-badge">くわもんさん・和田さん 専用ガイド</div>
+  <h1>Node.js から Claude Code まで<br>完全インストール手順</h1>
+  <p>原因がわかったので、ここから一気にいきましょう</p>
+</header>
+
+
+<!-- 例えセクション -->
+<section class="analogy-section">
+  <div class="container">
+    <div class="analogy-box">
+      <p class="analogy-title">なぜインストールできなかったのか？</p>
+      <p class="analogy-text">
+        Claude Code を入れようとしていましたが、<strong>「Node.js」というClaude Codeを動かす土台のソフト</strong>が入っていない状態でした。
+      </p>
+      <p class="analogy-text" style="margin-top: 12px;">
+        家を建てたい！と思って <strong>木材（Claude Code）</strong> を買ったけど、そもそも <strong>土地（Node.js）</strong> がなかった、という状態です。<br>
+        土地さえ用意できれば、その上に家が建てられます！
+      </p>
+
+      <div class="analogy-comparison">
+        <div class="analogy-card">
+          <div class="analogy-card-label">必要だったもの</div>
+          <div class="analogy-card-name">Node.js（土台）</div>
+        </div>
+        <div class="analogy-card">
+          <div class="analogy-card-label">入れたいもの</div>
+          <div class="analogy-card-name">Claude Code（建物）</div>
+        </div>
+      </div>
+
+      <div class="info-box mint" style="margin: 16px 0 0 0;">
+        <p class="info-box-label">よくある質問への答え</p>
+        <p><strong>「アンインストールしてからやるの？」</strong><br>
+        → いいえ！何もアンインストールしなくて大丈夫です。<br>
+        　 Node.js を新しく入れるだけで解決します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 1 -->
+<section class="step">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">1</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 1</p>
+        <h2>Node.js をインストール</h2>
+        <p>土台を用意します</p>
+      </div>
+    </div>
+
+    <div class="mini-steps">
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">1</div>
+          <div class="mini-step-text">下記の<strong>ダウンロード専用ページ</strong>をブラウザで開く</div>
+        </div>
+        <a href="https://nodejs.org/ja/download" target="_blank" class="link-btn">
+          nodejs.org/ja/download を開く →
+        </a>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">2</div>
+          <div class="mini-step-text">画面が開いたら、中央にある<strong>深緑色の「macOSインストーラー (.pkg)」</strong>ボタンをクリック<br>
+          <span style="font-size: 13px; color: var(--muted);">※他の場所や英語・数字のテキストはクリックしなくてOK</span></div>
+        </div>
+        <div class="screenshot-placeholder">
+          <strong>【スクショ：nodejs.orgのダウンロードページ】</strong>
+          「macOS インストーラー (.pkg)」の緑ボタンが見える画面
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">3</div>
+          <div class="mini-step-text">ダウンロードしたファイル（<code style="font-family:monospace; background:#F0F0F0; padding:1px 6px; border-radius:3px;">node-v24.16.0.pkg</code> など）を<strong>ダブルクリック</strong>して開く</div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">4</div>
+          <div class="mini-step-text">「Node.jsのインストール」画面が開く。<strong>右下の「続ける」</strong>を押して進める<br>
+          <span style="font-size: 13px; color: var(--muted);">「使用許諾契約」→「続ける」→「同意する」と進む</span></div>
+        </div>
+        <div class="screenshot-placeholder">
+          <strong>【スクショ：ようこそNode.jsインストーラへ画面】</strong>
+          「This package will install: Node.js v24.16.0」と表示されている
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">5</div>
+          <div class="mini-step-text"><strong>「インストール」</strong>を押す<br>
+          <span style="font-size: 13px; color: var(--muted);">※Macのログインパスワード（またはTouch ID）を求められます。いつもMacを起動するときのパスワードを入力</span></div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">6</div>
+          <div class="mini-step-text">「インストールが完了しました」と出たら成功！<br>
+          <strong>「インストーラをゴミ箱に入れますか？」</strong>が出たら、<strong>「ゴミ箱に入れる」</strong>を押してOK</div>
+        </div>
+        <div class="screenshot-placeholder">
+          <strong>【スクショ：インストール完了画面】</strong>
+          「Node.js v24.16.0 to /usr/local/bin/node」「npm v11.13.0 to /usr/local/bin/npm」が表示されている
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">7</div>
+          <div class="mini-step-text" style="color: var(--amber);"><strong>【ここが一番大事！】</strong></div>
+        </div>
+        <div class="important-box">
+          <span class="important-label">必須</span>
+          <p class="important-text">
+            インストールが完全に完了したら、<br>
+            今開いている黒い画面（ターミナル）を<br>
+            <strong>一度完全に閉じて、新しく開き直してください。</strong>
+          </p>
+          <p style="font-size: 13px; color: #8B6914; margin-top: 8px; line-height: 1.6;">
+            ※開き直さないと、パソコンが新しい土地（Node.js）を認識してくれません！
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 1 完了チェック</p>
+      <ul class="check-list">
+        <li>Node.js のインストーラーで「インストール完了」が表示された</li>
+        <li>ターミナルを一度閉じて、新しく開き直した</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 2 -->
+<section class="step">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">2</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 2</p>
+        <h2>Node.js が入ったか確認</h2>
+        <p>土地が用意できたかチェック</p>
+      </div>
+    </div>
+
+    <div class="mini-steps">
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">1</div>
+          <div class="mini-step-text">新しく開いたターミナルに、下記をコピペしてEnter</div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+            <span class="terminal-label">ターミナル</span>
+          </div>
+          <button class="copy-btn" data-copy="node --version">コピー</button>
+          <div class="terminal-body">
+            <span class="t-prompt">% </span><span class="t-cmd">node --version</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">2</div>
+          <div class="mini-step-text">下記のような<strong>「v24.16.0」</strong>などの数字が表示されればOK！</div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+          </div>
+          <div class="terminal-body">
+            <span class="t-prompt">% </span><span class="t-cmd">node --version</span><br>
+            <span class="t-success">v24.16.0</span><span class="t-output"> ← 数字が出れば成功！</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box rose">
+      <p class="info-box-label">「command not found」と出た場合</p>
+      <p>Node.jsのインストールが完了していないか、ターミナルを開き直していない可能性があります。<br>
+      STEP 1 の「<strong>ターミナルを開き直す</strong>」をもう一度確認してください。</p>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 2 完了チェック</p>
+      <ul class="check-list">
+        <li>「v○○.○○.○○」など数字のバージョンが表示された</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 3 -->
+<section class="step">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle"><span class="num">3</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 3</p>
+        <h2>Claude Code をインストール</h2>
+        <p>土地ができたので、いよいよ木材を組み立てます</p>
+      </div>
+    </div>
+
+    <div class="mini-steps">
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">1</div>
+          <div class="mini-step-text">下記をコピペしてターミナルに貼り付け、Enterを押す</div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+            <span class="terminal-label">ターミナル</span>
+          </div>
+          <button class="copy-btn" data-copy="npm install -g @anthropic-ai/claude-code">コピー</button>
+          <div class="terminal-body">
+            <span class="t-prompt">% </span><span class="t-cmd">npm install -g @anthropic-ai/claude-code</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">2</div>
+          <div class="mini-step-text">数分待ちます。画面がダダダッと動き、最後に<strong>「added 247 packages」</strong>などの文字が出たら完了！</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box rose">
+      <p class="info-box-label">「Permission denied」というエラーが出たら</p>
+      <p>頭に <code style="font-family:monospace;">sudo</code> をつけて、下記のように打ち直してください。</p>
+      <div class="terminal" style="margin: 8px 0 0 0;">
+        <div class="terminal-bar">
+          <span class="t-dot red"></span>
+          <span class="t-dot yellow"></span>
+          <span class="t-dot green"></span>
+        </div>
+        <button class="copy-btn" data-copy="sudo npm install -g @anthropic-ai/claude-code">コピー</button>
+        <div class="terminal-body">
+          <span class="t-prompt">% </span><span class="t-cmd">sudo npm install -g @anthropic-ai/claude-code</span>
+        </div>
+      </div>
+      <p style="margin-top: 8px; font-size: 13px;">Macのパスワードを求められるので、入力してEnterを押せば進みます。</p>
+    </div>
+
+    <div class="check-card">
+      <p class="check-card-label">STEP 3 完了チェック</p>
+      <ul class="check-list">
+        <li>「added ○○ packages」と表示された</li>
+        <li>赤いエラーが出ていない（または sudo で再実行してエラーが消えた）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- STEP 4 -->
+<section class="step">
+  <div class="container">
+    <div class="step-header">
+      <div class="step-circle" style="background: var(--green);"><span class="num">4</span></div>
+      <div class="step-meta">
+        <p class="step-label">STEP 4</p>
+        <h2>起動！</h2>
+        <p>最後の起動確認です</p>
+      </div>
+    </div>
+
+    <div class="mini-steps">
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">1</div>
+          <div class="mini-step-text">下記を打ってEnter</div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+            <span class="terminal-label">ターミナル</span>
+          </div>
+          <button class="copy-btn" data-copy="claude">コピー</button>
+          <div class="terminal-body">
+            <span class="t-prompt">% </span><span class="t-cmd">claude</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-step">
+        <div class="mini-step-head">
+          <div class="mini-step-num">2</div>
+          <div class="mini-step-text">画面に<strong>虫（アリ）のマーク</strong>が出たら<strong>大成功</strong>！🎉</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box mint">
+      <p class="info-box-label">虫マークが出た後の流れ</p>
+      <p>「ログイン方法を選んでください」と聞かれたら、1番（Claude account with subscription）が選ばれた状態で <strong>Enter</strong> を押してください。<br>
+      その後ブラウザが開いて、Claudeアカウントでログインすれば完了です！</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 完了セクション -->
+<section class="complete-section">
+  <div class="container">
+    <h2>お疲れさまでした！</h2>
+    <p>
+      ここまでできれば Claude Code が使えるようになります。<br>
+      その後、Superpowers や UI/UX Pro Max を入れる手順に進んでください。<br><br>
+      もし途中でエラーや困ったことがあったら、<br>
+      画面のスクリーンショットを撮って送ってください！
+    </p>
+  </div>
+</section>
+
+
+<!-- フッター -->
+<footer>
+  <p>くわもんさん・和田あゆみさん 専用サポート資料</p>
+</footer>
+
+<script>
+  // コピーボタン
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-copy');
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'コピー完了';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'コピー';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
