@@ -9,21 +9,26 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --mint:        #7BBCB0;
-      --mint-dark:   #5A9E92;
-      --mint-light:  #EEF7F5;
-      --rose:        #D97B8A;
-      --rose-light:  #FEF0F3;
-      --amber:       #D4A054;
-      --amber-light: #FEF8EC;
-      --blue:        #5B8DE8;
-      --blue-light:  #EEF3FD;
-      --green:       #5BAE6C;
-      --green-light: #EAF7ED;
-      --text:        #2A2A2A;
-      --muted:       #6B7280;
-      --border:      #E5EAE8;
-      --bg:          #F8FAF9;
+      /* メイン：淡い水色 */
+      --mint:        #8AB8D6;  /* 水色（旧mintを置き換え。HTMLクラス名はそのまま使う） */
+      --mint-dark:   #6299BD;
+      --mint-light:  #EAF3FA;
+      /* アクセント：ローズピンク */
+      --rose:        #E89BAA;
+      --rose-light:  #FDF1F4;
+      /* 警告：柔らかいゴールド */
+      --amber:       #D9B05A;
+      --amber-light: #FBF5E8;
+      /* セカンダリ：ラベンダー寄りのブルー */
+      --blue:        #A8B8E0;
+      --blue-light:  #F3F5FC;
+      /* 成功：ミント緑 */
+      --green:       #7DCAB8;
+      --green-light: #EBF7F3;
+      --text:        #3A3A4A;
+      --muted:       #7E8898;
+      --border:      #E4ECF3;
+      --bg:          #F6FAFD;
       --white:       #FFFFFF;
     }
     body {
@@ -36,13 +41,34 @@
     img { display: block; max-width: 100%; }
     a { color: var(--mint-dark); }
 
-    /* ヘッダー */
+    /* ヘッダー：水色→ピンクのグラデーション */
     .header {
-      background: linear-gradient(135deg, var(--mint-dark) 0%, #3D7A70 100%);
+      background:
+        linear-gradient(135deg, rgba(168, 196, 232, 0.95) 0%, rgba(232, 155, 170, 0.85) 100%),
+        linear-gradient(135deg, #B5D4ED 0%, #F5BFC9 100%);
       color: #fff;
-      padding: 36px 24px 44px;
+      padding: 40px 24px 48px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -20%; right: -10%;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; left: -5%;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header > * { position: relative; z-index: 1; }
     .header-badge {
       display: inline-block;
       background: rgba(255,255,255,0.2);
@@ -66,9 +92,9 @@
 
     .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
 
-    /* 例えセクション */
+    /* 例えセクション：水色→ピンクの淡いグラデ */
     .analogy-section {
-      background: var(--mint-light);
+      background: linear-gradient(135deg, #EAF3FA 0%, #FDF1F4 100%);
       padding: 32px 20px;
     }
     .analogy-box {
@@ -132,7 +158,7 @@
     }
     .step-circle {
       width: 48px; height: 48px;
-      background: var(--mint);
+      background: linear-gradient(135deg, var(--mint) 0%, var(--rose) 100%);
       color: #fff;
       border-radius: 50%;
       display: flex;
@@ -143,6 +169,7 @@
       font-size: 10px;
       font-weight: 700;
       line-height: 1.2;
+      box-shadow: 0 4px 10px rgba(138, 184, 214, 0.25);
     }
     .step-circle .num { font-size: 20px; }
     .step-meta { flex: 1; }
@@ -390,17 +417,29 @@
       width: 18px; height: 18px;
       flex-shrink: 0;
       margin-top: 3px;
-      background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%235BAE6C'/%3E%3Cpath d='M5 9.5L7.5 12L13 7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%237DCAB8'/%3E%3Cpath d='M5 9.5L7.5 12L13 7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-size: cover;
     }
 
-    /* 完了セクション */
+    /* 完了セクション：水色→ピンクの華やかなグラデ */
     .complete-section {
-      background: linear-gradient(135deg, var(--mint-dark) 0%, #3D7A70 100%);
+      background:
+        linear-gradient(135deg, rgba(138, 184, 214, 0.95) 0%, rgba(232, 155, 170, 0.95) 100%);
       color: #fff;
       text-align: center;
-      padding: 48px 20px;
+      padding: 56px 20px;
+      position: relative;
+      overflow: hidden;
     }
+    .complete-section::before {
+      content: '';
+      position: absolute;
+      top: -30%; right: -10%;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .complete-section > * { position: relative; z-index: 1; }
     .complete-icon {
       font-size: 36px;
       margin-bottom: 12px;
@@ -419,10 +458,10 @@
     }
 
     footer {
-      background: #2A4A45;
-      color: rgba(255,255,255,0.8);
+      background: linear-gradient(135deg, #6299BD 0%, #C6748A 100%);
+      color: rgba(255,255,255,0.95);
       text-align: center;
-      padding: 24px 20px;
+      padding: 26px 20px;
       font-size: 13px;
     }
   </style>
